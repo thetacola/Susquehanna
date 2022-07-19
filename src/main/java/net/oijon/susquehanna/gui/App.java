@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -26,9 +27,21 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-    @Override
+    @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
+	@Override
     public void start(Stage stage) {
+        //Navbox
+    	Button fileButton = new Button();
+        ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/file-tab.png")));
+        fileButton.setGraphic(fileButtonImage);
+        fileButton.setPadding(Insets.EMPTY);
+        fileButton.setBackground(null);
         
+        VBox navVBox = new VBox(fileButton);
+        ScrollPane navBox = new ScrollPane();
+        navBox.setContent(navVBox);
+    	
+    	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
         Label javaFXVersionLabel = new Label("Bundled with JavaFX SDK 18.0.1.");
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.2.2.");
@@ -60,34 +73,46 @@ public class App extends Application {
         BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(backgroundFill);
         
-        VBox homeVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        BackgroundFill fileToolsFill = new BackgroundFill(Color.web("#D17A88"), CornerRadii.EMPTY, Insets.EMPTY);
+        Background fileToolsBackground = new Background(fileToolsFill);
         
-        Button fileButton = new Button();
-        ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/file-tab.png")));
-        fileButton.setGraphic(fileButtonImage);
-        fileButton.setPadding(Insets.EMPTY);
+        Button addLanguage = new Button("New Language");
+        addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
+        addLanguage.setPadding(Insets.EMPTY);
+        addLanguage.setContentDisplay(ContentDisplay.TOP);
+        addLanguage.setBackground(null);
         
-        VBox navVBox = new VBox(fileButton);
-        ScrollPane navBox = new ScrollPane();
-        navBox.setContent(navVBox);
+        Button openLanguage = new Button("Open Language");
+        openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
+        openLanguage.setPadding(Insets.EMPTY);
+        openLanguage.setContentDisplay(ContentDisplay.TOP);
+        openLanguage.setBackground(null);
         
-        HBox homeHBox = new HBox(navBox, homeVBox);
-        homeVBox.setAlignment(Pos.CENTER);
-        homeHBox.setAlignment(Pos.TOP_LEFT);
-        homeHBox.setHgrow(homeVBox, Priority.ALWAYS);
+        VBox fileTools = new VBox(addLanguage, openLanguage);
+        fileTools.setBackground(fileToolsBackground);
         
-        homeHBox.setBackground(background);
-        Scene home = new Scene(homeHBox);
+        VBox fileVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
         
+        HBox fileHBox = new HBox(navBox, fileTools, fileVBox);
+        fileVBox.setAlignment(Pos.CENTER);
+        fileHBox.setAlignment(Pos.TOP_LEFT);
+        fileHBox.setHgrow(fileVBox, Priority.ALWAYS);
+        
+        fileHBox.setBackground(background);
+        Scene file = new Scene(fileHBox);
+        
+        //Phonology
+        
+        //Navbox actions
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				stage.setScene(home);			
+				stage.setScene(file);			
 			}
         });
         
         
-        stage.setScene(home);
+        stage.setScene(file);
         stage.setMaximized(true);
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("img/icon.png")));
