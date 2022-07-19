@@ -35,6 +35,7 @@ public class App extends Application {
 	@Override
     public void start(Stage stage) {
     	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+    	
         //Navbox
     	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(backgroundFill);
@@ -76,7 +77,7 @@ public class App extends Application {
         settingsButton.setBackground(null);
         
         VBox navVBox = new VBox(fileButton, phonologyButton, orthographyButton, grammarButton, lexiconButton, settingsButton);
-        navVBox.setPrefHeight(screenBounds.getHeight());
+        //navVBox.setPrefHeight(screenBounds.getHeight());
         navVBox.setBackground(background);
         StackPane navStackPane = new StackPane(navVBox);
         navStackPane.setPadding(new Insets(0, 10, 0, 0));
@@ -85,6 +86,7 @@ public class App extends Application {
         navBox.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         navBox.setHbarPolicy(ScrollBarPolicy.NEVER);
         navBox.setBackground(background);
+        navBox.setFitToHeight(true);
         
     	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
@@ -130,31 +132,96 @@ public class App extends Application {
         openLanguage.setContentDisplay(ContentDisplay.TOP);
         openLanguage.setBackground(null);
         
-        VBox fileTools = new VBox(addLanguage, openLanguage);
+        Button info = new Button("Info");
+        info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button.png"))));
+        info.setPadding(Insets.EMPTY);
+        info.setContentDisplay(ContentDisplay.TOP);
+        info.setBackground(null);
+        
+        VBox fileTools = new VBox(addLanguage, openLanguage, info);
         fileTools.setBackground(fileToolsBackground);
         
-        VBox fileVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        VBox contentVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
         
-        HBox fileHBox = new HBox(navBox, fileTools, fileVBox);
-        fileVBox.setAlignment(Pos.CENTER);
-        fileHBox.setAlignment(Pos.TOP_LEFT);
-        fileHBox.setHgrow(fileVBox, Priority.ALWAYS);
+        addLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
+        	@Override
+        	public void handle(MouseEvent event) {
+        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language-pressed.png"))));
+        	}
+        });
+        addLanguage.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        	@Override
+        	public void handle(MouseEvent event) {
+        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
+        	}
+        });
         
-        fileHBox.setBackground(background);
-        Scene file = new Scene(fileHBox);
+        openLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
+        	@Override
+        	public void handle(MouseEvent event) {
+        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language-pressed.png"))));
+        	}
+        });
+        openLanguage.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        	@Override
+        	public void handle(MouseEvent event) {
+        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
+        	}
+        });
+        
+        info.setOnMousePressed(new EventHandler<MouseEvent>() {
+        	@Override
+        	public void handle(MouseEvent event) {
+        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button-pressed.png"))));
+        	}
+        });
+        info.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        	@Override
+        	public void handle(MouseEvent event) {
+        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button.png"))));
+        	}
+        });
+        info.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent event) {
+        		contentVBox.getChildren().clear();
+        		contentVBox.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        	}
+        });
+        
+        //Root
+        HBox rootHBox = new HBox(navBox, fileTools, contentVBox);
+        contentVBox.setAlignment(Pos.CENTER);
+        rootHBox.setAlignment(Pos.TOP_LEFT);
+        rootHBox.setHgrow(contentVBox, Priority.ALWAYS);
+        
+        rootHBox.setBackground(background);
+        Scene root = new Scene(rootHBox);
         
         //Phonology
+        
         
         //Navbox actions
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				stage.setScene(file);			
+				rootHBox.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox, fileTools, contentVBox);
+			}
+        });
+        
+        phonologyButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+			public void handle(ActionEvent event) {
+        		rootHBox.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox);		
 			}
         });
         
         
-        stage.setScene(file);
+        
+        stage.setScene(root);
         stage.setMaximized(true);
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("img/icon.png")));
