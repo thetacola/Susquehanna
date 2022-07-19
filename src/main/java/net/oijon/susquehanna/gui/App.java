@@ -62,8 +62,12 @@ public class App extends Application {
         
         VBox homeVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
         
-        Button homeButton = new Button("Home");
-        VBox navVBox = new VBox(homeButton);
+        Button fileButton = new Button();
+        ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/file-tab.png")));
+        fileButton.setGraphic(fileButtonImage);
+        fileButton.setPadding(Insets.EMPTY);
+        
+        VBox navVBox = new VBox(fileButton);
         ScrollPane navBox = new ScrollPane();
         navBox.setContent(navVBox);
         
@@ -75,7 +79,7 @@ public class App extends Application {
         homeHBox.setBackground(background);
         Scene home = new Scene(homeHBox);
         
-        homeButton.setOnAction(new EventHandler<ActionEvent>() {
+        fileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				stage.setScene(home);			
