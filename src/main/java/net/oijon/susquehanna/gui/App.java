@@ -23,6 +23,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -120,23 +121,26 @@ public class App extends Application {
         BackgroundFill fileToolsFill = new BackgroundFill(Color.web("#D17A88"), CornerRadii.EMPTY, Insets.EMPTY);
         Background fileToolsBackground = new Background(fileToolsFill);
         
-        Button addLanguage = new Button("New Language");
+        Button addLanguage = new Button("New\nLanguage");
         addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
         addLanguage.setPadding(Insets.EMPTY);
         addLanguage.setContentDisplay(ContentDisplay.TOP);
         addLanguage.setBackground(null);
+        addLanguage.setTextAlignment(TextAlignment.CENTER);
         
-        Button openLanguage = new Button("Open Language");
+        Button openLanguage = new Button("Open\nLanguage");
         openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
         openLanguage.setPadding(Insets.EMPTY);
         openLanguage.setContentDisplay(ContentDisplay.TOP);
         openLanguage.setBackground(null);
+        openLanguage.setTextAlignment(TextAlignment.CENTER);
         
         Button info = new Button("Info");
         info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button.png"))));
         info.setPadding(Insets.EMPTY);
         info.setContentDisplay(ContentDisplay.TOP);
         info.setBackground(null);
+        info.setTextAlignment(TextAlignment.CENTER);
         
         VBox fileTools = new VBox(addLanguage, openLanguage, info);
         fileTools.setBackground(fileToolsBackground);
@@ -155,7 +159,13 @@ public class App extends Application {
         		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
         	}
         });
-        
+        addLanguage.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent event) {
+        		contentVBox.getChildren().clear();
+        	}
+        });
         openLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
@@ -168,7 +178,13 @@ public class App extends Application {
         		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
         	}
         });
-        
+        openLanguage.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent event) {
+        		contentVBox.getChildren().clear();
+        	}
+        });
         info.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
@@ -218,7 +234,34 @@ public class App extends Application {
 				rootHBox.getChildren().addAll(navBox);		
 			}
         });
-        
+        orthographyButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+			public void handle(ActionEvent event) {
+        		rootHBox.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox);		
+			}
+        });
+        grammarButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+			public void handle(ActionEvent event) {
+        		rootHBox.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox);		
+			}
+        });
+        lexiconButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+			public void handle(ActionEvent event) {
+        		rootHBox.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox);		
+			}
+        });
+        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+			public void handle(ActionEvent event) {
+        		rootHBox.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox);		
+			}
+        });
         
         
         stage.setScene(root);
