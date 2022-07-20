@@ -55,8 +55,15 @@ public class Phonology {
 		}
 	}
 	
-	public List getList() {
+	public List<String> getList() {
 		return phonoList;
+	}
+	
+	public String get(int id) {
+		return phonoList.get(id);
+	}
+	public void add(String value) {
+		phonoList.add(value);
 	}
 	
 	public void sort() {
