@@ -95,7 +95,7 @@ public class App extends Application {
     	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
         Label javaFXVersionLabel = new Label("Bundled with JavaFX SDK 18.0.1.");
-        Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.2.2.");
+        Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.2.2, non-release hotfix #1.");
         Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w29a ***SNAPSHOT VERSION***");
         javaVersionLabel.setTextFill(Color.WHITE);
         javaFXVersionLabel.setTextFill(Color.WHITE);
