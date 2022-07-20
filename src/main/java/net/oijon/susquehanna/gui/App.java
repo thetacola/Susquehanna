@@ -12,12 +12,14 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -129,6 +131,12 @@ public class App extends Application {
         addLanguage.setBackground(null);
         addLanguage.setTextAlignment(TextAlignment.CENTER);
         
+        Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
+        TextField languageName = new TextField();
+        Label languageAutonymLabel = new Label("Language Autonym");
+        TextField languageAutonym = new TextField();
+        Button createLanguage = new Button("Create!");
+        
         Button openLanguage = new Button("Open\nLanguage");
         openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
         openLanguage.setPadding(Insets.EMPTY);
@@ -165,6 +173,7 @@ public class App extends Application {
         	@Override
         	public void handle(ActionEvent event) {
         		contentVBox.getChildren().clear();
+        		contentVBox.getChildren().addAll(languageNameLabel, languageName, languageAutonymLabel, languageAutonym, createLanguage);
         	}
         });
         openLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {

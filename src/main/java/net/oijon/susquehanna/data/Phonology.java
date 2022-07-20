@@ -6,26 +6,28 @@ import java.util.List;
 public class Phonology {
 
 	private List<String> phonoList = new ArrayList<String>();
-	private final String[] plosive = {"p", "b", "t", "d", "ʈ", "ɖ", "c", "ɟ", "k", "ɡ", "q", "ɢ", "ʔ"};
-	private final String[] nasal = {"m","ɱ","n","ɳ","ɲ","ŋ","ɴ"};
-	private final String[] trill = {"ʙ","r","ʀ"};
-	private final String[] tap = {"ⱱ","ɾ","ɽ"};
-	private final String[] fricative = {"ɸ","β","f","v","θ","ð","s","z","ʃ","ʒ","ʂ","ʐ","ç","ʝ","x","ɣ","χ","ʁ","ħ","ʕ","h","ɦ"};
-	private final String[] lateralFricative = {"ɬ","ɮ"};
-	private final String[] approximant = {"ʋ","ɹ","ɻ","j","ɰ"};
-	private final String[] lateralApproximant = {"l","ɭ","ʎ","ʟ"};
+	//for use later
 	
-	private final String[] click = {"ʘ","ǀ","ǃ","ǂ","ǁ"};
-	private final String[] implosive = {"ɓ","ɗ","ʄ","ɠ","ʛ"};
-	private final String[] other = {"ʍ","w","ɥ","ʜ","ʢ","ʡ","ɕ","ʑ","ɺ","ɧ"};
+	//private final String[] plosive = {"p", "b", "t", "d", "ʈ", "ɖ", "c", "ɟ", "k", "ɡ", "q", "ɢ", "ʔ"};
+	//private final String[] nasal = {"m","ɱ","n","ɳ","ɲ","ŋ","ɴ"};
+	//private final String[] trill = {"ʙ","r","ʀ"};
+	//private final String[] tap = {"ⱱ","ɾ","ɽ"};
+	//private final String[] fricative = {"ɸ","β","f","v","θ","ð","s","z","ʃ","ʒ","ʂ","ʐ","ç","ʝ","x","ɣ","χ","ʁ","ħ","ʕ","h","ɦ"};
+	//private final String[] lateralFricative = {"ɬ","ɮ"};
+	//private final String[] approximant = {"ʋ","ɹ","ɻ","j","ɰ"};
+	//private final String[] lateralApproximant = {"l","ɭ","ʎ","ʟ"};
 	
-	private final String[] close = {"i","y","ɨ","ʉ","ɯ","u"};
-	private final String[] nearclose = {"ɪ","ʏ","ʊ"};
-	private final String[] closemid = {"e","ø","ɘ","ɵ","ɤ","o"};
-	private final String[] mid = {"ə"};
-	private final String[] openmid = {"ɛ","œ","ɜ","ɞ","ʌ","ɔ"};
-	private final String[] closeopen = {"æ","ɐ"};
-	private final String[] open = {"a","ɶ","ɑ","ɒ"};
+	//private final String[] click = {"ʘ","ǀ","ǃ","ǂ","ǁ"};
+	//private final String[] implosive = {"ɓ","ɗ","ʄ","ɠ","ʛ"};
+	//private final String[] other = {"ʍ","w","ɥ","ʜ","ʢ","ʡ","ɕ","ʑ","ɺ","ɧ"};
+	
+	//private final String[] close = {"i","y","ɨ","ʉ","ɯ","u"};
+	//private final String[] nearclose = {"ɪ","ʏ","ʊ"};
+	//private final String[] closemid = {"e","ø","ɘ","ɵ","ɤ","o"};
+	//private final String[] mid = {"ə"};
+	//private final String[] openmid = {"ɛ","œ","ɜ","ɞ","ʌ","ɔ"};
+	//private final String[] closeopen = {"æ","ɐ"};
+	//private final String[] open = {"a","ɶ","ɑ","ɒ"};
 	
 	private final String[] fullList = {
 			"p", "b", "t", "d", "ʈ", "ɖ", "c", "ɟ", "k", "ɡ", "q", "ɢ", "ʔ",
@@ -48,8 +50,13 @@ public class Phonology {
 			"a","ɶ","ɑ","ɒ"
 			};
 		
-	public Phonology() {
-		
+	public static final Phonology EMPTY = new Phonology(null);
+	
+	public Phonology(String[] array) {
+		for (int i = 0; i < array.length; i++) {
+			phonoList.add(array[i]);
+		}
+		sort();
 	}
 	
 	public List<String> getList() {
@@ -61,6 +68,7 @@ public class Phonology {
 	}
 	public void add(String value) {
 		phonoList.add(value);
+		sort();
 	}
 	
 	public void sort() {
