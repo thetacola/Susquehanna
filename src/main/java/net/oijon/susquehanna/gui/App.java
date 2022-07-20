@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -18,17 +17,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import net.oijon.susquehanna.data.Phonology;
 
 /**
  * JavaFX App
@@ -37,11 +37,13 @@ public class App extends Application {
 
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
-    public void start(Stage stage) {
-    	Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-    	
+    public void start(Stage stage) {    	
         //Navbox
     	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
+    	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/wood-texture.png")),
+    			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+    	          BackgroundSize.DEFAULT);
+    	Background woodBackground = new Background(plankImage);
         Background background = new Background(backgroundFill);
     	
     	Button fileButton = new Button();
@@ -82,14 +84,14 @@ public class App extends Application {
         
         VBox navVBox = new VBox(fileButton, phonologyButton, orthographyButton, grammarButton, lexiconButton, settingsButton);
         //navVBox.setPrefHeight(screenBounds.getHeight());
-        navVBox.setBackground(background);
+        navVBox.setBackground(woodBackground);
         StackPane navStackPane = new StackPane(navVBox);
         navStackPane.setPadding(new Insets(0, 10, 0, 0));
         ScrollPane navBox = new ScrollPane();
         navBox.setContent(navStackPane);
         navBox.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         navBox.setHbarPolicy(ScrollBarPolicy.NEVER);
-        navBox.setBackground(background);
+        navBox.setBackground(woodBackground);
         navBox.setFitToHeight(true);
         
     	//File
@@ -135,7 +137,7 @@ public class App extends Application {
         languageNameLabel.setTextFill(Color.WHITE);
         TextField languageName = new TextField();
         Label languageAutonymLabel = new Label("Language Autonym");
-        languageAutonymLabel.setTextFill(Color.WHITE);
+        languageNameLabel.setTextFill(Color.WHITE);
         TextField languageAutonym = new TextField();
         Button createLanguage = new Button("Create!");
         
