@@ -132,8 +132,10 @@ public class App extends Application {
         addLanguage.setTextAlignment(TextAlignment.CENTER);
         
         Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
+        languageNameLabel.setTextFill(Color.WHITE);
         TextField languageName = new TextField();
         Label languageAutonymLabel = new Label("Language Autonym");
+        languageAutonymLabel.setTextFill(Color.WHITE);
         TextField languageAutonym = new TextField();
         Button createLanguage = new Button("Create!");
         
