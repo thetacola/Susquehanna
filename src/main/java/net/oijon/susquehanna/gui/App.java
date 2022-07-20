@@ -26,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import net.oijon.susquehanna.data.Phonology;
 
 /**
  * JavaFX App

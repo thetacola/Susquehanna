@@ -1,10 +1,11 @@
 package net.oijon.susquehanna.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Phonology {
 
-	private List<String> phonoList;
+	private List<String> phonoList = new ArrayList<String>();
 	private final String[] plosive = {"p", "b", "t", "d", "ʈ", "ɖ", "c", "ɟ", "k", "ɡ", "q", "ɢ", "ʔ"};
 	private final String[] nasal = {"m","ɱ","n","ɳ","ɲ","ŋ","ɴ"};
 	private final String[] trill = {"ʙ","r","ʀ"};
@@ -46,13 +47,9 @@ public class Phonology {
 			"æ","ɐ",
 			"a","ɶ","ɑ","ɒ"
 			};
-	
-	public static final Phonology EMPTY = new Phonology(null);
-	
-	public Phonology(String[] phonoArray) {
-		for (int i = 0; i < phonoArray.length; i++) {
-			phonoList.add(phonoArray[i]);
-		}
+		
+	public Phonology() {
+		
 	}
 	
 	public List<String> getList() {
@@ -96,17 +93,17 @@ public class Phonology {
 					}
 				}
 				//actually start sorting
-				//this is a bit too many else ifs for my liking but i dont think a switch case would be good here
-				if (temp2 > temp) {
+				//this is a bit too many else ifs for my liking but i dont think a switch case would be good here\
+				if (temp2 < temp) {
 					temp3 = phonoList.get(i);
 					phonoList.set(i, phonoList.get(j));
 					phonoList.set(j, temp3);
+					System.out.println("Yes");
 				}
 				temp = 999;
 				temp2 = 999;
 				temp3 = null;
 			}
 		}
-		System.out.println("Sorted list: " + phonoList.toString());
 	}
 }
