@@ -42,10 +42,43 @@ public class App extends Application {
     	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
     	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/wood-texture.png")),
     			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-    	          BackgroundSize.DEFAULT);
+    	        BackgroundSize.DEFAULT);
     	Background woodBackground = new Background(plankImage);
         Background background = new Background(backgroundFill);
-    	
+        
+        BackgroundFill paperImage = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        Background paperBackground = new Background(paperImage);
+        
+        BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/file-bar.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background fileToolsBackground = new Background(fileBarImage);
+        
+        BackgroundImage phonologyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/phonology-bar.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background phonologyToolsBackground = new Background(phonologyBarImage);
+        
+        BackgroundImage orthographyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/orthography-bar.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background orthographyToolsBackground = new Background(orthographyBarImage);
+        
+        BackgroundImage grammarBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/grammar-bar.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background grammarToolsBackground = new Background(grammarBarImage);
+        
+        BackgroundImage lexiconBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/lexicon-bar.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background lexiconToolsBackground = new Background(lexiconBarImage);
+        
+        BackgroundImage settingsBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/settings-bar.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background settingsToolsBackground = new Background(settingsBarImage);
+        
     	Button fileButton = new Button();
         ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/file-tab.png")));
         fileButton.setGraphic(fileButtonImage);
@@ -93,16 +126,13 @@ public class App extends Application {
         navBox.setHbarPolicy(ScrollBarPolicy.NEVER);
         navBox.setBackground(woodBackground);
         navBox.setFitToHeight(true);
+        navBox.setPadding(new Insets(0, -20, 0, 0));
         
     	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
         Label javaFXVersionLabel = new Label("Bundled with JavaFX SDK 18.0.1.");
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.2.2, non-release hotfix #1.");
         Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w29a ***SNAPSHOT VERSION***");
-        javaVersionLabel.setTextFill(Color.WHITE);
-        javaFXVersionLabel.setTextFill(Color.WHITE);
-        algonquinVersionLabel.setTextFill(Color.WHITE);
-        versionLabel.setTextFill(Color.WHITE);
         Image bannerLogo = new Image(App.class.getResourceAsStream("img/bannerlogo.png"));
         Image hoveredBannerLogo = new Image(App.class.getResourceAsStream("img/bannerlogo-hover.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
@@ -123,9 +153,6 @@ public class App extends Application {
         	
         });
         
-        BackgroundFill fileToolsFill = new BackgroundFill(Color.web("#D17A88"), CornerRadii.EMPTY, Insets.EMPTY);
-        Background fileToolsBackground = new Background(fileToolsFill);
-        
         Button addLanguage = new Button("New\nLanguage");
         addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
         addLanguage.setPadding(Insets.EMPTY);
@@ -134,10 +161,8 @@ public class App extends Application {
         addLanguage.setTextAlignment(TextAlignment.CENTER);
         
         Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
-        languageNameLabel.setTextFill(Color.WHITE);
         TextField languageName = new TextField();
         Label languageAutonymLabel = new Label("Language Autonym");
-        languageNameLabel.setTextFill(Color.WHITE);
         TextField languageAutonym = new TextField();
         Button createLanguage = new Button("Create!");
         
@@ -158,7 +183,24 @@ public class App extends Application {
         VBox fileTools = new VBox(addLanguage, openLanguage, info);
         fileTools.setBackground(fileToolsBackground);
         
+        VBox phonologyTools = new VBox();
+        phonologyTools.setBackground(phonologyToolsBackground);
+        
+        VBox orthographyTools = new VBox();
+        orthographyTools.setBackground(orthographyToolsBackground);
+        
+        VBox grammarTools = new VBox();
+        grammarTools.setBackground(grammarToolsBackground);
+        
+        VBox lexiconTools = new VBox();
+        lexiconTools.setBackground(lexiconToolsBackground);
+        
+        VBox settingsTools = new VBox();
+        settingsTools.setBackground(settingsToolsBackground);
+        
         VBox contentVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        contentVBox.setBackground(paperBackground);
+        
         
         addLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
@@ -245,35 +287,35 @@ public class App extends Application {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox);		
+				rootHBox.getChildren().addAll(navBox, phonologyTools);
 			}
         });
         orthographyButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox);		
+				rootHBox.getChildren().addAll(navBox, orthographyTools);
 			}
         });
         grammarButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox);		
+				rootHBox.getChildren().addAll(navBox, grammarTools);
 			}
         });
         lexiconButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox);		
+				rootHBox.getChildren().addAll(navBox, lexiconTools);
 			}
         });
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox);		
+				rootHBox.getChildren().addAll(navBox, settingsTools);	
 			}
         });
         
