@@ -11,6 +11,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,8 +28,18 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import net.oijon.susquehanna.data.Language;
+import net.oijon.susquehanna.data.LanguageFile;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * JavaFX App
@@ -37,7 +48,11 @@ public class App extends Application {
 
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
-    public void start(Stage stage) {    	
+    public void start(Stage stage) {
+    	
+    	InputStream is = App.class.getResourceAsStream("font/Denyut.ttf");
+    	Font denyut20 = Font.loadFont(is, 20);
+    	
         //Navbox
     	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
     	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/wood-texture.png")),
@@ -46,7 +61,21 @@ public class App extends Application {
     	Background woodBackground = new Background(plankImage);
         Background background = new Background(backgroundFill);
         
-        BackgroundFill paperImage = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        BackgroundImage bindingBackgroundImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/page-binding.png")),
+    			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+    	        BackgroundSize.DEFAULT);
+        Background bindingBackground = new Background(bindingBackgroundImage);
+        ImageView bindingImage = new ImageView(new Image(App.class.getResourceAsStream("img/page-binding.png")));
+        
+        BackgroundImage rightPlankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/right-wood.png")),
+    			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+    	        BackgroundSize.DEFAULT);
+    	Background rightWoodBackground = new Background(rightPlankImage);
+    	ImageView rightWood = new ImageView(new Image(App.class.getResourceAsStream("img/right-wood.png")));
+        
+        BackgroundImage paperImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/paper-texture.png")),
+    			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+    	        BackgroundSize.DEFAULT);
         Background paperBackground = new Background(paperImage);
         
         BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/file-bar.png")),
@@ -78,6 +107,21 @@ public class App extends Application {
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background settingsToolsBackground = new Background(settingsBarImage);
+        
+        Image leftPapers = new Image(App.class.getResourceAsStream("img/left-papers.png"));
+        BackgroundImage leftPapersBI = new BackgroundImage(leftPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
+        		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
+        Background leftPapersBG = new Background(leftPapersBI);
+        
+        Image rightPapers = new Image(App.class.getResourceAsStream("img/right-papers.png"));
+        BackgroundImage rightPapersBI = new BackgroundImage(rightPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
+        		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
+        Background rightPapersBG = new Background(rightPapersBI);
+        
+        BackgroundImage brushedMetalImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/brushed-metal.png")),
+        		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+  	          	BackgroundSize.DEFAULT);
+        Background brushedMetal = new Background(brushedMetalImage);
         
     	Button fileButton = new Button();
         ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/file-tab.png")));
@@ -128,30 +172,28 @@ public class App extends Application {
         navBox.setFitToHeight(true);
         navBox.setPadding(new Insets(0, -20, 0, 0));
         
+        VBox leftPapersVBox = new VBox(new ImageView(leftPapers));
+        leftPapersVBox.setBackground(leftPapersBG);
+        VBox rightPapersVBox = new VBox(new ImageView(rightPapers));
+        rightPapersVBox.setBackground(rightPapersBG);
     	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
+        javaVersionLabel.setFont(denyut20);
         Label javaFXVersionLabel = new Label("Bundled with JavaFX SDK 18.0.1.");
+        javaFXVersionLabel.setFont(denyut20);
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.2.2, non-release hotfix #1.");
-        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w29a ***SNAPSHOT VERSION***");
-        Image bannerLogo = new Image(App.class.getResourceAsStream("img/bannerlogo.png"));
-        Image hoveredBannerLogo = new Image(App.class.getResourceAsStream("img/bannerlogo-hover.png"));
+        algonquinVersionLabel.setFont(denyut20);
+        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w34a ***SNAPSHOT VERSION***");
+        versionLabel.setFont(denyut20);
+        Image bannerLogo = new Image(App.class.getResourceAsStream("img/logo.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
-        bannerLogoView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent mouse) {
-				bannerLogoView.setImage(hoveredBannerLogo);
-			}
-        	
-        });
-        bannerLogoView.setOnMouseExited(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent mouse) {
-				bannerLogoView.setImage(bannerLogo);
-			}
-        	
-        });
+        
+        Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
+        madeByOijon.setFont(denyut20);
+        Image oijonLogo = new Image(App.class.getResourceAsStream("img/oijon.png"));
+        ImageView oijonView = new ImageView(oijonLogo);
+        
+        
         
         Button addLanguage = new Button("New\nLanguage");
         addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
@@ -160,11 +202,35 @@ public class App extends Application {
         addLanguage.setBackground(null);
         addLanguage.setTextAlignment(TextAlignment.CENTER);
         
+        Button makeTestLanguage = new Button("Make Test Language");
+        makeTestLanguage.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				LanguageFile.createTestLanguage();
+			}
+        	
+        });
         Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
+        languageNameLabel.setFont(denyut20);
         TextField languageName = new TextField();
         Label languageAutonymLabel = new Label("Language Autonym");
+        languageAutonymLabel.setFont(denyut20);
         TextField languageAutonym = new TextField();
         Button createLanguage = new Button("Create!");
+        
+        createLanguage.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Language newLang = new Language(languageName.getText());
+				newLang.setAutonym(languageAutonym.getText());
+				LanguageFile.createLanguage(newLang);
+			}
+        	
+        });
         
         Button openLanguage = new Button("Open\nLanguage");
         openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
@@ -172,6 +238,68 @@ public class App extends Application {
         openLanguage.setContentDisplay(ContentDisplay.TOP);
         openLanguage.setBackground(null);
         openLanguage.setTextAlignment(TextAlignment.CENTER);
+        
+        VBox languageSelect = new VBox();
+        
+        TextArea languageList = new TextArea();
+        File[] files = LanguageFile.getLanguageFiles();
+        String fileNames = "";
+        for (int i = 0; i < files.length; i++) {
+        	fileNames += files[i].getName() + "\n";
+        }
+        languageList.setText(fileNames);
+        
+        for (int i = 0; i < files.length; i++) {
+        	
+        	Label nameLabel = new Label();
+        	nameLabel.setFont(denyut20);
+        	Label timeCreatedLabel = new Label();
+        	timeCreatedLabel.setFont(denyut20);
+        	Label lastAccessedLabel = new Label();
+        	lastAccessedLabel.setFont(denyut20);
+        	Image icon = new Image(App.class.getResourceAsStream("img/no-image.png"));
+        	ImageView iconView = new ImageView(icon);
+        	HBox box = new HBox();
+        	
+        	try (InputStream input = new FileInputStream(files[i])) {
+
+                Properties prop = new Properties();
+
+                prop.load(input);
+                String name = prop.getProperty("name");
+                nameLabel.setText(name);
+                Long timeCreated = Long.valueOf(prop.getProperty("timeCreated"));
+                Date timeCreatedDate = new Date(timeCreated);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String timeCreatedString = sdf.format(timeCreatedDate);
+                timeCreatedLabel.setText(" Created on: " + timeCreatedString);
+                
+                Long lastAccessed = Long.valueOf(prop.getProperty("lastEdited"));
+                Date lastAccessedDate = new Date(lastAccessed);
+                String lastAccessedString = sdf.format(lastAccessedDate);
+                lastAccessedLabel.setText(" Last modified: " + lastAccessedString);
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        	box.getChildren().addAll(iconView, nameLabel, timeCreatedLabel, lastAccessedLabel);
+        	languageSelect.getChildren().add(box);
+        }
+        
+        Button refreshLanguageList = new Button("Refresh");
+                
+        refreshLanguageList.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent e) {
+        		File[] files = LanguageFile.getLanguageFiles();
+                String fileNames = "";
+                for (int i = 0; i < files.length; i++) {
+                	fileNames += files[i].getName() + "\n";
+                }
+                languageList.setText(fileNames);
+        	}
+        });
         
         Button info = new Button("Info");
         info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button.png"))));
@@ -198,9 +326,22 @@ public class App extends Application {
         VBox settingsTools = new VBox();
         settingsTools.setBackground(settingsToolsBackground);
         
-        VBox contentVBox = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
-        contentVBox.setBackground(paperBackground);
+        VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        leftPage.setBackground(paperBackground);
         
+        VBox binding = new VBox(bindingImage);
+        binding.setBackground(bindingBackground);
+        
+        VBox rightPage = new VBox(oijonView, madeByOijon);
+        rightPage.setBackground(paperBackground);
+        
+        Image fileIndicator = new Image(App.class.getResourceAsStream("img/file-bar.png"));
+        ImageView indicator = new ImageView(fileIndicator);
+        VBox rightIndicator = new VBox(indicator);
+        rightIndicator.setBackground(fileToolsBackground);
+        
+        VBox rightWoodVBox = new VBox(rightWood);
+        rightWoodVBox.setBackground(rightWoodBackground);
         
         addLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
@@ -218,8 +359,9 @@ public class App extends Application {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		contentVBox.getChildren().clear();
-        		contentVBox.getChildren().addAll(languageNameLabel, languageName, languageAutonymLabel, languageAutonym, createLanguage);
+        		leftPage.getChildren().clear();
+        		leftPage.getChildren().addAll(languageNameLabel, languageName, languageAutonymLabel, languageAutonym, createLanguage, makeTestLanguage);
+        		rightPage.getChildren().clear();
         	}
         });
         openLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -238,7 +380,10 @@ public class App extends Application {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		contentVBox.getChildren().clear();
+        		leftPage.getChildren().clear();
+        		leftPage.getChildren().addAll(languageSelect);
+        		rightPage.getChildren().clear();
+        		rightPage.getChildren().addAll(languageList, refreshLanguageList);
         	}
         });
         info.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -257,16 +402,22 @@ public class App extends Application {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		contentVBox.getChildren().clear();
-        		contentVBox.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		leftPage.getChildren().clear();
+        		leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		rightPage.getChildren().clear();
+        		rightPage.getChildren().addAll(oijonView, madeByOijon);
         	}
         });
         
         //Root
-        HBox rootHBox = new HBox(navBox, fileTools, contentVBox);
-        contentVBox.setAlignment(Pos.CENTER);
+        HBox rootHBox = new HBox(navBox, fileTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
+        leftPage.setAlignment(Pos.CENTER);
+        rightPage.setAlignment(Pos.CENTER);
         rootHBox.setAlignment(Pos.TOP_LEFT);
-        rootHBox.setHgrow(contentVBox, Priority.ALWAYS);
+        leftPage.setPrefWidth(400);
+        rightPage.setPrefWidth(400);
+        rootHBox.setHgrow(leftPage, Priority.ALWAYS);
+        rootHBox.setHgrow(rightPage, Priority.ALWAYS);
         
         rootHBox.setBackground(background);
         Scene root = new Scene(rootHBox);
@@ -279,7 +430,7 @@ public class App extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, fileTools, contentVBox);
+				rootHBox.getChildren().addAll(navBox, fileTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         
