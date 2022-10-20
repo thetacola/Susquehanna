@@ -165,6 +165,6 @@ public class LanguageFile {
 	}
 	
 	public void createTTSFiles() throws URISyntaxException, IOException {
-		net.oijon.algonquin.gui.GUILauncher.copyFiles();
+		//net.oijon.algonquin.gui.GUILauncher.copyFiles();
 	}
 }

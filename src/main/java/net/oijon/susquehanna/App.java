@@ -1,4 +1,4 @@
-package net.oijon.susquehanna.gui;
+package net.oijon.susquehanna;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -50,111 +50,111 @@ public class App extends Application {
 	@Override
     public void start(Stage stage) {
     	
-    	InputStream is = App.class.getResourceAsStream("font/Denyut.ttf");
+    	InputStream is = App.class.getResourceAsStream("/font/Denyut.ttf");
     	Font denyut20 = Font.loadFont(is, 20);
     	
         //Navbox
     	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
-    	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/wood-texture.png")),
+    	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/wood-texture.png")),
     			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
     	        BackgroundSize.DEFAULT);
     	Background woodBackground = new Background(plankImage);
         Background background = new Background(backgroundFill);
         
-        BackgroundImage bindingBackgroundImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/page-binding.png")),
+        BackgroundImage bindingBackgroundImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/page-binding.png")),
     			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
     	        BackgroundSize.DEFAULT);
         Background bindingBackground = new Background(bindingBackgroundImage);
-        ImageView bindingImage = new ImageView(new Image(App.class.getResourceAsStream("img/page-binding.png")));
+        ImageView bindingImage = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
         
-        BackgroundImage rightPlankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/right-wood.png")),
+        BackgroundImage rightPlankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/right-wood.png")),
     			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
     	        BackgroundSize.DEFAULT);
     	Background rightWoodBackground = new Background(rightPlankImage);
-    	ImageView rightWood = new ImageView(new Image(App.class.getResourceAsStream("img/right-wood.png")));
+    	ImageView rightWood = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
         
-        BackgroundImage paperImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/paper-texture.png")),
+        BackgroundImage paperImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/paper-texture.png")),
     			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
     	        BackgroundSize.DEFAULT);
         Background paperBackground = new Background(paperImage);
         
-        BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/file-bar.png")),
+        BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/file-bar.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background fileToolsBackground = new Background(fileBarImage);
         
-        BackgroundImage phonologyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/phonology-bar.png")),
+        BackgroundImage phonologyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/phonology-bar.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background phonologyToolsBackground = new Background(phonologyBarImage);
         
-        BackgroundImage orthographyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/orthography-bar.png")),
+        BackgroundImage orthographyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/orthography-bar.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background orthographyToolsBackground = new Background(orthographyBarImage);
         
-        BackgroundImage grammarBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/grammar-bar.png")),
+        BackgroundImage grammarBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/grammar-bar.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background grammarToolsBackground = new Background(grammarBarImage);
         
-        BackgroundImage lexiconBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/lexicon-bar.png")),
+        BackgroundImage lexiconBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/lexicon-bar.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background lexiconToolsBackground = new Background(lexiconBarImage);
         
-        BackgroundImage settingsBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/settings-bar.png")),
+        BackgroundImage settingsBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/settings-bar.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background settingsToolsBackground = new Background(settingsBarImage);
         
-        Image leftPapers = new Image(App.class.getResourceAsStream("img/left-papers.png"));
+        Image leftPapers = new Image(App.class.getResourceAsStream("/img/left-papers.png"));
         BackgroundImage leftPapersBI = new BackgroundImage(leftPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
         		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
         Background leftPapersBG = new Background(leftPapersBI);
         
-        Image rightPapers = new Image(App.class.getResourceAsStream("img/right-papers.png"));
+        Image rightPapers = new Image(App.class.getResourceAsStream("/img/right-papers.png"));
         BackgroundImage rightPapersBI = new BackgroundImage(rightPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
         		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
         Background rightPapersBG = new Background(rightPapersBI);
         
-        BackgroundImage brushedMetalImage = new BackgroundImage(new Image(App.class.getResourceAsStream("img/brushed-metal.png")),
+        BackgroundImage brushedMetalImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/brushed-metal.png")),
         		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
   	          	BackgroundSize.DEFAULT);
         Background brushedMetal = new Background(brushedMetalImage);
         
     	Button fileButton = new Button();
-        ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/file-tab.png")));
+        ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/file-tab.png")));
         fileButton.setGraphic(fileButtonImage);
         fileButton.setPadding(Insets.EMPTY);
         fileButton.setBackground(null);
         
         Button phonologyButton = new Button();
-        ImageView phonologyButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/phonology-tab.png")));
+        ImageView phonologyButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/phonology-tab.png")));
         phonologyButton.setGraphic(phonologyButtonImage);
         phonologyButton.setPadding(Insets.EMPTY);
         phonologyButton.setBackground(null);
         
         Button orthographyButton = new Button();
-        ImageView orthographyButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/orthography-tab.png")));
+        ImageView orthographyButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/orthography-tab.png")));
         orthographyButton.setGraphic(orthographyButtonImage);
         orthographyButton.setPadding(Insets.EMPTY);
         orthographyButton.setBackground(null);
         
         Button grammarButton = new Button();
-        ImageView grammarButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/grammar-tab.png")));
+        ImageView grammarButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/grammar-tab.png")));
         grammarButton.setGraphic(grammarButtonImage);
         grammarButton.setPadding(Insets.EMPTY);
         grammarButton.setBackground(null);
         
         Button lexiconButton = new Button();
-        ImageView lexiconButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/lexicon-tab.png")));
+        ImageView lexiconButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/lexicon-tab.png")));
         lexiconButton.setGraphic(lexiconButtonImage);
         lexiconButton.setPadding(Insets.EMPTY);
         lexiconButton.setBackground(null);
         
         Button settingsButton = new Button();
-        ImageView settingsButtonImage = new ImageView(new Image(App.class.getResourceAsStream("img/settings-tab.png")));
+        ImageView settingsButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/settings-tab.png")));
         settingsButton.setGraphic(settingsButtonImage);
         settingsButton.setPadding(Insets.EMPTY);
         settingsButton.setBackground(null);
@@ -185,18 +185,18 @@ public class App extends Application {
         algonquinVersionLabel.setFont(denyut20);
         Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w34a ***SNAPSHOT VERSION***");
         versionLabel.setFont(denyut20);
-        Image bannerLogo = new Image(App.class.getResourceAsStream("img/logo.png"));
+        Image bannerLogo = new Image(App.class.getResourceAsStream("/img/logo.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
         
         Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
         madeByOijon.setFont(denyut20);
-        Image oijonLogo = new Image(App.class.getResourceAsStream("img/oijon.png"));
+        Image oijonLogo = new Image(App.class.getResourceAsStream("/img/oijon.png"));
         ImageView oijonView = new ImageView(oijonLogo);
         
         
         
         Button addLanguage = new Button("New\nLanguage");
-        addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
+        addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/new-language.png"))));
         addLanguage.setPadding(Insets.EMPTY);
         addLanguage.setContentDisplay(ContentDisplay.TOP);
         addLanguage.setBackground(null);
@@ -233,7 +233,7 @@ public class App extends Application {
         });
         
         Button openLanguage = new Button("Open\nLanguage");
-        openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
+        openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/open-language.png"))));
         openLanguage.setPadding(Insets.EMPTY);
         openLanguage.setContentDisplay(ContentDisplay.TOP);
         openLanguage.setBackground(null);
@@ -244,47 +244,52 @@ public class App extends Application {
         TextArea languageList = new TextArea();
         File[] files = LanguageFile.getLanguageFiles();
         String fileNames = "";
-        for (int i = 0; i < files.length; i++) {
-        	fileNames += files[i].getName() + "\n";
+        if (files != null) {
+	        for (int i = 0; i < files.length; i++) {
+	        	fileNames += files[i].getName() + "\n";
+	        }
         }
         languageList.setText(fileNames);
         
-        for (int i = 0; i < files.length; i++) {
-        	
-        	Label nameLabel = new Label();
-        	nameLabel.setFont(denyut20);
-        	Label timeCreatedLabel = new Label();
-        	timeCreatedLabel.setFont(denyut20);
-        	Label lastAccessedLabel = new Label();
-        	lastAccessedLabel.setFont(denyut20);
-        	Image icon = new Image(App.class.getResourceAsStream("img/no-image.png"));
-        	ImageView iconView = new ImageView(icon);
-        	HBox box = new HBox();
-        	
-        	try (InputStream input = new FileInputStream(files[i])) {
-
-                Properties prop = new Properties();
-
-                prop.load(input);
-                String name = prop.getProperty("name");
-                nameLabel.setText(name);
-                Long timeCreated = Long.valueOf(prop.getProperty("timeCreated"));
-                Date timeCreatedDate = new Date(timeCreated);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String timeCreatedString = sdf.format(timeCreatedDate);
-                timeCreatedLabel.setText(" Created on: " + timeCreatedString);
-                
-                Long lastAccessed = Long.valueOf(prop.getProperty("lastEdited"));
-                Date lastAccessedDate = new Date(lastAccessed);
-                String lastAccessedString = sdf.format(lastAccessedDate);
-                lastAccessedLabel.setText(" Last modified: " + lastAccessedString);
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-        	box.getChildren().addAll(iconView, nameLabel, timeCreatedLabel, lastAccessedLabel);
-        	languageSelect.getChildren().add(box);
+        
+        if (files != null) {
+	        for (int i = 0; i < files.length; i++) {
+	        	
+	        	Label nameLabel = new Label();
+	        	nameLabel.setFont(denyut20);
+	        	Label timeCreatedLabel = new Label();
+	        	timeCreatedLabel.setFont(denyut20);
+	        	Label lastAccessedLabel = new Label();
+	        	lastAccessedLabel.setFont(denyut20);
+	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
+	        	ImageView iconView = new ImageView(icon);
+	        	HBox box = new HBox();
+	        	
+	        	try (InputStream input = new FileInputStream(files[i])) {
+	
+	                Properties prop = new Properties();
+	
+	                prop.load(input);
+	                String name = prop.getProperty("name");
+	                nameLabel.setText(name);
+	                Long timeCreated = Long.valueOf(prop.getProperty("timeCreated"));
+	                Date timeCreatedDate = new Date(timeCreated);
+	                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	                String timeCreatedString = sdf.format(timeCreatedDate);
+	                timeCreatedLabel.setText(" Created on: " + timeCreatedString);
+	                
+	                Long lastAccessed = Long.valueOf(prop.getProperty("lastEdited"));
+	                Date lastAccessedDate = new Date(lastAccessed);
+	                String lastAccessedString = sdf.format(lastAccessedDate);
+	                lastAccessedLabel.setText(" Last modified: " + lastAccessedString);
+	
+	            } catch (IOException ex) {
+	                ex.printStackTrace();
+	            }
+	
+	        	box.getChildren().addAll(iconView, nameLabel, timeCreatedLabel, lastAccessedLabel);
+	        	languageSelect.getChildren().add(box);
+	        }
         }
         
         Button refreshLanguageList = new Button("Refresh");
@@ -302,7 +307,7 @@ public class App extends Application {
         });
         
         Button info = new Button("Info");
-        info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button.png"))));
+        info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/info-button.png"))));
         info.setPadding(Insets.EMPTY);
         info.setContentDisplay(ContentDisplay.TOP);
         info.setBackground(null);
@@ -335,7 +340,7 @@ public class App extends Application {
         VBox rightPage = new VBox(oijonView, madeByOijon);
         rightPage.setBackground(paperBackground);
         
-        Image fileIndicator = new Image(App.class.getResourceAsStream("img/file-bar.png"));
+        Image fileIndicator = new Image(App.class.getResourceAsStream("/img/file-bar.png"));
         ImageView indicator = new ImageView(fileIndicator);
         VBox rightIndicator = new VBox(indicator);
         rightIndicator.setBackground(fileToolsBackground);
@@ -346,13 +351,13 @@ public class App extends Application {
         addLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
-        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language-pressed.png"))));
+        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/new-language-pressed.png"))));
         	}
         });
         addLanguage.setOnMouseReleased(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
-        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/new-language.png"))));
+        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/new-language.png"))));
         	}
         });
         addLanguage.setOnAction(new EventHandler<ActionEvent>() {
@@ -367,13 +372,13 @@ public class App extends Application {
         openLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
-        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language-pressed.png"))));
+        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/open-language-pressed.png"))));
         	}
         });
         openLanguage.setOnMouseReleased(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
-        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/open-language.png"))));
+        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/open-language.png"))));
         	}
         });
         openLanguage.setOnAction(new EventHandler<ActionEvent>() {
@@ -389,13 +394,13 @@ public class App extends Application {
         info.setOnMousePressed(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
-        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button-pressed.png"))));
+        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/info-button-pressed.png"))));
         	}
         });
         info.setOnMouseReleased(new EventHandler<MouseEvent>() {
         	@Override
         	public void handle(MouseEvent event) {
-        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/info-button.png"))));
+        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/info-button.png"))));
         	}
         });
         info.setOnAction(new EventHandler<ActionEvent>() {
@@ -474,7 +479,7 @@ public class App extends Application {
         stage.setScene(root);
         stage.setMaximized(true);
         stage.setTitle("Susquehanna Conlang Manager");
-        stage.getIcons().add(new Image(App.class.getResourceAsStream("img/icon.png")));
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
         stage.show();
     }
 
