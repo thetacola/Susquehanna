@@ -1,4 +1,4 @@
 module net.oijon.Susquehanna {
-    requires javafx.controls;
+    requires transitive javafx.controls;
     exports net.oijon.susquehanna;
 }

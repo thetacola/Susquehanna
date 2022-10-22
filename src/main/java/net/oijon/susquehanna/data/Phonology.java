@@ -101,7 +101,7 @@ public class Phonology {
 					}
 				}
 				//actually start sorting
-				//this is a bit too many else ifs for my liking but i dont think a switch case would be good here\
+				//this is a bit too many else ifs for my liking but i dont think a switch case would be good here
 				if (temp2 < temp) {
 					temp3 = phonoList.get(i);
 					phonoList.set(i, phonoList.get(j));

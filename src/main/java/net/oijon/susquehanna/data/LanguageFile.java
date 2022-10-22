@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+
 public class LanguageFile {
 
 	public void createFolders(Language language) {
@@ -146,7 +147,7 @@ public class LanguageFile {
 			prop.setProperty("mainFolder", mainDir.toString());
 			prop.setProperty("phonologyFolder", phonoDir.toString());
 			prop.setProperty("orthographyFolder", orthoDir.toString());
-			prop.setProperty("grammarFolder", grammarDir.toString());
+			prop.setProperty("grammarFolder", grammarDir.toString());  
 			prop.setProperty("lexiconFolder", lexiconDir.toString());
 			prop.setProperty("icon", "");
 			prop.setProperty("readonly", "false");
@@ -165,6 +166,6 @@ public class LanguageFile {
 	}
 	
 	public void createTTSFiles() throws URISyntaxException, IOException {
-		//net.oijon.algonquin.gui.GUILauncher.copyFiles();
+		//TODO: implement algonquin without eclipse shitting itself
 	}
 }
