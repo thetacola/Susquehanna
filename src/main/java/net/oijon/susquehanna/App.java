@@ -37,6 +37,7 @@ import net.oijon.susquehanna.data.PhonoSystem;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -129,8 +130,8 @@ public class App extends Application {
 	@Override
     public void start(Stage stage) {
     	
-    	PhonoSystem IPA = PhonoSystem.IPA;
-    	IPA.toFile();
+    	//PhonoSystem IPA = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
+    	//System.out.println(IPA.toString());
     	
         //Navbox        
     	Button fileButton = new Button();

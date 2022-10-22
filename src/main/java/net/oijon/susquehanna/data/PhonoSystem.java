@@ -1,5 +1,11 @@
 package net.oijon.susquehanna.data;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,9 +31,50 @@ public class PhonoSystem {
 	public PhonoSystem(String name) {
 		this.name = name;
 	}
+	/** FIXME: not adding categories correctly :(
+	public PhonoSystem(File file) {
+		if (file.exists()) {
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String line;
+				int lineNo = 0;
+				while ((line = br.readLine()) != null) {
+					if (lineNo == 0) {
+						this.name = line;
+					} else {
+						String[] split1 = line.split(":"); //Splits name from data
+						String[] split2 = split1[1].split(","); //Splits data into individual segments
+						PhonoCategory phonoCategory = new PhonoCategory(split1[0]);
+						
+						for (int i = 0; i < split2.length; i++) {
+							phonoCategory.addSound(split2[i]);
+						}
+						addCategory(phonoCategory);
+						System.out.println("Added phonocategory " + phonoCategory.getName());
+					}
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("Warning: The file " + file.toString() + " does not exist! Defaulting to using IPA...");
+			this.name = PhonoSystem.IPA.getName();
+			this.categories = PhonoSystem.IPA.getCategories();
+		}
+		
+	}
+	*/
 	
 	public String getName() {
 		return name;
+	}
+	
+	public ArrayList<PhonoCategory> getCategories() {
+		return categories;
 	}
 	
 	public void addCategory(PhonoCategory category) {
@@ -53,16 +100,39 @@ public class PhonoSystem {
 		return categories.get(x).getSound(y);
 	}
 	
-	public void toFile() {
+	public String toString() {
 		String output = name + "\n";
 		for (int i = 0; i < categories.size(); i++) {
-			output += categories.get(i).getName() + " : ";
+			output += categories.get(i).getName() + ":";
 			for (int j = 0; j < categories.get(i).getSounds().size(); j++) {
-				output += "[" + categories.get(i).getSound(j) + "]";
+				if (j == categories.get(i).getSounds().size() - 1) {
+					output += categories.get(i).getSound(j);
+				} else {
+					output += categories.get(i).getSound(j) + ",";
+				}
 			}
 			output += "\n";
 		}
-		System.out.println("[DEBUG]");
-		System.out.println(output);
+		return output;
+	}
+	
+	public void toFile() {
+		
+		String output = toString();
+		
+		File mainDir = new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems");
+		mainDir.mkdirs();
+		File systemFile = new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/" + getName() + ".phosys");
+		PrintWriter out;
+		try {
+			out = new PrintWriter(systemFile);
+			out.println(output);
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
