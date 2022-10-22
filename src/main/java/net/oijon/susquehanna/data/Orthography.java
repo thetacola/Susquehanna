@@ -5,35 +5,38 @@ import java.util.List;
 
 import javafx.scene.text.Font;
 
+//last edit: 10/22/22 -N3
+
 public class Orthography {
 
-	private List<String> phono = new ArrayList<String>();
-	private List<String> mappings = new ArrayList<String>();
+	private ArrayList<Phoneme> phonemes;
 	private Font conscript;
 	
 	public static final Orthography EMPTY = new Orthography(Phonology.EMPTY);
 	
-	//TODO: have sorted after phono changes
+	//creates orthography object
 	public Orthography(Phonology phono) {
 		phono.sort();
-		this.phono = phono.getList();
+		List<String> phonologyList = phono.getList();
+		for (int i = 0; i < phonologyList.size(); i++) {
+			Phoneme phoneme = new Phoneme(phonologyList.get(i));
+			phonemes.add(phoneme);
+		}
 	}
+	//Sets the conscript attached to the orthography
 	public void setScript(String fontName, double size) {
 		conscript = new Font(fontName, size);
 	}
+	//Gets the conscript attached to the orthography
 	public Font getScript() {
 		return conscript;
 	}
-	public void addPhono(String phoneme) {
-		phono.add(phoneme);
+	//Adds a phoneme to the phoneme list
+	public void addPhoneme(Phoneme phoneme) {
+		phonemes.add(phoneme);
 	}
-	public List<String> getPhono() {
-		return phono;
-	}
-	public List<String> getMapping() {
-		return mappings;
-	}
-	public void addMapping(int id, String mapping) {
-		mappings.set(id, mapping);
+	//Removes phoneme i from the phoneme list
+	public void removePhoneme(int i) {
+		phonemes.remove(i);
 	}
 }

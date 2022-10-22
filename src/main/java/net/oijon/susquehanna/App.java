@@ -33,6 +33,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import net.oijon.susquehanna.data.Language;
 import net.oijon.susquehanna.data.LanguageFile;
+import net.oijon.susquehanna.data.PhonoSystem;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,6 +42,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+
+//last edit: 10/22/22 -N3
 
 /**
  * JavaFX App
@@ -124,6 +128,9 @@ public class App extends Application {
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
+    	
+    	PhonoSystem IPA = PhonoSystem.IPA;
+    	IPA.toFile();
     	
         //Navbox        
     	Button fileButton = new Button();

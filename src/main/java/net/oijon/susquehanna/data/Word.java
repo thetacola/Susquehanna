@@ -3,6 +3,8 @@ package net.oijon.susquehanna.data;
 import java.util.ArrayList;
 import java.util.Date;
 
+//last edit: 10/22/22 -N3
+
 public class Word {
 
 	private String name;
@@ -17,13 +19,13 @@ public class Word {
 	private ArrayList<Word> homonyms;
 	
 	public Word(String name, String meaning) {
-		name = this.name;
-		meaning = this.meaning;
+		this.name = name;
+		this.meaning = meaning;
 		//TODO: automatically get IPA from name via orthography
 	}
 	
 	public void setIPA(String IPA) {
-		IPA = this.IPA;
+		this.IPA = IPA;
 	}
 	
 	public String getIPA() {
@@ -31,7 +33,7 @@ public class Word {
 	}
 	
 	public void setEtymology(String etymology) {
-		etymology = this.etymology;
+		this.etymology = etymology;
 	}
 	
 	public String getEtymology() {
@@ -50,8 +52,12 @@ public class Word {
 		return creationDate;
 	}
 	
+	public Date getEditDate() {
+		return editDate;
+	}
+	
 	public void setEditDate(Date editDate) {
-		editDate = this.editDate;
+		this.editDate = editDate;
 	}
 	
 	public void addSynonym(Word syn) {
