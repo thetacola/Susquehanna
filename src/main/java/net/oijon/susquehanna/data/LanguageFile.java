@@ -115,9 +115,6 @@ public class LanguageFile {
             };
             files = f.listFiles(filter);
 
-            for (int i = 0; i < files.length; i++) {
-                System.out.println(files[i].getName());
-            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
             files = null;

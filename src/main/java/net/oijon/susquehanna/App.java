@@ -33,6 +33,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import net.oijon.susquehanna.data.Language;
 import net.oijon.susquehanna.data.LanguageFile;
+import net.oijon.susquehanna.data.Log;
 import net.oijon.susquehanna.data.PhonoSystem;
 
 import java.io.File;
@@ -50,6 +51,8 @@ import java.util.Properties;
  * JavaFX App
  */
 public class App extends Application {
+	
+	static Log log = new Log();
 	
 	// Shared resources, mainly backgrounds
 	static InputStream is = App.class.getResourceAsStream("/font/Denyut.ttf");
@@ -129,14 +132,15 @@ public class App extends Application {
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
-    	
+    	log.println("Starting application...");
+    	//Verify IPA is intact
     	PhonoSystem IPA = PhonoSystem.IPA;
     	IPA.toFile();
     	PhonoSystem IPAFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
     	if (IPAFile.toString().equals(IPA.toString())) {
-    		System.out.println("IPA phonology system successfully verified!");
+    		log.println("IPA phonology system successfully verified!");
     	} else {
-    		System.err.println("IPA phonology system could not be verified!");
+    		log.err("IPA phonology system could not be verified!");
     	}
     	
         //Navbox        
@@ -444,11 +448,17 @@ public class App extends Application {
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
         stage.show();
+        log.println("Started!");
     }
 
     public static void refreshLanguages() {
     	
     	File[] files = LanguageFile.getLanguageFiles();
+    	log.println("Found " + files.length + " language(s)");
+    	log.println("Language(s) found:");
+    	for (int i = 0; i < files.length; i++) {
+    		log.println(files[i].getName());
+    	}
     	languageSelect.getChildren().clear();
     	
     	if (files != null) {
@@ -492,6 +502,7 @@ public class App extends Application {
 	        	languageList.setText(fileNames);
 	        }
         }
+    	
     }
     
     public static void main(String[] args) {
