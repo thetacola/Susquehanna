@@ -58,7 +58,7 @@ public class App extends Application {
 	static InputStream is = App.class.getResourceAsStream("/font/Denyut.ttf");
 	static Font denyut20 = Font.loadFont(is, 20);
 	static VBox languageSelect = new VBox();
-	static TextArea languageList = new TextArea();
+	//static TextArea languageList = new TextArea();
 	
 	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
 	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/wood-texture.png")),
@@ -135,6 +135,8 @@ public class App extends Application {
     Image grammarIndicator = new Image(App.class.getResourceAsStream("/img/grammar-bar.png"));
     Image lexiconIndicator = new Image(App.class.getResourceAsStream("/img/lexicon-bar.png"));
     Image settingsIndicator = new Image(App.class.getResourceAsStream("/img/settings-bar.png"));
+    
+    static Language selectedLanguage = Language.NULL;
     
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
@@ -361,7 +363,7 @@ public class App extends Application {
         		leftPage.getChildren().clear();
         		leftPage.getChildren().addAll(languageSelect);
         		rightPage.getChildren().clear();
-        		rightPage.getChildren().addAll(languageList, refreshLanguageList);
+        		rightPage.getChildren().addAll(refreshLanguageList);
         	}
         });
         info.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -402,6 +404,22 @@ public class App extends Application {
         
         //Phonology
         
+        Button viewPhonology = new Button("View Phonology");
+        viewPhonology.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				File phonoFile = new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys");
+				if (phonoFile.exists()) {
+					
+				} else {
+					
+				}
+			}
+        	
+        });
+        Button editPhonemes = new Button("Edit Phonemes");
+        Button phonotactics = new Button("Phonotactics");
         
         
         //Navbox actions
@@ -506,6 +524,7 @@ public class App extends Application {
 	        	lastAccessedLabel.setFont(denyut20);
 	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
 	        	ImageView iconView = new ImageView(icon);
+	        	Button select = new Button("Select");
 	        	HBox box = new HBox();
 	        	
 	        	try (InputStream input = new FileInputStream(files[i])) {
@@ -525,14 +544,24 @@ public class App extends Application {
 	                Date lastAccessedDate = new Date(lastAccessed);
 	                String lastAccessedString = sdf.format(lastAccessedDate);
 	                lastAccessedLabel.setText(" Last modified: " + lastAccessedString);
+	                
+	                select.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent event) {
+							selectedLanguage = new Language(name);
+							log.println("Selected language: " + selectedLanguage.getName());
+						}
+	                	
+	                });
 	
 	            } catch (IOException ex) {
 	                ex.printStackTrace();
 	            }
 	
-	        	box.getChildren().addAll(iconView, nameLabel, timeCreatedLabel, lastAccessedLabel);
+	        	box.getChildren().addAll(iconView, nameLabel, timeCreatedLabel, lastAccessedLabel, select);
 	        	languageSelect.getChildren().add(box);
-	        	languageList.setText(fileNames);
+	        	//languageList.setText(fileNames);
 	        }
         }
     	

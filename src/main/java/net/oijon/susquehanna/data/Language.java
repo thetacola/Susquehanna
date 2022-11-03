@@ -2,6 +2,7 @@ package net.oijon.susquehanna.data;
 
 public class Language {
 
+	public static final Language NULL = new Language("null");
 	private String autonym;
 	private String name;
 	private Phonology phono;
