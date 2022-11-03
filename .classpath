@@ -29,6 +29,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/alex/Git and Backups/Backups/Jars/algonquin/algonquin-0.3.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

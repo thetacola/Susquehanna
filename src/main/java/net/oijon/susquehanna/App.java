@@ -44,7 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 10/22/22 -N3
+//last edit: 11/3/22 -N3
 
 /**
  * JavaFX App
@@ -130,8 +130,14 @@ public class App extends Application {
 	@Override
     public void start(Stage stage) {
     	
-    	//PhonoSystem IPA = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
-    	//System.out.println(IPA.toString());
+    	PhonoSystem IPA = PhonoSystem.IPA;
+    	IPA.toFile();
+    	PhonoSystem IPAFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
+    	if (IPAFile.toString().equals(IPA.toString())) {
+    		System.out.println("IPA phonology system successfully verified!");
+    	} else {
+    		System.err.println("IPA phonology system could not be verified!");
+    	}
     	
         //Navbox        
     	Button fileButton = new Button();
@@ -190,9 +196,9 @@ public class App extends Application {
     	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
         javaVersionLabel.setFont(denyut20);
-        Label javaFXVersionLabel = new Label("Bundled with JavaFX SDK 18.0.1.");
+        Label javaFXVersionLabel = new Label("Bundled with JavaFX " + System.getProperty("javafx.runtime.version") + ".");
         javaFXVersionLabel.setFont(denyut20);
-        Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1, non-release hotfix #1.");
+        Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
         algonquinVersionLabel.setFont(denyut20);
         Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w41a ***SNAPSHOT VERSION***");
         versionLabel.setFont(denyut20);
