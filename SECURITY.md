@@ -1,7 +1,7 @@
 # Security Policy
 
 ## Supported Versions
-As there are currently no released versions, the current build will be supported. Anything else will not be.
+As there are currently no released versions, the current build will be supported. Anything else will not be. In the future, expect a time period of what is supported, most likely around 3-6 months.
 
 | Version | Supported          |
 | ------- | ------------------ |
