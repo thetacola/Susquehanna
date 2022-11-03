@@ -15,4 +15,5 @@ In your report, please explain:
 - What the vulnerability is
 - How you found it
 - What version is affected
+
 There will not be a bug bounty program, as I do not have the funds for that.
