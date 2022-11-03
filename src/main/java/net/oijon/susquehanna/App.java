@@ -129,6 +129,13 @@ public class App extends Application {
 	          	BackgroundSize.DEFAULT);
     Background brushedMetal = new Background(brushedMetalImage);
 
+    Image fileIndicator = new Image(App.class.getResourceAsStream("/img/file-bar.png"));
+    Image phonologyIndicator = new Image(App.class.getResourceAsStream("/img/phonology-bar.png"));
+    Image orthographyIndicator = new Image(App.class.getResourceAsStream("/img/orthography-bar.png"));
+    Image grammarIndicator = new Image(App.class.getResourceAsStream("/img/grammar-bar.png"));
+    Image lexiconIndicator = new Image(App.class.getResourceAsStream("/img/lexicon-bar.png"));
+    Image settingsIndicator = new Image(App.class.getResourceAsStream("/img/settings-bar.png"));
+    
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
@@ -204,7 +211,7 @@ public class App extends Application {
         javaFXVersionLabel.setFont(denyut20);
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
         algonquinVersionLabel.setFont(denyut20);
-        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w41a ***SNAPSHOT VERSION***");
+        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w44a\n***SNAPSHOT VERSION***");
         versionLabel.setFont(denyut20);
         Image bannerLogo = new Image(App.class.getResourceAsStream("/img/logo.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
@@ -307,7 +314,6 @@ public class App extends Application {
         VBox rightPage = new VBox(oijonView, madeByOijon);
         rightPage.setBackground(paperBackground);
         
-        Image fileIndicator = new Image(App.class.getResourceAsStream("/img/file-bar.png"));
         ImageView indicator = new ImageView(fileIndicator);
         VBox rightIndicator = new VBox(indicator);
         rightIndicator.setBackground(fileToolsBackground);
@@ -397,11 +403,18 @@ public class App extends Application {
         //Phonology
         
         
+        
         //Navbox actions
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				rootHBox.getChildren().clear();
+        		leftPage.getChildren().clear();
+        		rightPage.getChildren().clear();
+        		indicator.setImage(fileIndicator);
+        		rightIndicator.setBackground(fileToolsBackground);
+        		leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		rightPage.getChildren().addAll(oijonView, madeByOijon);
 				rootHBox.getChildren().addAll(navBox, fileTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
@@ -410,35 +423,55 @@ public class App extends Application {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, phonologyTools);
+        		leftPage.getChildren().clear();
+        		rightPage.getChildren().clear();
+        		indicator.setImage(phonologyIndicator);
+        		rightIndicator.setBackground(phonologyToolsBackground);
+				rootHBox.getChildren().addAll(navBox, phonologyTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         orthographyButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, orthographyTools);
+        		leftPage.getChildren().clear();
+        		rightPage.getChildren().clear();
+        		indicator.setImage(orthographyIndicator);
+        		rightIndicator.setBackground(orthographyToolsBackground);
+        		rootHBox.getChildren().addAll(navBox, orthographyTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         grammarButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, grammarTools);
+        		leftPage.getChildren().clear();
+        		rightPage.getChildren().clear();
+        		indicator.setImage(grammarIndicator);
+        		rightIndicator.setBackground(grammarToolsBackground);
+        		rootHBox.getChildren().addAll(navBox, grammarTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         lexiconButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, lexiconTools);
+        		leftPage.getChildren().clear();
+        		rightPage.getChildren().clear();
+        		indicator.setImage(lexiconIndicator);
+        		rightIndicator.setBackground(lexiconToolsBackground);
+        		rootHBox.getChildren().addAll(navBox, lexiconTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, settingsTools);	
+        		leftPage.getChildren().clear();
+        		rightPage.getChildren().clear();
+        		indicator.setImage(settingsIndicator);
+        		rightIndicator.setBackground(settingsToolsBackground);
+        		rootHBox.getChildren().addAll(navBox, settingsTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         
