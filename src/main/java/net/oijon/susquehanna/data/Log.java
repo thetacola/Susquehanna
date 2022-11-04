@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Enumeration;
+import java.util.Properties;
 
-//last edit: 11/3/22 -N3
+//last edit: 11/4/22 -N3
 
 /**
  * Simple log utility to help with getting console output to file
@@ -113,6 +115,22 @@ public class Log {
 			e.printStackTrace();
 		}
 	    
+	}
+	
+	/**
+	 * Prints system information to console and writes to file
+	 */
+	public void logSystemInfo() {
+		Properties properties = System.getProperties();
+		this.println("=====================");
+		this.println("List of system properties:");
+		Enumeration<Object> keyNames = properties.keys();
+		while(keyNames.hasMoreElements()) {
+			String key = keyNames.nextElement().toString();
+			String value = properties.getProperty(key).toString();
+			this.println(key + " - " + value);
+		}
+		this.println("=====================");
 	}
 	
 }

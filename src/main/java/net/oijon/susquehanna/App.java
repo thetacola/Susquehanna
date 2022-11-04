@@ -141,6 +141,7 @@ public class App extends Application {
     @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
+    	log.logSystemInfo();
     	log.println("Starting application...");
     	//Verify IPA is intact
     	PhonoSystem IPA = PhonoSystem.IPA;
