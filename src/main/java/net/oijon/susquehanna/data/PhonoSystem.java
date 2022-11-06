@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-//last edit: 11/3/22 -N3
+//last edit: 11/4/22 -N3
 
 public class PhonoSystem {
 
@@ -45,6 +45,7 @@ public class PhonoSystem {
 	 */
 	
 	public PhonoSystem(File file) {
+		//TODO: Make sure this doesn't just take any old file and try to turn it into a phono system, that could end quite poorly!
 		try {
 			//Take each line and put it into an ArrayList.
 			//This probably is not the best memory wise, however it should work better than the previous spaghetti code
@@ -156,6 +157,21 @@ public class PhonoSystem {
 			output += "\n";
 		}
 		return output;
+	}
+	/**
+	 * Checks if a given value exists in a phono system.
+	 * @param value The value to be checked
+	 * @return Returns true if value is found in phono system, false if not
+	 */
+	public boolean isIn(String value) {
+		for (int i = 0; i < categories.size(); i++) {
+			for (int j = 0; j < categories.get(i).size(); j++) {
+				if (value.equals(categories.get(i).getSound(j))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**

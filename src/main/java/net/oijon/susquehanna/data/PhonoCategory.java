@@ -3,7 +3,7 @@ package net.oijon.susquehanna.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//last edit: 10/22/22 -N3
+//last edit: 11/4/22 -N3
 
 public class PhonoCategory {
 
@@ -130,5 +130,13 @@ public class PhonoCategory {
 	 */
 	public void addSound(String sound) {
 		sounds.add(sound);
+	}
+	
+	/**
+	 * Returns the amount of sounds in a phono category
+	 * @return The amount of sounds
+	 */
+	public int size() {
+		return sounds.size();
 	}
 }

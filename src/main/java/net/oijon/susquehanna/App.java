@@ -410,18 +410,12 @@ public class App extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				File phonoFile = new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys");
-				if (phonoFile.exists()) {
-					
-				} else {
-					
-				}
+				
 			}
         	
         });
         Button editPhonemes = new Button("Edit Phonemes");
         Button phonotactics = new Button("Phonotactics");
-        
         
         //Navbox actions
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -515,8 +509,6 @@ public class App extends Application {
     	
     	if (files != null) {
 	        for (int i = 0; i < files.length; i++) {
-	        	String fileNames = "";
-                fileNames += files[i].getName() + "\n";
 	        	Label nameLabel = new Label();
 	        	nameLabel.setFont(denyut20);
 	        	Label timeCreatedLabel = new Label();
@@ -526,6 +518,7 @@ public class App extends Application {
 	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
 	        	ImageView iconView = new ImageView(icon);
 	        	Button select = new Button("Select");
+	        	VBox infoBox = new VBox();
 	        	HBox box = new HBox();
 	        	
 	        	try (InputStream input = new FileInputStream(files[i])) {
@@ -559,8 +552,9 @@ public class App extends Application {
 	            } catch (IOException ex) {
 	                ex.printStackTrace();
 	            }
-	
-	        	box.getChildren().addAll(iconView, nameLabel, timeCreatedLabel, lastAccessedLabel, select);
+	        	
+	        	infoBox.getChildren().addAll(nameLabel, timeCreatedLabel, lastAccessedLabel, select);
+	        	box.getChildren().addAll(iconView, infoBox);
 	        	languageSelect.getChildren().add(box);
 	        	//languageList.setText(fileNames);
 	        }

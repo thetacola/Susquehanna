@@ -13,6 +13,12 @@ import java.util.Properties;
 //last edit: 11/4/22 -N3
 
 /**
+ * TODO: Get log to work on other classes
+ * This could be done by creating a temporary file with the name of the current file
+ * This file could then be deleted once the program closes
+ */
+
+/**
  * Simple log utility to help with getting console output to file
  * @author N3ther
  *
