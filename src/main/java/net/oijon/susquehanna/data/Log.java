@@ -2,6 +2,7 @@ package net.oijon.susquehanna.data;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Scanner;
 
 //last edit: 11/4/22 -N3
 
@@ -29,6 +31,7 @@ public class Log {
 	private String today;
 	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	private String now;
+	private File tempFile;
 	
 	/**
 	 * Creates the log object
@@ -37,8 +40,10 @@ public class Log {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		this.today = LocalDate.now().format(formatter);
 		File logFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/" + this.today + ".log");
+		File tempFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/.logtmp");
 		int i = 0;
 		while (logFile.exists()) {
+			
 			i++;
 			logFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/" + this.today + "(" + i + ")" + ".log");
 		}
@@ -46,6 +51,10 @@ public class Log {
 			File logDir = new File(System.getProperty("user.home") + "/Susquehanna/logs/");
 			logDir.mkdirs();
 			logFile.createNewFile();
+			tempFile.createNewFile();
+			FileWriter fw = new FileWriter(tempFile, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(logFile.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,6 +68,25 @@ public class Log {
 	private void setNow() {
 		LocalDateTime now = LocalDateTime.now();
 		this.now = this.dtf.format(now);
+	}
+	
+	/**
+	 * Reads the temp file and gets the current log file
+	 * @return
+	 */
+	private File readTempFile() {
+		try {
+			Scanner sc = new Scanner(tempFile);
+			String filePath = "";
+			while(sc.hasNextLine()) {
+				filePath = sc.nextLine();
+			}
+			File logFile = new File(filePath);
+			return logFile;
+		} catch (FileNotFoundException e) {
+			this.err(e.toString());
+			return null;
+		}
 	}
 	
 	/**
@@ -137,6 +165,12 @@ public class Log {
 			this.println(key + " - " + value);
 		}
 		this.println("=====================");
+	}
+	
+	public void closeLog() {
+		this.println("Closing log...");
+		this.tempFile.delete();
+		this.println("Log closed.");
 	}
 	
 }

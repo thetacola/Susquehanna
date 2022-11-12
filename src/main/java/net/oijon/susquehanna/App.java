@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
@@ -31,10 +32,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import net.oijon.susquehanna.data.Language;
 import net.oijon.susquehanna.data.LanguageFile;
 import net.oijon.susquehanna.data.Log;
 import net.oijon.susquehanna.data.PhonoSystem;
+import net.oijon.susquehanna.gui.ToolButton;
+import net.oijon.susquehanna.gui.Toolbox;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,10 +49,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 11/3/22 -N3
+//last edit: 11/7/22 -N3
+
 
 /**
  * JavaFX App
+ * @author alex
+ *
  */
 public class App extends Application {
 	
@@ -142,17 +149,43 @@ public class App extends Application {
 	@Override
     public void start(Stage stage) {
     	log.logSystemInfo();
+    	log.println("Starting loading screen...");
+    	Stage loadingStage = new Stage();
+    	loadingStage.setTitle("Susquehanna Conlang Manager - Loading...");
+    	loadingStage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
+    	
+    	ProgressBar loadingBar = new ProgressBar();
+    	loadingBar.setProgress(0);
+    	Label loadingText = new Label("Starting loading screen...");
+    	loadingText.setTextFill(Color.WHITE);
+    	VBox loadingVBox = new VBox(loadingText, loadingBar);
+    	loadingVBox.setBackground(background);
+    	loadingVBox.setAlignment(Pos.CENTER);
+    	Scene loadingScene = new Scene(loadingVBox);
+    	loadingStage.setScene(loadingScene);
+    	loadingStage.show();
     	log.println("Starting application...");
+    	loadingText.setText("Starting application...");
+    	loadingBar.setProgress(1/6);
+    	
+    	while (!loadingStage.isShowing()) {
+    		
+    	}
+    	
     	//Verify IPA is intact
     	PhonoSystem IPA = PhonoSystem.IPA;
     	IPA.toFile();
     	PhonoSystem IPAFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
     	if (IPAFile.toString().equals(IPA.toString())) {
+    		loadingText.setText("IPA phonology system successfully verified!");
+    		loadingBar.setProgress(2/6);
     		log.println("IPA phonology system successfully verified!");
     	} else {
     		log.err("IPA phonology system could not be verified!");
     	}
     	
+    	loadingText.setText("Loading Navbox...");
+    	loadingBar.setProgress(3/6);
         //Navbox        
     	Button fileButton = new Button();
         ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/file-tab.png")));
@@ -203,6 +236,8 @@ public class App extends Application {
         navBox.setFitToHeight(true);
         navBox.setPadding(new Insets(0, -20, 0, 0));
         
+        loadingText.setText("Loading File...");
+        loadingBar.setProgress(4/6);
         VBox leftPapersVBox = new VBox(new ImageView(leftPapers));
         leftPapersVBox.setBackground(leftPapersBG);
         VBox rightPapersVBox = new VBox(new ImageView(rightPapers));
@@ -214,7 +249,7 @@ public class App extends Application {
         javaFXVersionLabel.setFont(denyut20);
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
         algonquinVersionLabel.setFont(denyut20);
-        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w44a\n***SNAPSHOT VERSION***");
+        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w45a\n***SNAPSHOT VERSION***");
         versionLabel.setFont(denyut20);
         Image bannerLogo = new Image(App.class.getResourceAsStream("/img/logo.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
@@ -226,12 +261,7 @@ public class App extends Application {
         
         
         
-        Button addLanguage = new Button("New\nLanguage");
-        addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/new-language.png"))));
-        addLanguage.setPadding(Insets.EMPTY);
-        addLanguage.setContentDisplay(ContentDisplay.TOP);
-        addLanguage.setBackground(null);
-        addLanguage.setTextAlignment(TextAlignment.CENTER);
+        ToolButton addLanguage = ToolButton.createActions(new ToolButton("New\nLanguage"));
         
         Button makeTestLanguage = new Button("Make Test Language");
         makeTestLanguage.setOnAction(new EventHandler<ActionEvent>() {
@@ -263,13 +293,7 @@ public class App extends Application {
         	
         });
         
-        Button openLanguage = new Button("Open\nLanguage");
-        openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/open-language.png"))));
-        openLanguage.setPadding(Insets.EMPTY);
-        openLanguage.setContentDisplay(ContentDisplay.TOP);
-        openLanguage.setBackground(null);
-        openLanguage.setTextAlignment(TextAlignment.CENTER);
-        
+        ToolButton openLanguage = ToolButton.createActions(new ToolButton("Open\nLanguage"));
         refreshLanguages();
         
         Button refreshLanguageList = new Button("Refresh");
@@ -281,32 +305,19 @@ public class App extends Application {
         	}
         });
         
-        Button info = new Button("Info");
-        info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/info-button.png"))));
-        info.setPadding(Insets.EMPTY);
-        info.setContentDisplay(ContentDisplay.TOP);
-        info.setBackground(null);
-        info.setTextAlignment(TextAlignment.CENTER);
-        info.setAlignment(Pos.CENTER);
+        ToolButton info = ToolButton.createActions(new ToolButton("Info"));
         
-        VBox fileTools = new VBox(addLanguage, openLanguage, info);
-        fileTools.setBackground(fileToolsBackground);
+        Toolbox fileTools = new Toolbox(fileToolsBackground);
         
-        VBox phonologyTools = new VBox();
-        phonologyTools.setBackground(phonologyToolsBackground);
-        phonologyTools.setAlignment(Pos.CENTER);
+        Toolbox phonologyTools = new Toolbox(phonologyToolsBackground);
         
-        VBox orthographyTools = new VBox();
-        orthographyTools.setBackground(orthographyToolsBackground);
+        Toolbox orthographyTools = new Toolbox(orthographyToolsBackground);
         
-        VBox grammarTools = new VBox();
-        grammarTools.setBackground(grammarToolsBackground);
+        Toolbox grammarTools = new Toolbox(grammarToolsBackground);
         
-        VBox lexiconTools = new VBox();
-        lexiconTools.setBackground(lexiconToolsBackground);
+        Toolbox lexiconTools = new Toolbox(lexiconToolsBackground);
         
-        VBox settingsTools = new VBox();
-        settingsTools.setBackground(settingsToolsBackground);
+        Toolbox settingsTools = new Toolbox(settingsToolsBackground);
         
         VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
         leftPage.setBackground(paperBackground);
@@ -324,18 +335,7 @@ public class App extends Application {
         VBox rightWoodVBox = new VBox(rightWood);
         rightWoodVBox.setBackground(rightWoodBackground);
         
-        addLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
-        	@Override
-        	public void handle(MouseEvent event) {
-        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/new-language-pressed.png"))));
-        	}
-        });
-        addLanguage.setOnMouseReleased(new EventHandler<MouseEvent>() {
-        	@Override
-        	public void handle(MouseEvent event) {
-        		addLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/new-language.png"))));
-        	}
-        });
+        
         addLanguage.setOnAction(new EventHandler<ActionEvent>() {
         	
         	@Override
@@ -345,18 +345,7 @@ public class App extends Application {
         		rightPage.getChildren().clear();
         	}
         });
-        openLanguage.setOnMousePressed(new EventHandler<MouseEvent>() {
-        	@Override
-        	public void handle(MouseEvent event) {
-        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/open-language-pressed.png"))));
-        	}
-        });
-        openLanguage.setOnMouseReleased(new EventHandler<MouseEvent>() {
-        	@Override
-        	public void handle(MouseEvent event) {
-        		openLanguage.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/open-language.png"))));
-        	}
-        });
+        
         openLanguage.setOnAction(new EventHandler<ActionEvent>() {
         	
         	@Override
@@ -367,18 +356,7 @@ public class App extends Application {
         		rightPage.getChildren().addAll(refreshLanguageList);
         	}
         });
-        info.setOnMousePressed(new EventHandler<MouseEvent>() {
-        	@Override
-        	public void handle(MouseEvent event) {
-        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/info-button-pressed.png"))));
-        	}
-        });
-        info.setOnMouseReleased(new EventHandler<MouseEvent>() {
-        	@Override
-        	public void handle(MouseEvent event) {
-        		info.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("/img/info-button.png"))));
-        	}
-        });
+        
         info.setOnAction(new EventHandler<ActionEvent>() {
         	
         	@Override
@@ -390,6 +368,10 @@ public class App extends Application {
         	}
         });
         
+        fileTools.getChildren().addAll(addLanguage, openLanguage, info);
+        
+        loadingText.setText("Loading root...");
+        loadingBar.setProgress(5/6);
         //Root
         HBox rootHBox = new HBox(navBox, fileTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
         leftPage.setAlignment(Pos.CENTER);
@@ -403,19 +385,14 @@ public class App extends Application {
         rootHBox.setBackground(background);
         Scene root = new Scene(rootHBox);
         
+        loadingText.setText("Loading Phonology...");
+        loadingBar.setProgress(1);
         //Phonology
         
-        Button viewPhonology = new Button("View Phonology");
-        viewPhonology.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				
-			}
-        	
-        });
-        Button editPhonemes = new Button("Edit Phonemes");
-        Button phonotactics = new Button("Phonotactics");
+        ToolButton viewPhonology = ToolButton.createActions(new ToolButton("View\nPhonology"));
+        ToolButton editPhonemes = ToolButton.createActions(new ToolButton("Edit\nPhonology"));
+        ToolButton phonotactics = ToolButton.createActions(new ToolButton("Phonotactics"));
+        phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
         
         //Navbox actions
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -494,6 +471,17 @@ public class App extends Application {
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
         stage.show();
+        loadingStage.close();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				// TODO Auto-generated method stub
+				log.println("Closing...");
+				stage.close();
+			}
+        	
+        });
         log.println("Started!");
     }
 
