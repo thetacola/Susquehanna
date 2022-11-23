@@ -1,6 +1,7 @@
 package net.oijon.susquehanna;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -29,6 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -186,7 +188,8 @@ public class App extends Application {
     	
     	loadingText.setText("Loading Navbox...");
     	loadingBar.setProgress(3/6);
-        //Navbox        
+        //Navbox
+    	
     	Button fileButton = new Button();
         ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/file-tab.png")));
         fileButton.setGraphic(fileButtonImage);
@@ -249,7 +252,7 @@ public class App extends Application {
         javaFXVersionLabel.setFont(denyut20);
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
         algonquinVersionLabel.setFont(denyut20);
-        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w45a\n***SNAPSHOT VERSION***");
+        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w47a\n***SNAPSHOT VERSION***");
         versionLabel.setFont(denyut20);
         Image bannerLogo = new Image(App.class.getResourceAsStream("/img/logo.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
@@ -258,8 +261,6 @@ public class App extends Application {
         madeByOijon.setFont(denyut20);
         Image oijonLogo = new Image(App.class.getResourceAsStream("/img/oijon.png"));
         ImageView oijonView = new ImageView(oijonLogo);
-        
-        
         
         ToolButton addLanguage = ToolButton.createActions(new ToolButton("New\nLanguage"));
         
@@ -318,6 +319,40 @@ public class App extends Application {
         Toolbox lexiconTools = new Toolbox(lexiconToolsBackground);
         
         Toolbox settingsTools = new Toolbox(settingsToolsBackground);
+        
+      //Selection thread
+    	Thread t1 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while(true) {
+					if (selectedLanguage != Language.NULL & selectedLanguage.getName().equals(fileTools.getSelected()) == false) {
+						Platform.runLater(new Runnable() {
+							//This is very silly, but JavaFX cannot be edited from other threads, which is annoying
+						    @Override
+						    public void run() {
+						    	fileTools.setSelected(selectedLanguage.getName());
+						    	phonologyTools.setSelected(selectedLanguage.getName());
+						    	orthographyTools.setSelected(selectedLanguage.getName());
+						    	grammarTools.setSelected(selectedLanguage.getName());
+						    	lexiconTools.setSelected(selectedLanguage.getName());
+						    	settingsTools.setSelected(selectedLanguage.getName());
+						    }
+						});
+					}
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+    		
+    	});
+    	t1.start();
         
         VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
         leftPage.setBackground(paperBackground);

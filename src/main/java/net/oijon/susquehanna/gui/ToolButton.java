@@ -7,6 +7,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import net.oijon.susquehanna.App;
 
@@ -31,6 +32,7 @@ public class ToolButton extends Button {
         this.setContentDisplay(ContentDisplay.TOP);
         this.setBackground(null);
         this.setTextAlignment(TextAlignment.CENTER);
+        this.setTextFill(Color.WHITE);
 	}
 	
 	private static String getFileName(String name) {
