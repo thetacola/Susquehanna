@@ -8,16 +8,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -27,12 +24,10 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.oijon.susquehanna.data.Language;
@@ -44,7 +39,6 @@ import net.oijon.susquehanna.gui.Toolbox;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -229,15 +223,16 @@ public class App extends Application {
         VBox navVBox = new VBox(fileButton, phonologyButton, orthographyButton, grammarButton, lexiconButton, settingsButton);
         //navVBox.setPrefHeight(screenBounds.getHeight());
         navVBox.setBackground(woodBackground);
-        StackPane navStackPane = new StackPane(navVBox);
-        navStackPane.setPadding(new Insets(0, 10, 0, 0));
         ScrollPane navBox = new ScrollPane();
-        navBox.setContent(navStackPane);
-        navBox.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        navBox.setContent(navVBox);
+        navBox.setBorder(null);
+        navBox.setPannable(true);
+        navBox.setVbarPolicy(ScrollBarPolicy.NEVER);
         navBox.setHbarPolicy(ScrollBarPolicy.NEVER);
         navBox.setBackground(woodBackground);
         navBox.setFitToHeight(true);
-        navBox.setPadding(new Insets(0, -20, 0, 0));
+        navBox.setFitToWidth(true);
+        navBox.setPadding(new Insets(0, 0, 0, 10));
         
         loadingText.setText("Loading File...");
         loadingBar.setProgress(4/6);
@@ -340,6 +335,18 @@ public class App extends Application {
 						    	settingsTools.setSelected(selectedLanguage.getName());
 						    }
 						});
+					} else if (selectedLanguage == Language.NULL & fileTools.getSelected().equals("No language selected") == false) {
+						Platform.runLater(new Runnable() {
+						    @Override
+						    public void run() {
+						    	fileTools.setSelected("No language selected");
+						    	phonologyTools.setSelected("No language selected");
+						    	orthographyTools.setSelected("No language selected");
+						    	grammarTools.setSelected("No language selected");
+						    	lexiconTools.setSelected("No language selected");
+						    	settingsTools.setSelected("No language selected");
+						    }
+						});
 					}
 					try {
 						Thread.sleep(100);
@@ -352,8 +359,9 @@ public class App extends Application {
 			}
     		
     	});
+    	t1.setDaemon(true);
     	t1.start();
-        
+    	
         VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
         leftPage.setBackground(paperBackground);
         
@@ -389,6 +397,7 @@ public class App extends Application {
         		leftPage.getChildren().addAll(languageSelect);
         		rightPage.getChildren().clear();
         		rightPage.getChildren().addAll(refreshLanguageList);
+        		refreshLanguages();
         	}
         });
         
@@ -541,7 +550,9 @@ public class App extends Application {
 	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
 	        	ImageView iconView = new ImageView(icon);
 	        	Button select = new Button("Select");
+	        	Button delete = new Button("Delete");
 	        	VBox infoBox = new VBox();
+	        	HBox buttonHBox = new HBox();
 	        	HBox box = new HBox();
 	        	
 	        	try (InputStream input = new FileInputStream(files[i])) {
@@ -571,12 +582,83 @@ public class App extends Application {
 						}
 	                	
 	                });
+	                delete.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent event) {
+							Stage delete = new Stage();
+							delete.setWidth(400);
+							delete.setHeight(150);
+							
+							Label label = new Label("Are you sure you want to delete " + name + "?");
+							Button yes = new Button("Yes");
+							yes.setPrefSize(50, 25);
+							yes.setOnAction(new EventHandler<ActionEvent>() {
+
+								@Override
+								public void handle(ActionEvent event) {
+									File mainFolder = new File(System.getProperty("user.home") + "/Susquehanna/" + name);
+									File langFile = new File(System.getProperty("user.home") + "/Susquehanna/" + name + ".language");
+									
+									if (selectedLanguage.getName() == name) {
+										selectedLanguage = Language.NULL;
+										log.println("Warning! The currently selected language is being deleted! Unselecting " + name + "...");
+									}
+									
+									try {
+										input.close();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									File[] allContents = mainFolder.listFiles();
+								    if (allContents != null) {
+								        for (File file : allContents) {
+								            if (file.delete()) {
+								            	log.println("Deleted " + file.toString());
+								            }
+								        }
+								    }
+									mainFolder.delete();
+									if (langFile.delete()) {
+										log.println("Successfully deleted language " + name + " at " + langFile.toString());
+									} else {
+										log.println("Unable to delete " + name + " at " + langFile.toString());
+									}
+									refreshLanguages();
+									delete.close();
+								}
+								
+							});
+							Button no = new Button("No");
+							no.setOnAction(new EventHandler<ActionEvent>() {
+
+								@Override
+								public void handle(ActionEvent event) {
+									delete.close();
+								}
+								
+							});
+							no.setPrefSize(50, 25);
+							
+							HBox buttons = new HBox(yes, no);
+							buttons.setAlignment(Pos.CENTER);
+							VBox popupBox = new VBox(label, buttons);
+							popupBox.setAlignment(Pos.CENTER);
+							
+							Scene popup = new Scene(popupBox);
+							delete.setScene(popup);
+							delete.show();
+						}
+	                	
+	                });
 	
 	            } catch (IOException ex) {
 	                ex.printStackTrace();
 	            }
 	        	
-	        	infoBox.getChildren().addAll(nameLabel, timeCreatedLabel, lastAccessedLabel, select);
+	        	buttonHBox.getChildren().addAll(select, delete);
+	        	infoBox.getChildren().addAll(nameLabel, timeCreatedLabel, lastAccessedLabel, buttonHBox);
 	        	box.getChildren().addAll(iconView, infoBox);
 	        	languageSelect.getChildren().add(box);
 	        	//languageList.setText(fileNames);
@@ -584,6 +666,7 @@ public class App extends Application {
         }
     	
     }
+ 
     
     public static void main(String[] args) {
         launch();
