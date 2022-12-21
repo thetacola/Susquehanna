@@ -45,7 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 11/7/22 -N3
+//last edit: 11/26/22 -N3
 
 
 /**
@@ -145,7 +145,7 @@ public class App extends Application {
 	@Override
     public void start(Stage stage) {
     	log.logSystemInfo();
-    	log.println("Starting loading screen...");
+    	log.info("Starting loading screen...");
     	Stage loadingStage = new Stage();
     	loadingStage.setTitle("Susquehanna Conlang Manager - Loading...");
     	loadingStage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
@@ -160,7 +160,7 @@ public class App extends Application {
     	Scene loadingScene = new Scene(loadingVBox);
     	loadingStage.setScene(loadingScene);
     	loadingStage.show();
-    	log.println("Starting application...");
+    	log.info("Starting application...");
     	loadingText.setText("Starting application...");
     	loadingBar.setProgress(1/6);
     	
@@ -175,7 +175,7 @@ public class App extends Application {
     	if (IPAFile.toString().equals(IPA.toString())) {
     		loadingText.setText("IPA phonology system successfully verified!");
     		loadingBar.setProgress(2/6);
-    		log.println("IPA phonology system successfully verified!");
+    		log.debug("IPA phonology system successfully verified!");
     	} else {
     		log.err("IPA phonology system could not be verified!");
     	}
@@ -247,9 +247,9 @@ public class App extends Application {
         javaFXVersionLabel.setFont(denyut20);
         Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
         algonquinVersionLabel.setFont(denyut20);
-        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w47a\n***SNAPSHOT VERSION***");
+        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w51a\n***SNAPSHOT VERSION***");
         versionLabel.setFont(denyut20);
-        Image bannerLogo = new Image(App.class.getResourceAsStream("/img/logo.png"));
+        Image bannerLogo = new Image(App.class.getResourceAsStream("/img/icon.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
         
         Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
@@ -521,21 +521,21 @@ public class App extends Application {
 			@Override
 			public void handle(WindowEvent event) {
 				// TODO Auto-generated method stub
-				log.println("Closing...");
+				log.critical("Closing...");
 				stage.close();
 			}
         	
         });
-        log.println("Started!");
+        log.info("Started!");
     }
 
     public static void refreshLanguages() {
     	
     	File[] files = LanguageFile.getLanguageFiles();
-    	log.println("Found " + files.length + " language(s)");
-    	log.println("Language(s) found:");
+    	log.info("Found " + files.length + " language(s)");
+    	log.debug("Language(s) found:");
     	for (int i = 0; i < files.length; i++) {
-    		log.println(files[i].getName());
+    		log.debug(files[i].getName());
     	}
     	languageSelect.getChildren().clear();
     	
@@ -578,7 +578,7 @@ public class App extends Application {
 						@Override
 						public void handle(ActionEvent event) {
 							selectedLanguage = new Language(name);
-							log.println("Selected language: " + selectedLanguage.getName());
+							log.info("Selected language: " + selectedLanguage.getName());
 						}
 	                	
 	                });
@@ -602,7 +602,7 @@ public class App extends Application {
 									
 									if (selectedLanguage.getName() == name) {
 										selectedLanguage = Language.NULL;
-										log.println("Warning! The currently selected language is being deleted! Unselecting " + name + "...");
+										log.err("The currently selected language is being deleted! Unselecting " + name + "...");
 									}
 									
 									try {
@@ -615,15 +615,15 @@ public class App extends Application {
 								    if (allContents != null) {
 								        for (File file : allContents) {
 								            if (file.delete()) {
-								            	log.println("Deleted " + file.toString());
+								            	log.info("Deleted " + file.toString());
 								            }
 								        }
 								    }
 									mainFolder.delete();
 									if (langFile.delete()) {
-										log.println("Successfully deleted language " + name + " at " + langFile.toString());
+										log.info("Successfully deleted language " + name + " at " + langFile.toString());
 									} else {
-										log.println("Unable to delete " + name + " at " + langFile.toString());
+										log.err("Unable to delete " + name + " at " + langFile.toString());
 									}
 									refreshLanguages();
 									delete.close();

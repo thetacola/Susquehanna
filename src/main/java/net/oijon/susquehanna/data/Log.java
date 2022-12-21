@@ -11,8 +11,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Scanner;
+import com.diogonunes.jcolor.AnsiFormat;
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.*;
 
-//last edit: 11/4/22 -N3
+//last edit: 11/26/22 -N3
 
 /**
  * TODO: Get log to work on other classes
@@ -26,12 +29,18 @@ import java.util.Scanner;
  *
  */
 public class Log {
-
+	
+	private boolean debug = true;
 	private File file;
 	private String today;
 	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	private String now;
 	private File tempFile;
+	
+	AnsiFormat fDebug = new AnsiFormat(WHITE_TEXT());
+	AnsiFormat fInfo = new AnsiFormat(CYAN_TEXT());
+	AnsiFormat fError = new AnsiFormat(RED_TEXT());
+	AnsiFormat fCritical = new AnsiFormat(BOLD(), RED_TEXT(), YELLOW_BACK());
 	
 	/**
 	 * Creates the log object
@@ -89,18 +98,36 @@ public class Log {
 		}
 	}
 	
+	public void debug(String input) {
+		if (debug) {
+			setNow();
+			String output = "[DEBUG]    [" + this.now + "] - " + input;
+			System.out.println(fDebug.format(output));
+			try {
+				FileWriter fw = new FileWriter(file, true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(fInfo.format(output));
+				bw.newLine();
+			    bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
-	 * Prints a line
+	 * Prints an info line
 	 * @param input What is to be printed
 	 */
-	public void println(String input) {
+	public void info(String input) {
 		setNow();
-		String output = "[" + this.now + "] - " + input;
-		System.out.println(output);
+		String output = "[INFO]     [" + this.now + "] - " + input;
+		System.out.println(fInfo.format(output));
 		try {
 			FileWriter fw = new FileWriter(file, true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
+			bw.write(fInfo.format(output));
 			bw.newLine();
 		    bw.close();
 		} catch (IOException e) {
@@ -111,33 +138,13 @@ public class Log {
 	}
 	
 	/**
-	 * Prints without creating a new line
-	 * @param input What is to be printed
-	 */
-	public void print(String input) {
-		setNow();
-		String output = "[" + this.now + "] - " + input;
-		System.out.print(output);
-		try {
-			FileWriter fw = new FileWriter(file, true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
-		    bw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	}
-	
-	/**
-	 * Prints an error, identical to println() but with an [ERROR] tag added to easily identify it in logs
+	 * Prints an error.
 	 * @param input What is to be printed
 	 */
 	public void err(String input) {
 		setNow();
-		String output = "[ERROR] [" + this.now + "] - " + input;
-		System.out.println(output);
+		String output = "[ERROR]    [" + this.now + "] - " + input;
+		System.out.println(fError.format(output));
 		try {
 			FileWriter fw = new FileWriter(file, true);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -149,6 +156,22 @@ public class Log {
 			e.printStackTrace();
 		}
 	    
+	}
+	
+	public void critical(String input) {
+		setNow();
+		String output = "[CRITICAL] [" + this.now + "] - " + input;
+		System.out.println(fCritical.format(output));
+		try {
+			FileWriter fw = new FileWriter(file, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(output);
+			bw.newLine();
+		    bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -156,21 +179,25 @@ public class Log {
 	 */
 	public void logSystemInfo() {
 		Properties properties = System.getProperties();
-		this.println("=====================");
-		this.println("List of system properties:");
+		this.debug("=====================");
+		this.debug("List of system properties:");
 		Enumeration<Object> keyNames = properties.keys();
 		while(keyNames.hasMoreElements()) {
 			String key = keyNames.nextElement().toString();
 			String value = properties.getProperty(key).toString();
-			this.println(key + " - " + value);
+			this.debug(key + " - " + value);
 		}
-		this.println("=====================");
+		this.debug("=====================");
+	}
+	
+	public void setDebug(boolean bool) {
+		debug = bool;
 	}
 	
 	public void closeLog() {
-		this.println("Closing log...");
+		this.info("Closing log...");
 		this.tempFile.delete();
-		this.println("Log closed.");
+		this.info("Log closed.");
 	}
 	
 }
