@@ -45,7 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 11/26/22 -N3
+//last edit: 12/22/22 -N3
 
 
 /**
@@ -141,7 +141,7 @@ public class App extends Application {
     
     static Language selectedLanguage = Language.NULL;
     
-    @SuppressWarnings("static-access") //Eclipse does not like how you make specific HBoxes fix the screen.
+    @SuppressWarnings("static-access") // Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
     	log.logSystemInfo();
@@ -394,7 +394,9 @@ public class App extends Application {
         	@Override
         	public void handle(ActionEvent event) {
         		leftPage.getChildren().clear();
-        		leftPage.getChildren().addAll(languageSelect);
+        		ScrollPane scrollPane = new ScrollPane();
+        		scrollPane.setContent(languageSelect);
+        		leftPage.getChildren().addAll(scrollPane);
         		rightPage.getChildren().clear();
         		rightPage.getChildren().addAll(refreshLanguageList);
         		refreshLanguages();
