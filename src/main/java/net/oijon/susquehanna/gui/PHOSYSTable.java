@@ -5,9 +5,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.data.PhonoSystem;
 
-public class IPATable extends VBox {
+public class PHOSYSTable extends VBox {
 
-	public IPATable(PhonoSystem ps) {
+	public PHOSYSTable(PhonoSystem ps) {
 	
 		
 		

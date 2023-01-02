@@ -28,11 +28,13 @@ public class Toolbox extends VBox {
 		this.setBackground(background);
         this.setPrefWidth(100);
         this.setAlignment(Pos.TOP_CENTER);
+        this.setSpacing(10);
         
         selectLabel.setTextFill(Color.WHITE);
     	selectLabel.setWrapText(true);
     	selectLabel.setTextAlignment(TextAlignment.CENTER);
-    	selectLabel.setStyle("-fx-font: 16 arial; -fx-font-weight: bold;");
+    	selectLabel.setStyle("-fx-font: 14 opensans; -fx-font-weight: bold;");
+    	
     	
     	this.getChildren().addAll(selectLabel, divLine);
 	}

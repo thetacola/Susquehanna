@@ -45,7 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 12/22/22 -N3
+//last edit: 1/2/23 -N3
 
 
 /**
@@ -60,13 +60,16 @@ public class App extends Application {
 	// Shared resources, mainly backgrounds
 	static InputStream is = App.class.getResourceAsStream("/font/Denyut.ttf");
 	static Font denyut20 = Font.loadFont(is, 20);
+	static InputStream is2 = App.class.getResourceAsStream("/font/OpenSans-Regular.ttf");
+	static Font opensans = Font.loadFont(is2, 16);
 	static VBox languageSelect = new VBox();
 	//static TextArea languageList = new TextArea();
 	
+	BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
 	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
 	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/wood-texture.png")),
 			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	        BackgroundSize.DEFAULT);
+	        stretchToFit);
 	Background woodBackground = new Background(plankImage);
     Background background = new Background(backgroundFill);
     
@@ -81,10 +84,10 @@ public class App extends Application {
 	        BackgroundSize.DEFAULT);
 	Background rightWoodBackground = new Background(rightPlankImage);
 	ImageView rightWood = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
-    
+	
     BackgroundImage paperImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/paper-texture.png")),
-			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	        BackgroundSize.DEFAULT);
+			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+			stretchToFit);
     Background paperBackground = new Background(paperImage);
     
     BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/file-bar.png")),
@@ -242,18 +245,18 @@ public class App extends Application {
         rightPapersVBox.setBackground(rightPapersBG);
     	//File
         Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
-        javaVersionLabel.setFont(denyut20);
+        javaVersionLabel.setFont(opensans);
         Label javaFXVersionLabel = new Label("Bundled with JavaFX " + System.getProperty("javafx.runtime.version") + ".");
-        javaFXVersionLabel.setFont(denyut20);
-        Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
-        algonquinVersionLabel.setFont(denyut20);
-        Label versionLabel = new Label("Version 0.0.1 \"Otsego\", build 22w51a\n***SNAPSHOT VERSION***");
-        versionLabel.setFont(denyut20);
+        javaFXVersionLabel.setFont(opensans);
+        //Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
+        //algonquinVersionLabel.setFont(opensans);
+        Label versionLabel = new Label("Version " + SystemInfo.susquehannaVersion());
+        versionLabel.setFont(opensans);
         Image bannerLogo = new Image(App.class.getResourceAsStream("/img/icon.png"));
         ImageView bannerLogoView = new ImageView(bannerLogo);
         
         Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
-        madeByOijon.setFont(denyut20);
+        madeByOijon.setFont(opensans);
         Image oijonLogo = new Image(App.class.getResourceAsStream("/img/oijon.png"));
         ImageView oijonView = new ImageView(oijonLogo);
         
@@ -270,10 +273,10 @@ public class App extends Application {
         	
         });
         Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
-        languageNameLabel.setFont(denyut20);
+        languageNameLabel.setFont(opensans);
         TextField languageName = new TextField();
         Label languageAutonymLabel = new Label("Language Autonym");
-        languageAutonymLabel.setFont(denyut20);
+        languageAutonymLabel.setFont(opensans);
         TextField languageAutonym = new TextField();
         Button createLanguage = new Button("Create!");
         
@@ -362,7 +365,8 @@ public class App extends Application {
     	t1.setDaemon(true);
     	t1.start();
     	
-        VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        //VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+    	VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, versionLabel);
         leftPage.setBackground(paperBackground);
         
         VBox binding = new VBox(bindingImage);
@@ -408,7 +412,8 @@ public class App extends Application {
         	@Override
         	public void handle(ActionEvent event) {
         		leftPage.getChildren().clear();
-        		leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		//leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, versionLabel);
         		rightPage.getChildren().clear();
         		rightPage.getChildren().addAll(oijonView, madeByOijon);
         	}
@@ -428,7 +433,7 @@ public class App extends Application {
         rootHBox.setHgrow(leftPage, Priority.ALWAYS);
         rootHBox.setHgrow(rightPage, Priority.ALWAYS);
         
-        rootHBox.setBackground(background);
+        rootHBox.setBackground(woodBackground);
         Scene root = new Scene(rootHBox);
         
         loadingText.setText("Loading Phonology...");
@@ -449,7 +454,8 @@ public class App extends Application {
         		rightPage.getChildren().clear();
         		indicator.setImage(fileIndicator);
         		rightIndicator.setBackground(fileToolsBackground);
-        		leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		//leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
+        		leftPage.getChildren().addAll(bannerLogoView, javaVersionLabel, javaFXVersionLabel, versionLabel);
         		rightPage.getChildren().addAll(oijonView, madeByOijon);
 				rootHBox.getChildren().addAll(navBox, fileTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
@@ -544,15 +550,19 @@ public class App extends Application {
     	if (files != null) {
 	        for (int i = 0; i < files.length; i++) {
 	        	Label nameLabel = new Label();
-	        	nameLabel.setFont(denyut20);
+	        	nameLabel.setFont(opensans);
 	        	Label timeCreatedLabel = new Label();
-	        	timeCreatedLabel.setFont(denyut20);
+	        	timeCreatedLabel.setFont(opensans);
 	        	Label lastAccessedLabel = new Label();
-	        	lastAccessedLabel.setFont(denyut20);
+	        	lastAccessedLabel.setFont(opensans);
 	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
 	        	ImageView iconView = new ImageView(icon);
 	        	Button select = new Button("Select");
+	        	select.setPrefSize(100, 30);
+	        	select.setMinSize(100, 30);
 	        	Button delete = new Button("Delete");
+	        	delete.setPrefSize(100, 30);
+	        	delete.setMinSize(100, 30);
 	        	VBox infoBox = new VBox();
 	        	HBox buttonHBox = new HBox();
 	        	HBox box = new HBox();
