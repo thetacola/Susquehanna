@@ -1,12 +1,13 @@
 package net.oijon.susquehanna.data;
 
+//last edit: 1/6/2023 -N3
 public class Language {
 
 	public static final Language NULL = new Language("null");
-	private String autonym;
-	private String name;
-	private Phonology phono;
-	private Language parent;
+	private String autonym = "null";
+	private String name = "null";
+	private Phonology phono = new Phonology();
+	private Language parent = Language.NULL;
 	
 	
 	public Language(String name) {
@@ -37,4 +38,14 @@ public class Language {
 	public void setParent(Language parent) {
 		this.parent = parent;
 	}
+	public String toString() {
+		String returnString = "autonym:" + autonym;
+		returnString += "\nname:" + name;
+		returnString += "\n===BEGIN PHONO===\n";
+		returnString += phono.toString();
+		returnString += "\n===END PHONO===";
+		returnString += "\nparent:" + parent.getName();
+		return returnString;
+	}
+	
 }

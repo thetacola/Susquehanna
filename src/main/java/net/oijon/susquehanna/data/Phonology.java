@@ -3,7 +3,7 @@ package net.oijon.susquehanna.data;
 import java.util.ArrayList;
 import java.util.List;
 
-//last edit: 10/22/22 -N3
+//last edit: 1/6/23 -N3
 
 public class Phonology {
 
@@ -75,9 +75,19 @@ public class Phonology {
 	public String get(int id) {
 		return phonoList.get(id);
 	}
+	
 	public void add(String value) {
 		if (phonoSystem.isIn(value)) {
 			phonoList.add(value);
 		}
+	}
+	
+	public boolean isIn(String value) {
+		for (int i = 0; i < phonoList.size(); i++) {
+			if (phonoList.get(i).equals(value)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

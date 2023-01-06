@@ -71,6 +71,14 @@ public class PhonoTable {
 		return rows.get(i);
 	}
 	
+	public ArrayList<String> getColumnNames() {
+		return columnNames;
+	}
+	
+	public int dataPerCell() {
+		return soundsPerCell;
+	}
+	
 	public boolean verify() {
 		return true;
 	}

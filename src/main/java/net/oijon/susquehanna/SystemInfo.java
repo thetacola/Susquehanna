@@ -33,7 +33,7 @@ public class SystemInfo {
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "23w01a";
+    		return "23w01b";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}

@@ -34,6 +34,7 @@ import net.oijon.susquehanna.data.Language;
 import net.oijon.susquehanna.data.LanguageFile;
 import net.oijon.susquehanna.data.Log;
 import net.oijon.susquehanna.data.PhonoSystem;
+import net.oijon.susquehanna.gui.PHOSYSTable;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
 
@@ -45,7 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 1/2/23 -N3
+//last edit: 1/6/23 -N3
 
 
 /**
@@ -441,7 +442,45 @@ public class App extends Application {
         //Phonology
         
         ToolButton viewPhonology = ToolButton.createActions(new ToolButton("View\nPhonology"));
+        viewPhonology.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent event) {
+        		leftPage.getChildren().clear();
+        		if (selectedLanguage != Language.NULL) {
+        			Label phonoLabel = new Label("Phonology");
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono());
+        			leftPage.getChildren().addAll(phonoLabel, testTable);
+        		} else {
+        			Label noLangViewPhono = new Label("Could not display phonology."
+        					+ " Either no language is selected, or the phonology is invalid.");
+        			leftPage.getChildren().addAll(noLangViewPhono);
+        		}
+        		
+        		rightPage.getChildren().clear();
+        		if (selectedLanguage != Language.NULL) {
+        			Label phonoSystemLabel = new Label("Phonology System - " + selectedLanguage.getPhono().getPhonoSystem().getName());
+        			log.debug(selectedLanguage.toString());
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono().getPhonoSystem());
+        			rightPage.getChildren().addAll(phonoSystemLabel, testTable);
+        		} else {
+        			Label noLangViewPhono = new Label("Could not display phonology system."
+        					+ " Either no language is selected, or the phonology system is invalid.");
+        			rightPage.getChildren().addAll(noLangViewPhono);
+        		}
+        	}
+        });
+        
+        
         ToolButton editPhonemes = ToolButton.createActions(new ToolButton("Edit\nPhonology"));
+        editPhonemes.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
         ToolButton phonotactics = ToolButton.createActions(new ToolButton("Phonotactics"));
         phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
         
@@ -464,11 +503,42 @@ public class App extends Application {
         phonologyButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
+        		ProgressBar loadingBar = new ProgressBar();
+        		leftPage.getChildren().addAll(loadingBar);
+        		
         		rootHBox.getChildren().clear();
-        		leftPage.getChildren().clear();
-        		rightPage.getChildren().clear();
+				rootHBox.getChildren().addAll(navBox, phonologyTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
+        		
+        		if (selectedLanguage != Language.NULL) {
+        			Label phonoLabel = new Label("Phonology");
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono());
+        			leftPage.getChildren().clear();
+        			leftPage.getChildren().addAll(phonoLabel, testTable);
+        		} else {
+        			Label noLangViewPhono = new Label("Could not display phonology."
+        					+ " Either no language is selected, or the phonology is invalid.");
+        			leftPage.getChildren().clear();
+        			leftPage.getChildren().addAll(noLangViewPhono);
+        		}
+        		
+        		if (selectedLanguage != Language.NULL) {
+        			Label phonoSystemLabel = new Label("Phonology System - " + selectedLanguage.getPhono().getPhonoSystem().getName());
+        			log.debug(selectedLanguage.toString());
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono().getPhonoSystem());
+        			rightPage.getChildren().clear();
+        			log.debug("Adding tables...");
+        			rightPage.getChildren().addAll(phonoSystemLabel, testTable);
+        			log.debug("Tables added!");
+        		} else {
+        			Label noLangViewPhono = new Label("Could not display phonology system."
+        					+ " Either no language is selected, or the phonology system is invalid.");
+        			rightPage.getChildren().clear();
+        			rightPage.getChildren().addAll(noLangViewPhono);
+        		}
+        		
         		indicator.setImage(phonologyIndicator);
         		rightIndicator.setBackground(phonologyToolsBackground);
+        		rootHBox.getChildren().clear();
 				rootHBox.getChildren().addAll(navBox, phonologyTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
