@@ -28,12 +28,12 @@ public class SystemInfo {
     }
     
     public static boolean isSnapshot() {
-    	return true;
+    	return false;
     }
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "23w02a";
+    		return "23w02b";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
