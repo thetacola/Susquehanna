@@ -31,9 +31,10 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.oijon.susquehanna.data.Language;
-import net.oijon.susquehanna.data.LanguageFile;
 import net.oijon.susquehanna.data.Log;
 import net.oijon.susquehanna.data.PhonoSystem;
+import net.oijon.susquehanna.data.Phonology;
+import net.oijon.susquehanna.data.phosys.Parser;
 import net.oijon.susquehanna.gui.PHOSYSTable;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
@@ -144,6 +145,7 @@ public class App extends Application {
     Image settingsIndicator = new Image(App.class.getResourceAsStream("/img/settings-bar.png"));
     
     static Language selectedLanguage = Language.NULL;
+    static File currentFile;
     
     @SuppressWarnings("static-access") // Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
@@ -263,16 +265,7 @@ public class App extends Application {
         
         ToolButton addLanguage = ToolButton.createActions(new ToolButton("New\nLanguage"));
         
-        Button makeTestLanguage = new Button("Make Test Language");
-        makeTestLanguage.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				LanguageFile.createTestLanguage();
-			}
-        	
-        });
+        
         Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
         languageNameLabel.setFont(opensans);
         TextField languageName = new TextField();
@@ -285,10 +278,16 @@ public class App extends Application {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				log.info("Creating new language...");
 				Language newLang = new Language(languageName.getText());
 				newLang.setAutonym(languageAutonym.getText());
-				LanguageFile.createLanguage(newLang);
+				try {
+					newLang.toFile(new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".language"));
+				} catch (IOException e) {
+					log.err(e.toString() + " - Could not write new language to file!");
+					e.printStackTrace();
+				}
+				log.info(newLang.getName() + " has been created!");
 			}
         	
         });
@@ -324,7 +323,6 @@ public class App extends Application {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				while(true) {
 					if (selectedLanguage != Language.NULL & selectedLanguage.getName().equals(fileTools.getSelected()) == false) {
 						Platform.runLater(new Runnable() {
@@ -355,7 +353,7 @@ public class App extends Application {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						log.err(e.toString());
 						e.printStackTrace();
 					}
 				}
@@ -389,7 +387,7 @@ public class App extends Application {
         	@Override
         	public void handle(ActionEvent event) {
         		leftPage.getChildren().clear();
-        		leftPage.getChildren().addAll(languageNameLabel, languageName, languageAutonymLabel, languageAutonym, createLanguage, makeTestLanguage);
+        		leftPage.getChildren().addAll(languageNameLabel, languageName, languageAutonymLabel, languageAutonym, createLanguage);
         		rightPage.getChildren().clear();
         	}
         });
@@ -448,7 +446,7 @@ public class App extends Application {
         		leftPage.getChildren().clear();
         		if (selectedLanguage != Language.NULL) {
         			Label phonoLabel = new Label("Phonology");
-        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono());
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage);
         			leftPage.getChildren().addAll(phonoLabel, testTable);
         		} else {
         			Label noLangViewPhono = new Label("Could not display phonology."
@@ -476,7 +474,28 @@ public class App extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
+				leftPage.getChildren().clear();
+        		if (selectedLanguage != Language.NULL) {
+        			Label phonoLabel = new Label("Phonology");
+        			PHOSYSTable table = new PHOSYSTable(selectedLanguage, true, currentFile);
+        			leftPage.getChildren().addAll(phonoLabel, table);
+        		} else {
+        			Label noLangViewPhono = new Label("Could not display phonology."
+        					+ " Either no language is selected, or the phonology is invalid.");
+        			leftPage.getChildren().addAll(noLangViewPhono);
+        		}
+        		
+        		rightPage.getChildren().clear();
+        		if (selectedLanguage != Language.NULL) {
+        			Label phonoSystemLabel = new Label("Phonology System - " + selectedLanguage.getPhono().getPhonoSystem().getName());
+        			log.debug(selectedLanguage.toString());
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono().getPhonoSystem());
+        			rightPage.getChildren().addAll(phonoSystemLabel, testTable);
+        		} else {
+        			Label noLangViewPhono = new Label("Could not display phonology system."
+        					+ " Either no language is selected, or the phonology system is invalid.");
+        			rightPage.getChildren().addAll(noLangViewPhono);
+        		}
 				
 			}
         	
@@ -511,7 +530,7 @@ public class App extends Application {
         		
         		if (selectedLanguage != Language.NULL) {
         			Label phonoLabel = new Label("Phonology");
-        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono());
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage);
         			leftPage.getChildren().clear();
         			leftPage.getChildren().addAll(phonoLabel, testTable);
         		} else {
@@ -598,7 +617,6 @@ public class App extends Application {
 
 			@Override
 			public void handle(WindowEvent event) {
-				// TODO Auto-generated method stub
 				log.critical("Closing...");
 				stage.close();
 			}
@@ -609,7 +627,7 @@ public class App extends Application {
 
     public static void refreshLanguages() {
     	
-    	File[] files = LanguageFile.getLanguageFiles();
+    	File[] files = Language.getLanguageFiles();
     	log.info("Found " + files.length + " language(s)");
     	log.debug("Language(s) found:");
     	for (int i = 0; i < files.length; i++) {
@@ -638,7 +656,7 @@ public class App extends Application {
 	        	HBox box = new HBox();
 	        	
 	        	try (InputStream input = new FileInputStream(files[i])) {
-	
+	        		final File file = files[i];
 	                Properties prop = new Properties();
 	
 	                prop.load(input);
@@ -659,7 +677,16 @@ public class App extends Application {
 
 						@Override
 						public void handle(ActionEvent event) {
-							selectedLanguage = new Language(name);
+							Parser parser = new Parser(file);
+							try {
+								selectedLanguage = parser.parseLanguage();
+								currentFile = file;
+							} catch (Exception e) {
+								selectedLanguage = Language.NULL;
+								e.printStackTrace();
+								log.err("Unable to select language!");
+								log.err(e.toString());
+							}
 							log.info("Selected language: " + selectedLanguage.getName());
 						}
 	                	
@@ -690,7 +717,7 @@ public class App extends Application {
 									try {
 										input.close();
 									} catch (IOException e) {
-										// TODO Auto-generated catch block
+										log.err(e.toString());
 										e.printStackTrace();
 									}
 									File[] allContents = mainFolder.listFiles();

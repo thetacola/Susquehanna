@@ -15,13 +15,9 @@ import com.diogonunes.jcolor.AnsiFormat;
 import static com.diogonunes.jcolor.Ansi.colorize;
 import static com.diogonunes.jcolor.Attribute.*;
 
-//last edit: 11/26/22 -N3
+//last edit: 1/9/22 -N3
 
-/**
- * TODO: Get log to work on other classes
- * This could be done by creating a temporary file with the name of the current file
- * This file could then be deleted once the program closes
- */
+
 
 /**
  * Simple log utility to help with getting console output to file
@@ -39,6 +35,7 @@ public class Log {
 	
 	AnsiFormat fDebug = new AnsiFormat(WHITE_TEXT());
 	AnsiFormat fInfo = new AnsiFormat(CYAN_TEXT());
+	AnsiFormat fWarn = new AnsiFormat(YELLOW_TEXT());
 	AnsiFormat fError = new AnsiFormat(RED_TEXT());
 	AnsiFormat fCritical = new AnsiFormat(BOLD(), RED_TEXT(), YELLOW_BACK());
 	
@@ -46,6 +43,10 @@ public class Log {
 	 * Creates the log object
 	 */
 	public Log() {
+		this(false);
+	}
+	
+	public Log(boolean useCurrent) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		this.today = LocalDate.now().format(formatter);
 		File logFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/" + this.today + ".log");
@@ -56,17 +57,27 @@ public class Log {
 			i++;
 			logFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/" + this.today + "(" + i + ")" + ".log");
 		}
-		try {
-			File logDir = new File(System.getProperty("user.home") + "/Susquehanna/logs/");
-			logDir.mkdirs();
-			logFile.createNewFile();
-			tempFile.createNewFile();
-			FileWriter fw = new FileWriter(tempFile, true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(logFile.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (useCurrent) {
+			if (i > 0) {
+				i--;
+				if (i == 0) {
+					logFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/" + this.today + ".log");
+				} else {
+					logFile = new File(System.getProperty("user.home") + "/Susquehanna/logs/" + this.today + "(" + i + ")" + ".log");
+				}
+			}
+		} else {
+			try {
+				File logDir = new File(System.getProperty("user.home") + "/Susquehanna/logs/");
+				logDir.mkdirs();
+				logFile.createNewFile();
+				tempFile.createNewFile();
+				FileWriter fw = new FileWriter(tempFile, true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(logFile.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		this.file = logFile;
 	}
@@ -106,11 +117,11 @@ public class Log {
 			try {
 				FileWriter fw = new FileWriter(file, true);
 				BufferedWriter bw = new BufferedWriter(fw);
-				bw.write(fInfo.format(output));
+				bw.write(output);
 				bw.newLine();
 			    bw.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				this.err(e.toString());
 				e.printStackTrace();
 			}
 		}
@@ -127,11 +138,32 @@ public class Log {
 		try {
 			FileWriter fw = new FileWriter(file, true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(fInfo.format(output));
+			bw.write(output);
 			bw.newLine();
 		    bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			this.err(e.toString());
+			e.printStackTrace();
+		}
+	    
+	}
+	
+	/**
+	 * Prints a warning
+	 * @param input What is to be printed
+	 */
+	public void warn(String input) {
+		setNow();
+		String output = "[WARN]     [" + this.now + "] - " + input;
+		System.out.println(fWarn.format(output));
+		try {
+			FileWriter fw = new FileWriter(file, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(output);
+			bw.newLine();
+		    bw.close();
+		} catch (IOException e) {
+			this.err(e.toString());
 			e.printStackTrace();
 		}
 	    
@@ -152,7 +184,7 @@ public class Log {
 			bw.newLine();
 		    bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			this.err(e.toString()); // this might be a very bad idea
 			e.printStackTrace();
 		}
 	    
@@ -169,7 +201,8 @@ public class Log {
 			bw.newLine();
 		    bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// if this catch is being hit, something has gone horribly wrong
+			this.err(e.toString());
 			e.printStackTrace();
 		}
 	}

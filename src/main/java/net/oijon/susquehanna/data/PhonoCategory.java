@@ -75,7 +75,12 @@ public class PhonoCategory {
 	public static final PhonoCategory IPAOpen = new PhonoCategory("Other", new ArrayList<String>(
 			Arrays.asList("a", "ɶ", "*", "*", "ɑ", "ɒ")
 			));
-	
+	public static final PhonoCategory IPAEncodingAnomolies = new PhonoCategory(".encodingAnomoly",  new ArrayList<String>(
+			Arrays.asList("g", "ɚ", "#", "#", "#", "#", "#", "#", "#", "#")));
+	public static final ArrayList<String> IPADiacritics = new ArrayList<String>(
+			Arrays.asList("̥", "̬", "ʰ", "̹", "̜", "̟", "̠", "̈", "̽", "̩", "̯", "˞", "̤", "̰", "̼", "ʷ", "ʲ", "ˠ", "ˤ", "̴", "̝", "̞", "̘",
+					"̙", "̪", "̺", "̻", "̃", "ⁿ", "ˡ", "̚", "̋", "́", "̄", "̀", "̏", "̌", "̂", "᷄", "᷅", "᷈", "ˈ", "ˌ", "ː", "ˑ", "̆", "|",
+					"‖", ".", "‿", "͡"));
 	/**
 	 * Creates phono category for already created list
 	 * @param name the name of the category

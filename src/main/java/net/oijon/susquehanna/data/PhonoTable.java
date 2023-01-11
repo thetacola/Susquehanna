@@ -27,7 +27,7 @@ public class PhonoTable {
 					PhonoCategory.IPAOpenMid, PhonoCategory.IPACloseOpen, PhonoCategory.IPAOpen)), 2);
 	public static final PhonoTable IPAOther = new PhonoTable("IPA Non-Pulmonics", new ArrayList<String>(Arrays.asList("No column names")), 
 			new ArrayList<PhonoCategory>(
-					Arrays.asList(PhonoCategory.IPAClick, PhonoCategory.IPAImplosive, PhonoCategory.IPAOther)), 1);
+					Arrays.asList(PhonoCategory.IPAClick, PhonoCategory.IPAImplosive, PhonoCategory.IPAOther, PhonoCategory.IPAEncodingAnomolies)), 1);
 	
 	public PhonoTable(String name, ArrayList<String> columnNames, ArrayList<PhonoCategory> rows, int soundsPerCell) {
 		this.name = name;
@@ -50,6 +50,7 @@ public class PhonoTable {
 		returnString = returnString.substring(0, returnString.length() - 1); // removes last comma
 		returnString += "\n";
 		for (int i = 0; i < rows.size(); i++) {
+			returnString += ":";
 			for (int j = 0; j < rows.get(i).size(); j++) {
 				returnString += rows.get(i).getSound(j);
 			}
