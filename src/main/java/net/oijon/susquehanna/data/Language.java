@@ -21,6 +21,7 @@ public class Language {
 	private String autonym = "null";
 	private String name = "null";
 	private Phonology phono = new Phonology();
+	private Lexicon lexicon = new Lexicon();
 	private Language parent = Language.NULL;
 	private boolean isReadOnly = false;
 	private Date created = Date.from(Instant.now());
@@ -71,6 +72,12 @@ public class Language {
 	public void setPhono(Phonology phono) {
 		this.phono = phono;
 	}
+	public Lexicon getLexicon() {
+		return lexicon;
+	}
+	public void setLexicon(Lexicon lexicon) {
+		this.lexicon = lexicon;
+	}
 	public Language getParent() {
 		return parent;
 	}
@@ -106,6 +113,11 @@ public class Language {
 	}
 	public void toFile(File file) throws IOException {
 		edited = Date.from(Instant.now());
+		versionEdited = SystemInfo.susquehannaVersion();
+		
+		lexicon.checkHomonyms();
+		lexicon.checkSynonyms();
+		
 		String data = "===PHOSYS Start===\n";
 		data += this.toString();
 		data += "\n===PHOSYS End===";
@@ -127,7 +139,8 @@ public class Language {
 		returnString += "readonly:" + isReadOnly + "\n";
 		returnString += "parent:" + parent.getName() + "\n";
 		returnString += "===Meta End===\n";
-		returnString += phono.toString();
+		returnString += phono.toString() + "\n";
+		returnString += lexicon.toString();
 		return returnString;
 	}
 	

@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +22,9 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -34,8 +38,11 @@ import net.oijon.susquehanna.data.Language;
 import net.oijon.susquehanna.data.Log;
 import net.oijon.susquehanna.data.PhonoSystem;
 import net.oijon.susquehanna.data.Phonology;
+import net.oijon.susquehanna.data.Word;
 import net.oijon.susquehanna.data.phosys.Parser;
+import net.oijon.susquehanna.gui.DetailedWordList;
 import net.oijon.susquehanna.gui.PHOSYSTable;
+import net.oijon.susquehanna.gui.SimpleWordList;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
 
@@ -171,7 +178,12 @@ public class App extends Application {
     	loadingBar.setProgress(1/6);
     	
     	while (!loadingStage.isShowing()) {
-    		
+    		try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
     	}
     	
     	//Verify IPA is intact
@@ -503,6 +515,77 @@ public class App extends Application {
         ToolButton phonotactics = ToolButton.createActions(new ToolButton("Phonotactics"));
         phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
         
+        //Lexicon
+        ToolButton viewWords = ToolButton.createActions(new ToolButton("View Words"));
+        viewWords.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent event) {
+        		if (selectedLanguage != Language.NULL) {
+        			leftPage.getChildren().clear();
+            		rightPage.getChildren().clear();
+            		DetailedWordList wordList = new DetailedWordList(selectedLanguage);
+            		leftPage.getChildren().add(wordList);
+        		} else {
+        			leftPage.getChildren().clear();
+        			rightPage.getChildren().clear();
+        			Label cantDisplay = new Label("Could not display lexicon."
+        					+ " Either no language is selected, or the lexicon is invalid.");
+        			leftPage.getChildren().add(cantDisplay);
+        		}
+        	}
+        });
+        
+        ToolButton editWords = ToolButton.createActions(new ToolButton("Edit Words"));
+        editWords.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				leftPage.getChildren().clear();
+				Label wordLabel = new Label("Word: ");
+				TextField wordInput = new TextField();
+				Label meaningLabel = new Label("Meaning: ");
+				TextField meaningInput = new TextField();
+				//TODO: automatically get pronunciation from orthography
+				//TODO: let other parts of the word be editable
+				Button addWord = new Button("Add Word");
+				addWord.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						if (!wordInput.getText().isBlank()) {
+							if (!meaningInput.getText().isBlank()) {
+								Word word = new Word(wordInput.getText(), meaningInput.getText());
+								selectedLanguage.getLexicon().addWord(word);
+								wordInput.clear();
+								meaningInput.clear();
+								try {
+									selectedLanguage.toFile(currentFile);
+								} catch (IOException e) {
+									log.err(e.toString() + " - Could not add word " + word.getName());
+									e.printStackTrace();
+								}
+								rightPage.getChildren().clear();
+								SimpleWordList wordScroll = new SimpleWordList(selectedLanguage, currentFile);
+				        		rightPage.getChildren().add(wordScroll);
+							}
+						}
+					}
+					
+				});
+				leftPage.getChildren().addAll(wordLabel, wordInput, meaningLabel, meaningInput, addWord);
+				
+				rightPage.getChildren().clear();
+				SimpleWordList wordScroll = new SimpleWordList(selectedLanguage, currentFile);
+        		rightPage.getChildren().add(wordScroll);
+			}
+        	
+        });
+
+        
+        lexiconTools.getChildren().addAll(viewWords, editWords);
+        
+        //TODO: Enable/disable debug logging in settings
+        
         //Navbox actions
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -591,8 +674,20 @@ public class App extends Application {
         		rightPage.getChildren().clear();
         		indicator.setImage(lexiconIndicator);
         		rightIndicator.setBackground(lexiconToolsBackground);
+        		if (selectedLanguage != Language.NULL) {
+        			leftPage.getChildren().clear();
+            		rightPage.getChildren().clear();
+            		DetailedWordList wordList = new DetailedWordList(selectedLanguage);
+            		leftPage.getChildren().add(wordList);
+        		} else {
+        			leftPage.getChildren().clear();
+        			rightPage.getChildren().clear();
+        			Label cantDisplay = new Label("Could not display lexicon."
+        					+ " Either no language is selected, or the lexicon is invalid.");
+        			leftPage.getChildren().add(cantDisplay);
+        		}
         		rootHBox.getChildren().addAll(navBox, lexiconTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
-			}
+        	}
         });
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override

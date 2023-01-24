@@ -9,11 +9,13 @@ import java.util.Scanner;
 
 import net.oijon.susquehanna.SystemInfo;
 import net.oijon.susquehanna.data.Language;
+import net.oijon.susquehanna.data.Lexicon;
 import net.oijon.susquehanna.data.Log;
 import net.oijon.susquehanna.data.PhonoCategory;
 import net.oijon.susquehanna.data.PhonoSystem;
 import net.oijon.susquehanna.data.PhonoTable;
 import net.oijon.susquehanna.data.Phonology;
+import net.oijon.susquehanna.data.Word;
 import net.oijon.susquehanna.data.phosys.tags.Multitag;
 import net.oijon.susquehanna.data.phosys.tags.Tag;
 
@@ -52,6 +54,7 @@ public class Parser {
 			} else {
 				log.err("Input is not a valid PHOSYS file!");
 			}
+			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			log.critical("File " + file.toString() + " not found! Cannot parse.");
@@ -189,6 +192,7 @@ public class Parser {
 	}
 	public Language parseLanguage() throws Exception {
 		Phonology phono = this.parsePhono();
+		Lexicon lexicon = this.parseLexicon();
 		Multitag meta = this.tag.getMultitag("Meta");
 		Tag ver = meta.getDirectChild("susquehannaVersion");
 		if (!ver.value().equals(SystemInfo.susquehannaVersion())) {
@@ -206,6 +210,7 @@ public class Parser {
 		Tag parent = meta.getDirectChild("parent");
 		Language lang = new Language(name.value());
 		lang.setPhono(phono);
+		lang.setLexicon(lexicon);
 		lang.setCreated(new Date(Long.parseLong(timeCreated.value())));
 		lang.setEdited(new Date(Long.parseLong(lastEdited.value())));
 		lang.setAutonym(autonym.value());
@@ -215,5 +220,39 @@ public class Parser {
 		return lang;
 	}
 	
-
+	public Lexicon parseLexicon() {
+		try {
+			Lexicon lexicon = new Lexicon();
+			Multitag lexiconTag = this.tag.getMultitag("Lexicon");
+			ArrayList<Multitag> wordList = lexiconTag.getSubMultitags();
+			for (int i = 0; i < wordList.size(); i++) {
+				if (wordList.get(i).getName().equals("Word")) {
+					Multitag wordTag = wordList.get(i);
+					Tag valueTag = wordTag.getDirectChild("wordname");
+					Tag meaningTag = wordTag.getDirectChild("meaning");
+					Word word = new Word(valueTag.value(), meaningTag.value());
+					try {
+						Tag pronunciationTag = wordTag.getDirectChild("pronunciation");
+						word.setPronounciation(pronunciationTag.value());
+						Tag etymologyTag = wordTag.getDirectChild("etymology");
+						word.setEtymology(etymologyTag.value());
+						//TODO: Attempt to find name of source language in Susquehanna folder. If not found, revert to null.
+						//Tag sourceLanguageTag = wordTag.getDirectChild("sourceLanguage");
+						//word.setSourceLanguage(null);
+						Tag creationDateTag = wordTag.getDirectChild("creationDate");
+						word.setCreationDate(new Date(Long.parseLong(creationDateTag.value())));
+						Tag editDateTag = wordTag.getDirectChild("editDate");
+						word.setEditDate(new Date(Long.parseLong(editDateTag.value())));
+					} catch (Exception e) {
+						log.warn("Could not find optional property for " + valueTag.value() + ". Was this word added manually?");
+					}
+					lexicon.addWord(word);
+				}
+			}
+			return lexicon;
+		} catch (Exception e) {
+			log.err("No lexicon found! Has one been created? Returning a blank lexicon...");
+			return new Lexicon();
+		}
+	}
 }
