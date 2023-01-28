@@ -9,15 +9,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,11 +34,9 @@ import net.oijon.susquehanna.data.Phonology;
  */
 public class PHOSYSTable extends VBox {
 	
-	private boolean editable = false;
 	private PhonoSystem ps;
 	private Phonology ph;
 	private File file;
-	private ArrayList<PHOSYSCheck> checks = new ArrayList<PHOSYSCheck>(); // will be null if isEditable == false
 
 	public PHOSYSTable(PhonoSystem ps) {
 		/**
@@ -139,8 +133,8 @@ public class PHOSYSTable extends VBox {
 	 * This displays characters that are only in a Phonology and the attached PhonoSystem.
 	 * @param ph
 	 */
-	public PHOSYSTable(Language lang) {
-		this(lang, false, null); // included to support other functions
+	public PHOSYSTable(Language lang, File file) {
+		this(lang, false, file); // included to support other functions
 	}
 	
 	public PHOSYSTable(Language lang, boolean isEditable, File file) {
@@ -148,6 +142,28 @@ public class PHOSYSTable extends VBox {
 		this.ps = ph.getPhonoSystem();
 		this.file = file;
 		ArrayList<PhonoTable> tables = this.ps.getTables();
+		
+		TextField keyboardField = new TextField();
+		Button addSound = new Button("Add Sound");
+		addSound.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ph.add(keyboardField.getText());
+				lang.setPhono(ph);
+				try {
+					lang.toFile(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				keyboardField.clear();
+			}
+			
+		});
+		
+		HBox addBox = new HBox();
+		addBox.getChildren().addAll(keyboardField, addSound);
 		
 		for (int i = 0; i < tables.size(); i++) {
 			PhonoTable table = tables.get(i);
@@ -193,61 +209,68 @@ public class PHOSYSTable extends VBox {
 						currentCell.setAlignment(Pos.CENTER);
 					}
 					String sound = row.getSound(k);
-					Label label = new Label();
-					PHOSYSCheck check = new PHOSYSCheck();
-					boolean addCheck = false;
+					Button button = new Button();
 					if (isEditable) {
 						if (sound.equals("#")) {
-							label = new Label(" ");
-							addCheck = false;
+							button = new Button(" ");
+							button.setDisable(true);
 						}
 						else if (sound.equals("*")) {
-							label = new Label(" ");
-							addCheck = false;
-						}
-						else if (ph.isIn(sound) == false) {
-							label = new Label(sound);
-							check = new PHOSYSCheck(sound);
-							check.setSelected(false);
-							addCheck = true;
+							button = new Button(" ");
+							button.setDisable(true);
 						} else {
-							label = new Label();
-							String labelData = "";
-							for (int l = 0; l < ph.getList().size(); l++) {
-								if (ph.getList().get(l).charAt(0) == row.getSound(k).charAt(0)) {
-									labelData += ph.getList().get(l) + " ";
-								}	
-							}
-							label.setText(labelData);
-							check = new PHOSYSCheck(sound);
-							check.setSelected(true);
-							addCheck = true;
+							button = new Button(sound);
+							button.setOnAction(new EventHandler<ActionEvent>() {
+
+								@Override
+								public void handle(ActionEvent event) {
+									String currentText = keyboardField.getText();
+									keyboardField.setText(currentText + sound);
+								}
+								
+							});
 						}
-						if (addCheck) {
-							this.checks.add(check);
-							currentCell.getChildren().addAll(label, check);
-						} else {
-							currentCell.getChildren().add(label);
-						}
+						currentCell.getChildren().addAll(button);
 					} else {
 						if (ph.isIn(sound) == false) {
-							label = new Label(" ");
+							button = new Button(" ");
+							button.setDisable(true);
+							currentCell.getChildren().add(button);
 						}
 						else if (sound.equals("#")) {
-							label = new Label(" ");
+							button = new Button(" ");
+							button.setDisable(true);
+							currentCell.getChildren().add(button);
 						}
 						else if (sound.equals("*")) {
-							label = new Label(" ");
+							button = new Button(" ");
+							button.setDisable(true);
+							currentCell.getChildren().add(button);
 						} else {
-							String labelData = "";
 							for (int l = 0; l < ph.getList().size(); l++) {
 								if (ph.getList().get(l).charAt(0) == row.getSound(k).charAt(0)) {
-									labelData += ph.getList().get(l) + " ";
+									String currentSound = ph.getList().get(l);
+									final Button button2 = new Button(currentSound); // would not compile using button
+									button2.setOnAction(new EventHandler<ActionEvent>() {
+									File langFile = file;
+										@Override
+										public void handle(ActionEvent event) {
+											ph.remove(currentSound);
+											lang.setPhono(ph);
+											try {
+												lang.toFile(langFile);
+											} catch (IOException e) {
+												e.printStackTrace();
+											}
+											button2.setText(" ");
+										}
+										
+									});
+									currentCell.getChildren().add(button2);
 								}	
 							}
-							label = new Label(labelData);
 						}
-						currentCell.getChildren().add(label);
+						
 					}
 				}
 				// should add last column
@@ -255,27 +278,35 @@ public class PHOSYSTable extends VBox {
 			}
 			this.getChildren().add(tablePane);
 		}
+		
+		GridPane diacriticTable = new GridPane();
+		int rowNum = 0;
+		ArrayList<String> diacriticList = ph.getPhonoSystem().getDiacritics();
+		for (int j = 0; j < ph.getPhonoSystem().getDiacritics().size(); j++) {
+			String diacritic = diacriticList.get(j);
+			if (isEditable) {
+				Button button = new Button(diacritic);
+				button.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						String currentText = keyboardField.getText();
+						keyboardField.setText(currentText + diacritic);
+					}						
+				});
+				diacriticTable.add(button, (j) % 10, rowNum);
+			} else {
+				Label label = new Label(diacritic);
+				label.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null , null)));
+				diacriticTable.add(label, (j) % 10, rowNum);
+			}
+			if ((j + 1) % 10 == 0) {
+				rowNum++;
+			}
+		}
+		
+		// TODO: make diacritic table look good on non-editables
 		if (isEditable) {
-			Button applyChanges = new Button("Apply Changes");
-			applyChanges.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0) {
-					ph.clear();
-					for (int i = 0; i < checks.size(); i++) {
-						if (checks.get(i).isSelected()) {
-							ph.add(checks.get(i).getSound());
-						}
-					}
-					lang.setPhono(ph);
-					try {
-						lang.toFile(file);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-	        });
-			this.getChildren().add(applyChanges);
+			this.getChildren().addAll(addBox, diacriticTable);
 		}
 	}
 	

@@ -20,7 +20,7 @@ public class SystemInfo {
     }
     
     public static String susquehannaVerNum() {
-    	return "0.0.2";
+    	return "0.0.3";
     }
     
     public static String susquehannaVerName() {
@@ -28,12 +28,12 @@ public class SystemInfo {
     }
     
     public static boolean isSnapshot() {
-    	return false;
+    	return true;
     }
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "23w02c";
+    		return "23w04a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}

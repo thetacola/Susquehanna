@@ -458,7 +458,7 @@ public class App extends Application {
         		leftPage.getChildren().clear();
         		if (selectedLanguage != Language.NULL) {
         			Label phonoLabel = new Label("Phonology");
-        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage);
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage, currentFile);
         			leftPage.getChildren().addAll(phonoLabel, testTable);
         		} else {
         			Label noLangViewPhono = new Label("Could not display phonology."
@@ -613,7 +613,7 @@ public class App extends Application {
         		
         		if (selectedLanguage != Language.NULL) {
         			Label phonoLabel = new Label("Phonology");
-        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage);
+        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage, currentFile);
         			leftPage.getChildren().clear();
         			leftPage.getChildren().addAll(phonoLabel, testTable);
         		} else {

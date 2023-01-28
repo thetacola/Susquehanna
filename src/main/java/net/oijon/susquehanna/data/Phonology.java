@@ -1,13 +1,10 @@
 package net.oijon.susquehanna.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//last edit: 1/8/23 -N3
+//last edit: 1/27/23 -N3
 
 public class Phonology {
 
@@ -93,6 +90,18 @@ public class Phonology {
 	public void add(String value) {
 		if (phonoSystem.isIn(value)) {
 			phonoList.add(value);
+		}
+	}
+	
+	/**
+	 * Removes a phoneme from the phonology
+	 * @param value The phoneme to be removed
+	 */
+	public void remove(String value) {
+		for (int i = 0; i < phonoList.size(); i++) {
+			if (value.equals(phonoList.get(i))) {
+				phonoList.remove(i);
+			}
 		}
 	}
 	
