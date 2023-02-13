@@ -18,11 +18,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import net.oijon.susquehanna.data.Language;
-import net.oijon.susquehanna.data.PhonoCategory;
-import net.oijon.susquehanna.data.PhonoSystem;
-import net.oijon.susquehanna.data.PhonoTable;
-import net.oijon.susquehanna.data.Phonology;
+import net.oijon.utils.parser.data.Language;
+import net.oijon.utils.parser.data.PhonoCategory;
+import net.oijon.utils.parser.data.PhonoSystem;
+import net.oijon.utils.parser.data.PhonoTable;
+import net.oijon.utils.parser.data.Phonology;
 
 //last edit: 1/6/2023 -N3
 

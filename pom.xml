@@ -25,6 +25,17 @@
 		    <artifactId>JColor</artifactId>
 		    <version>5.5.1</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.apache.opennlp</groupId>
+		    <artifactId>opennlp-tools</artifactId>
+		    <version>1.8.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.oijon/utils -->
+		<dependency>
+		    <groupId>net.oijon</groupId>
+		    <artifactId>utils</artifactId>
+		    <version>1.1.2</version>
+		</dependency>
     </dependencies>
     <build>
         <plugins>

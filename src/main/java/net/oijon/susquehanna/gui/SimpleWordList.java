@@ -9,22 +9,20 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import net.oijon.susquehanna.data.Language;
-import net.oijon.susquehanna.data.Lexicon;
-import net.oijon.susquehanna.data.Log;
-import net.oijon.susquehanna.data.Word;
+import net.oijon.utils.parser.data.Language;
+import net.oijon.utils.logger.Log;
+import net.oijon.utils.parser.data.Word;
 
 public class SimpleWordList extends ScrollPane {
 
 	public SimpleWordList(Language selectedLanguage, File currentFile) {
-		Log log = new Log(true);
+		Log log = new Log(System.getProperty("user.home") + "/Susquehanna", true);
 		VBox wordList = new VBox();
 		for (int i = 0; i < selectedLanguage.getLexicon().size(); i++) {
 			Word listword = selectedLanguage.getLexicon().getWord(i);

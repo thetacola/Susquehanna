@@ -1,7 +1,5 @@
 package net.oijon.susquehanna.gui;
 
-import java.io.File;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -12,8 +10,8 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import net.oijon.susquehanna.data.Language;
-import net.oijon.susquehanna.data.Word;
+import net.oijon.utils.parser.data.Language;
+import net.oijon.utils.parser.data.Word;
 
 public class DetailedWordList extends ScrollPane {
 	

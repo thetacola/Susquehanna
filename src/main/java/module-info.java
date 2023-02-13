@@ -3,5 +3,6 @@ module net.oijon.Susquehanna {
     requires transitive javafx.controls;
 	requires javafx.graphics;
 	requires JColor;
+	requires utils;
     exports net.oijon.susquehanna;
 }

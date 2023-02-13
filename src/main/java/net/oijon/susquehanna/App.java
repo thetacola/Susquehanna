@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,24 +21,19 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import net.oijon.susquehanna.data.Language;
-import net.oijon.susquehanna.data.Log;
-import net.oijon.susquehanna.data.PhonoSystem;
-import net.oijon.susquehanna.data.Phonology;
-import net.oijon.susquehanna.data.Word;
-import net.oijon.susquehanna.data.phosys.Parser;
+import net.oijon.utils.parser.data.Language;
+import net.oijon.utils.logger.Log;
+import net.oijon.utils.parser.data.PhonoSystem;
+import net.oijon.utils.parser.data.Word;
+import net.oijon.utils.parser.Parser;
 import net.oijon.susquehanna.gui.DetailedWordList;
 import net.oijon.susquehanna.gui.PHOSYSTable;
 import net.oijon.susquehanna.gui.SimpleWordList;
@@ -54,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-//last edit: 1/6/23 -N3
+//last edit: 2/13/23 -N3
 
 
 /**
@@ -64,7 +58,7 @@ import java.util.Properties;
  */
 public class App extends Application {
 	
-	static Log log = new Log();
+	static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
 	
 	// Shared resources, mainly backgrounds
 	static InputStream is = App.class.getResourceAsStream("/font/Denyut.ttf");
@@ -98,6 +92,11 @@ public class App extends Application {
 			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 			stretchToFit);
     Background paperBackground = new Background(paperImage);
+    
+    BackgroundImage padImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/pad-texture.png")),
+			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+			stretchToFit);
+    Background padBackground = new Background(padImage);
     
     BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/file-bar.png")),
     		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
@@ -138,6 +137,11 @@ public class App extends Application {
     BackgroundImage rightPapersBI = new BackgroundImage(rightPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
     		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
     Background rightPapersBG = new Background(rightPapersBI);
+    
+    Image rightPad = new Image(App.class.getResourceAsStream("/img/right-pad.png"));
+    BackgroundImage rightPadBI = new BackgroundImage(rightPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
+    		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
+    Background rightPadBG = new Background(rightPadBI);
     
     BackgroundImage brushedMetalImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/brushed-metal.png")),
     		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
@@ -263,8 +267,8 @@ public class App extends Application {
         javaVersionLabel.setFont(opensans);
         Label javaFXVersionLabel = new Label("Bundled with JavaFX " + System.getProperty("javafx.runtime.version") + ".");
         javaFXVersionLabel.setFont(opensans);
-        //Label algonquinVersionLabel = new Label("Bundled with AlgonquinTTS 0.3.1");
-        //algonquinVersionLabel.setFont(opensans);
+        Label utilsVersionLabel = new Label("Powered by " + SystemInfo.utilsVersion());
+        utilsVersionLabel.setFont(opensans);
         Label versionLabel = new Label("Version " + SystemInfo.susquehannaVersion());
         versionLabel.setFont(opensans);
         Image bannerLogo = new Image(App.class.getResourceAsStream("/img/icon.png"));
@@ -377,7 +381,7 @@ public class App extends Application {
     	t1.start();
     	
         //VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, algonquinVersionLabel, versionLabel);
-    	VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, versionLabel);
+    	VBox leftPage = new VBox(bannerLogoView, javaVersionLabel, javaFXVersionLabel, utilsVersionLabel, versionLabel);
         leftPage.setBackground(paperBackground);
         
         VBox binding = new VBox(bindingImage);
@@ -467,16 +471,6 @@ public class App extends Application {
         		}
         		
         		rightPage.getChildren().clear();
-        		if (selectedLanguage != Language.NULL) {
-        			Label phonoSystemLabel = new Label("Phonology System - " + selectedLanguage.getPhono().getPhonoSystem().getName());
-        			log.debug(selectedLanguage.toString());
-        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono().getPhonoSystem());
-        			rightPage.getChildren().addAll(phonoSystemLabel, testTable);
-        		} else {
-        			Label noLangViewPhono = new Label("Could not display phonology system."
-        					+ " Either no language is selected, or the phonology system is invalid.");
-        			rightPage.getChildren().addAll(noLangViewPhono);
-        		}
         	}
         });
         
@@ -590,6 +584,10 @@ public class App extends Application {
         fileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				leftPage.setBackground(paperBackground);
+				rightPapersVBox.getChildren().clear();
+				//rightPapersVBox.getChildren().add(rightPad);
+		        rightPapersVBox.setBackground(rightPadBG);
 				rootHBox.getChildren().clear();
         		leftPage.getChildren().clear();
         		rightPage.getChildren().clear();
@@ -605,6 +603,7 @@ public class App extends Application {
         phonologyButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
+        		leftPage.setBackground(padBackground);
         		ProgressBar loadingBar = new ProgressBar();
         		leftPage.getChildren().addAll(loadingBar);
         		
@@ -623,30 +622,17 @@ public class App extends Application {
         			leftPage.getChildren().addAll(noLangViewPhono);
         		}
         		
-        		if (selectedLanguage != Language.NULL) {
-        			Label phonoSystemLabel = new Label("Phonology System - " + selectedLanguage.getPhono().getPhonoSystem().getName());
-        			log.debug(selectedLanguage.toString());
-        			PHOSYSTable testTable = new PHOSYSTable(selectedLanguage.getPhono().getPhonoSystem());
-        			rightPage.getChildren().clear();
-        			log.debug("Adding tables...");
-        			rightPage.getChildren().addAll(phonoSystemLabel, testTable);
-        			log.debug("Tables added!");
-        		} else {
-        			Label noLangViewPhono = new Label("Could not display phonology system."
-        					+ " Either no language is selected, or the phonology system is invalid.");
-        			rightPage.getChildren().clear();
-        			rightPage.getChildren().addAll(noLangViewPhono);
-        		}
-        		
         		indicator.setImage(phonologyIndicator);
         		rightIndicator.setBackground(phonologyToolsBackground);
+        		rightPapersVBox.setBackground(rightPadBG);
         		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, phonologyTools, leftPapersVBox, leftPage, binding, rightPage, rightPapersVBox, rightIndicator, rightWoodVBox);
+				rootHBox.getChildren().addAll(navBox, phonologyTools, leftPapersVBox, leftPage, rightPapersVBox, rightIndicator, rightWoodVBox);
 			}
         });
         orthographyButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
+        		leftPage.setBackground(paperBackground);
         		rootHBox.getChildren().clear();
         		leftPage.getChildren().clear();
         		rightPage.getChildren().clear();
@@ -658,6 +644,7 @@ public class App extends Application {
         grammarButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
+        		leftPage.setBackground(paperBackground);
         		rootHBox.getChildren().clear();
         		leftPage.getChildren().clear();
         		rightPage.getChildren().clear();
@@ -669,6 +656,7 @@ public class App extends Application {
         lexiconButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
+        		leftPage.setBackground(paperBackground);
         		rootHBox.getChildren().clear();
         		leftPage.getChildren().clear();
         		rightPage.getChildren().clear();
@@ -692,6 +680,7 @@ public class App extends Application {
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
 			public void handle(ActionEvent event) {
+        		leftPage.setBackground(paperBackground);
         		rootHBox.getChildren().clear();
         		leftPage.getChildren().clear();
         		rightPage.getChildren().clear();

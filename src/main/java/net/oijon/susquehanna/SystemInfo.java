@@ -1,6 +1,6 @@
 package net.oijon.susquehanna;
 
-//last edit: 1/24/23 -N3
+//last edit: 2/13/23 -N3
 
 /**
  * Allows access to version numbers throughout the program.
@@ -33,14 +33,18 @@ public class SystemInfo {
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "23w04a";
+    		return "23w06a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
     }
     
-    public static String phosysVersion() {
-    	return "PHOSYS 0.0.2";
+    public static String utilsVersion() {
+    	return net.oijon.utils.info.Info.getVersion();
+    }
+    
+    public static String utilsVersionNum() {
+    	return net.oijon.utils.info.Info.getVersionNum();
     }
     
     public static String susquehannaVersion() {
