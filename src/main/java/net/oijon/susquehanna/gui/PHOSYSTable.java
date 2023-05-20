@@ -24,7 +24,6 @@ import net.oijon.utils.parser.data.PhonoSystem;
 import net.oijon.utils.parser.data.PhonoTable;
 import net.oijon.utils.parser.data.Phonology;
 
-//last edit: 1/6/2023 -N3
 
 /**
  * Creates a table from a PhonoSystem, allowing easy access in the GUI
@@ -36,6 +35,7 @@ public class PHOSYSTable extends VBox {
 	
 	private PhonoSystem ps;
 	private Phonology ph;
+	@SuppressWarnings("unused")
 	private File file;
 
 	public PHOSYSTable(PhonoSystem ps) {

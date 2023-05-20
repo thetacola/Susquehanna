@@ -19,7 +19,8 @@ import net.oijon.susquehanna.App;
 public class ToolButton extends Button {
 
 	/**
-	 * Constructs a button. Please use ToolButton.createActions(new ToolButton()) instead!
+	 * Constructs a button. 
+	 * Before ToolButton.createActions(new ToolButton()) instead!
 	 * @param name The text under the button
 	 */
 	public ToolButton(String name) {
@@ -33,8 +34,14 @@ public class ToolButton extends Button {
         this.setBackground(null);
         this.setTextAlignment(TextAlignment.CENTER);
         this.setTextFill(Color.WHITE);
+        createActions();
 	}
 	
+	/**
+	 * Gets the file name of the images from a button name
+	 * @param name The name of the button
+	 * @return The file name for the button
+	 */
 	private static String getFileName(String name) {
 		String fileName = "";
 		for (int i = 0; i < name.length(); i++) {
@@ -51,22 +58,30 @@ public class ToolButton extends Button {
 		return fileName;
 	}
 	
-	public static ToolButton createActions(ToolButton button) {
+	/**
+	 * Creates the button images for when pressed
+	 */
+	private void createActions() {
+		// only works because of pass-by-reference
+		// have to do this because otherwise the eventhandlers go
+		//
+		//  🥺  is for me?
+		// 👉👈
+		Button button = this;
 		final String fileName = "/img/" + getFileName(button.getText());
 		
 		button.setOnMousePressed(new EventHandler<MouseEvent>() {
 	       	@Override
 	       	public void handle(MouseEvent event) {
-	       		button.setGraphic(new ImageView(new Image(App.class.getResourceAsStream(fileName + "-pressed.png"))));
+	       		button.setGraphic(new ImageView(new Image(ToolButton.class.getResourceAsStream(fileName + "-pressed.png"))));
 	       	}
 	       });
 		button.setOnMouseReleased(new EventHandler<MouseEvent>() {
 	       	@Override
 	       	public void handle(MouseEvent event) {
-	       		button.setGraphic(new ImageView(new Image(App.class.getResourceAsStream(fileName + ".png"))));
+	       		button.setGraphic(new ImageView(new Image(ToolButton.class.getResourceAsStream(fileName + ".png"))));
 	     	}
 	    });
-		return button;
 	}
 	
 }

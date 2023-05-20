@@ -33,7 +33,7 @@ public class SystemInfo {
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "23w06a";
+    		return "23w20a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
@@ -56,14 +56,5 @@ public class SystemInfo {
     	}
     	return returnString;
     }
-
-	public static String getLogVersionNum() {
-		return "1.0.1";
-	}
-
-	public static String getLogVersion() {
-		// TODO Auto-generated method stub
-		return "Oijon Utils - v" + getLogVersionNum();
-	}
 
 }
