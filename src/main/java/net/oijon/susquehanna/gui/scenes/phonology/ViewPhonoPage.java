@@ -22,6 +22,9 @@ public class ViewPhonoPage extends Book {
 		}		
 	}
 
+	/**
+	 * Builds the book if the phonology is currently viewable
+	 */
 	private void buildViewable() {
 		clear();
 		
@@ -32,6 +35,9 @@ public class ViewPhonoPage extends Book {
 		addToLeft(table);
 	}
 	
+	/**
+	 * Builds the book if the phonology is not currently viewable
+	 */
 	private void buildNonViewable() {
 		clear();
 		
@@ -41,8 +47,12 @@ public class ViewPhonoPage extends Book {
 		addToLeft(noLangViewPhono);
 	}
 	
+	/**
+	 * Checks if the there is currently a selected language.
+	 * @return
+	 */
 	private boolean hasViewablePhono() {
-		if (App.getSelectedLang() == Language.NULL) {
+		if (App.getSelectedLang().equals(Language.NULL)) {
 			return false;
 		} else {
 			return true;

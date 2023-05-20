@@ -31,6 +31,7 @@ import javafx.stage.WindowEvent;
 import net.oijon.utils.parser.data.Language;
 import net.oijon.utils.logger.Log;
 import net.oijon.utils.parser.data.PhonoSystem;
+import net.oijon.susquehanna.gui.BinderTab;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
 import net.oijon.susquehanna.gui.scenes.BlankPage;
@@ -65,12 +66,12 @@ public class App extends Application {
 	static VBox languageSelect = new VBox();
 	//static TextArea languageList = new TextArea();
 	
-	BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
+	static BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
 	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
-	BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/wood-texture.png")),
+	static BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/wood-texture.png")),
 			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
 	        stretchToFit);
-	Background woodBackground = new Background(plankImage);
+	public static Background woodBackground = new Background(plankImage);
     Background background = new Background(backgroundFill);
     
     BackgroundImage bindingBackgroundImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/page-binding.png")),
@@ -193,41 +194,12 @@ public class App extends Application {
     	loadingBar.setProgress(3/6);
         //Navbox
     	
-    	Button fileButton = new Button();
-        ImageView fileButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/file-tab.png")));
-        fileButton.setGraphic(fileButtonImage);
-        fileButton.setPadding(Insets.EMPTY);
-        fileButton.setBackground(null);
-        
-        Button phonologyButton = new Button();
-        ImageView phonologyButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/phonology-tab.png")));
-        phonologyButton.setGraphic(phonologyButtonImage);
-        phonologyButton.setPadding(Insets.EMPTY);
-        phonologyButton.setBackground(null);
-        
-        Button orthographyButton = new Button();
-        ImageView orthographyButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/orthography-tab.png")));
-        orthographyButton.setGraphic(orthographyButtonImage);
-        orthographyButton.setPadding(Insets.EMPTY);
-        orthographyButton.setBackground(null);
-        
-        Button grammarButton = new Button();
-        ImageView grammarButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/grammar-tab.png")));
-        grammarButton.setGraphic(grammarButtonImage);
-        grammarButton.setPadding(Insets.EMPTY);
-        grammarButton.setBackground(null);
-        
-        Button lexiconButton = new Button();
-        ImageView lexiconButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/lexicon-tab.png")));
-        lexiconButton.setGraphic(lexiconButtonImage);
-        lexiconButton.setPadding(Insets.EMPTY);
-        lexiconButton.setBackground(null);
-        
-        Button settingsButton = new Button();
-        ImageView settingsButtonImage = new ImageView(new Image(App.class.getResourceAsStream("/img/settings-tab.png")));
-        settingsButton.setGraphic(settingsButtonImage);
-        settingsButton.setPadding(Insets.EMPTY);
-        settingsButton.setBackground(null);
+    	BinderTab fileButton = new BinderTab("file");
+    	BinderTab phonologyButton = new BinderTab("phonology");
+    	BinderTab orthographyButton = new BinderTab("orthography");
+    	BinderTab grammarButton = new BinderTab("grammar");
+    	BinderTab lexiconButton = new BinderTab("lexicon");
+    	BinderTab settingsButton = new BinderTab("settings");
         
         VBox navVBox = new VBox(fileButton, phonologyButton, orthographyButton, grammarButton, lexiconButton, settingsButton);
         //navVBox.setPrefHeight(screenBounds.getHeight());
@@ -246,12 +218,23 @@ public class App extends Application {
         loadingText.setText("Loading File...");
         loadingBar.setProgress(4/6);
     	//File
+        
+        // final because it won't compile otherwise :(
+    	// shouldn't affect the scuffed way I'm editing it though...
+    	final HBox mainBook = new HBox(new InfoPage());        
+    	mainBook.getChildren().clear();
+		InfoPage infoPage = new InfoPage();
+		mainBook.getChildren().add(infoPage);
+		mainBook.setHgrow(infoPage, Priority.ALWAYS);
+        
                 
         ToolButton addLanguage = new ToolButton("New\nLanguage");
-        
+        addLanguage.createTransferAction(mainBook, new AddLangPage());
         ToolButton openLanguage = new ToolButton("Open\nLanguage");
         
         ToolButton info = new ToolButton("Info");
+        
+        HBox mainToolbox = new HBox();
         
         Toolbox fileTools = new Toolbox(fileToolsBackground);
         
@@ -311,14 +294,6 @@ public class App extends Application {
     	t1.setDaemon(true);
     	t1.start();
     	
-    	// final because it won't compile otherwise :(
-    	// shouldn't affect the scuffed way I'm editing it though...
-    	final HBox mainBook = new HBox(new InfoPage());        
-    	mainBook.getChildren().clear();
-		InfoPage infoPage = new InfoPage();
-		mainBook.getChildren().add(infoPage);
-		mainBook.setHgrow(infoPage, Priority.ALWAYS);
-    	
         ImageView indicator = new ImageView(fileIndicator);
         VBox rightIndicator = new VBox(indicator);
         rightIndicator.setBackground(fileToolsBackground);
@@ -327,45 +302,17 @@ public class App extends Application {
         rightWoodVBox.setBackground(rightWoodBackground);
         
         
-        addLanguage.setOnAction(new EventHandler<ActionEvent>() {
-        	
-        	@Override
-        	public void handle(ActionEvent event) {
-        		mainBook.getChildren().clear();
-        		AddLangPage addLangPage = new AddLangPage();
-        		mainBook.getChildren().add(addLangPage);
-        		mainBook.setHgrow(addLangPage, Priority.ALWAYS);
-        	}
-        });
         
-        openLanguage.setOnAction(new EventHandler<ActionEvent>() {
-        	
-        	@Override
-        	public void handle(ActionEvent event) {
-        		mainBook.getChildren().clear();
-        		OpenLangPage openLangPage = new OpenLangPage();
-        		mainBook.getChildren().add(openLangPage);
-        		mainBook.setHgrow(openLangPage, Priority.ALWAYS);
-        	}
-        });
-        
-        info.setOnAction(new EventHandler<ActionEvent>() {
-        	
-        	@Override
-        	public void handle(ActionEvent event) {
-        		mainBook.getChildren().clear();
-        		InfoPage infoPage = new InfoPage();
-        		mainBook.getChildren().add(infoPage);
-        		mainBook.setHgrow(infoPage, Priority.ALWAYS);
-        	}
-        });
+        openLanguage.createTransferAction(mainBook, new OpenLangPage());
+        info.createTransferAction(mainBook, new InfoPage());
         
         fileTools.getChildren().addAll(addLanguage, openLanguage, info);
+        mainToolbox.getChildren().add(fileTools);
         
         loadingText.setText("Loading root...");
         loadingBar.setProgress(5/6);
         //Root
-        HBox rootHBox = new HBox(navBox, fileTools, mainBook, rightIndicator, rightWoodVBox);
+        HBox rootHBox = new HBox(navBox, mainToolbox, mainBook, rightIndicator, rightWoodVBox);
         
         rootHBox.setAlignment(Pos.TOP_LEFT);
         rootHBox.setHgrow(mainBook, Priority.ALWAYS);
@@ -378,55 +325,21 @@ public class App extends Application {
         //Phonology
         
         ToolButton viewPhonology = new ToolButton("View\nPhonology");
-        viewPhonology.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(ActionEvent event) {
-        		mainBook.getChildren().clear();
-        		ViewPhonoPage viewPhonoPage = new ViewPhonoPage();
-        		mainBook.getChildren().add(viewPhonoPage);
-        		mainBook.setHgrow(viewPhonoPage, Priority.ALWAYS);
-        	}
-        });
+        viewPhonology.createTransferAction(mainBook, new ViewPhonoPage());
         
         
         ToolButton editPhonemes = new ToolButton("Edit\nPhonology");
-        editPhonemes.setOnAction(new EventHandler<ActionEvent>() {
-
-        	public void handle(ActionEvent event) {
-        		mainBook.getChildren().clear();
-        		EditPhonoPage editPhonoPage = new EditPhonoPage();
-        		mainBook.getChildren().add(editPhonoPage);
-        		mainBook.setHgrow(editPhonoPage, Priority.ALWAYS);
-        	}
-        	
-        });
+        editPhonemes.createTransferAction(mainBook, new EditPhonoPage());
+        
         ToolButton phonotactics = new ToolButton("Phonotactics");
         phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
         
         //Lexicon
         ToolButton viewWords = new ToolButton("View Words");
-        viewWords.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(ActionEvent event) {
-        		mainBook.getChildren().clear();
-        		ViewWordsPage viewWordsPage = new ViewWordsPage();
-        		mainBook.getChildren().add(viewWordsPage);
-        		mainBook.setHgrow(viewWordsPage, Priority.ALWAYS);
-        	}
-        });
+        viewWords.createTransferAction(mainBook, new ViewWordsPage());
         
         ToolButton editWords = new ToolButton("Edit Words");
-        editWords.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				mainBook.getChildren().clear();
-        		EditWordsPage editWordsPage = new EditWordsPage();
-        		mainBook.getChildren().add(editWordsPage);
-        		mainBook.setHgrow(editWordsPage, Priority.ALWAYS);
-			}
-        	
-        });
+        editWords.createTransferAction(mainBook, new EditWordsPage());
 
         
         lexiconTools.getChildren().addAll(viewWords, editWords);
@@ -434,92 +347,13 @@ public class App extends Application {
         //TODO: Enable/disable debug logging in settings
         
         //Navbox actions
-        fileButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				rootHBox.getChildren().clear();
-				mainBook.getChildren().clear();
-        		InfoPage infoPage = new InfoPage();
-        		mainBook.getChildren().add(infoPage);
-        		mainBook.setHgrow(infoPage, Priority.ALWAYS);
-        		indicator.setImage(fileIndicator);
-        		rightIndicator.setBackground(fileToolsBackground);
-        		rootHBox.getChildren().addAll(navBox, fileTools, mainBook, rightIndicator, rightWoodVBox);
-			}
-        });
         
-        phonologyButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-			public void handle(ActionEvent event) {
-        		rootHBox.getChildren().clear();
-        		mainBook.getChildren().clear();
-        		ViewPhonoPage viewPhonoPage = new ViewPhonoPage();
-        		mainBook.getChildren().add(viewPhonoPage);
-        		mainBook.setHgrow(viewPhonoPage, Priority.ALWAYS);
-        		
-        		indicator.setImage(phonologyIndicator);
-        		rightIndicator.setBackground(phonologyToolsBackground);
-        		rootHBox.getChildren().clear();
-				rootHBox.getChildren().addAll(navBox, phonologyTools, mainBook, rightIndicator, rightWoodVBox);
-			}
-        });
-        orthographyButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-			public void handle(ActionEvent event) {
-        		rootHBox.getChildren().clear();
-        		mainBook.getChildren().clear();
-        		BlankPage blankPage = new BlankPage();
-        		mainBook.getChildren().add(blankPage);
-        		mainBook.setHgrow(blankPage, Priority.ALWAYS);
-        		
-        		indicator.setImage(orthographyIndicator);
-        		rightIndicator.setBackground(orthographyToolsBackground);
-        		rootHBox.getChildren().addAll(navBox, orthographyTools, mainBook, rightIndicator, rightWoodVBox);
-			}
-        });
-        grammarButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-			public void handle(ActionEvent event) {
-        		rootHBox.getChildren().clear();
-        		mainBook.getChildren().clear();
-        		BlankPage blankPage = new BlankPage();
-        		mainBook.getChildren().add(blankPage);
-        		mainBook.setHgrow(blankPage, Priority.ALWAYS);
-        		
-        		indicator.setImage(grammarIndicator);
-        		rightIndicator.setBackground(grammarToolsBackground);
-        		rootHBox.getChildren().addAll(navBox, grammarTools, mainBook, rightIndicator, rightWoodVBox);
-			}
-        });
-        lexiconButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-			public void handle(ActionEvent event) {
-        		rootHBox.getChildren().clear();
-        		mainBook.getChildren().clear();
-        		ViewWordsPage viewWordsPage = new ViewWordsPage();
-        		mainBook.getChildren().add(viewWordsPage);
-        		mainBook.setHgrow(viewWordsPage, Priority.ALWAYS);
-
-        		indicator.setImage(lexiconIndicator);
-        		rightIndicator.setBackground(lexiconToolsBackground);
-        		rootHBox.getChildren().addAll(navBox, lexiconTools, mainBook, rightIndicator, rightWoodVBox);
-        	}
-        });
-        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-			public void handle(ActionEvent event) {
-        		rootHBox.getChildren().clear();
-        		mainBook.getChildren().clear();
-        		BlankPage blankPage = new BlankPage();
-        		mainBook.getChildren().add(blankPage);
-        		mainBook.setHgrow(blankPage, Priority.ALWAYS);
-        		
-        		indicator.setImage(settingsIndicator);
-        		rightIndicator.setBackground(settingsToolsBackground);
-        		rootHBox.getChildren().addAll(navBox, settingsTools, mainBook, rightIndicator, rightWoodVBox);
-			}
-        });
-        
+        fileButton.createTransferAction(mainBook, new InfoPage(), mainToolbox, fileTools, indicator, rightIndicator);
+        phonologyButton.createTransferAction(mainBook, new ViewPhonoPage(), mainToolbox, phonologyTools, indicator, rightIndicator);
+        orthographyButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, orthographyTools, indicator, rightIndicator);
+        grammarButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, grammarTools, indicator, rightIndicator);
+        lexiconButton.createTransferAction(mainBook, new ViewWordsPage(), mainToolbox, lexiconTools, indicator, rightIndicator);
+        settingsButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, settingsTools, indicator, rightIndicator);
         
         stage.setScene(root);
         stage.setMaximized(true);
@@ -539,22 +373,46 @@ public class App extends Application {
         log.info("Started!");
     }
 
+    /**
+     * Sets the currently selected language to Language.NULL
+     */
     public static void setSelectedLangNull() {
     	selectedLanguage = Language.NULL;
     	currentFile = null;
     }
     
+    /**
+     * Sets a new selected language
+     * @param l The language to be selected
+     * @param f The file of the newly-selected language
+     */
     public static void setSelectedLang(Language l, File f) {
     	selectedLanguage = l;
     	currentFile = f;
     } 
     
+    /**
+     * Gets the currently selected language
+     * @return The currently selected language
+     */
     public static Language getSelectedLang() {
     	return selectedLanguage;
     }
     
+    /**
+     * Gets the file connected to the selected language
+     * @return The file connected to the selected language
+     */
     public static File getCurrentFile() {
     	return currentFile;
+    }
+    
+    /**
+     * Gets the currently used log.
+     * @return The log being used
+     */
+    public Log getLog() {
+    	return log;
     }
     
     public static void main(String[] args) {

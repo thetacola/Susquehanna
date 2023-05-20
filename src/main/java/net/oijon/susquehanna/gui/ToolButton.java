@@ -1,5 +1,6 @@
 package net.oijon.susquehanna.gui;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,9 +8,13 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.scenes.file.OpenLangPage;
 
 /**
  * Creates a button designed to work with the Toolbox
@@ -28,13 +33,31 @@ public class ToolButton extends Button {
 		fileName += getFileName(name);
 		fileName += ".png";
 		this.setText(name);
-		this.setGraphic(new ImageView(new Image(App.class.getResourceAsStream(fileName))));
+		this.setGraphic(new ImageView(new Image(ToolButton.class.getResourceAsStream(fileName))));
 		this.setPadding(Insets.EMPTY);
         this.setContentDisplay(ContentDisplay.TOP);
         this.setBackground(null);
         this.setTextAlignment(TextAlignment.CENTER);
         this.setTextFill(Color.WHITE);
         createActions();
+	}
+	/**
+	 * Crea
+	 * @param container
+	 * @param book
+	 */
+	@SuppressWarnings("static-access")
+	public void createTransferAction(HBox container, Book book) {
+		this.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	@Override
+        	public void handle(ActionEvent event) {
+        		container.getChildren().clear();
+        		container.getChildren().add(book);
+        		container.setHgrow(book, Priority.ALWAYS);
+        		book.refresh();
+        	}
+        });
 	}
 	
 	/**
