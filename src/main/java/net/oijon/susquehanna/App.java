@@ -12,18 +12,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.oijon.utils.parser.data.Language;
@@ -32,6 +24,7 @@ import net.oijon.utils.parser.data.PhonoSystem;
 import net.oijon.susquehanna.gui.BinderTab;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
+import net.oijon.susquehanna.gui.resources.Backgrounds;
 import net.oijon.susquehanna.gui.scenes.BlankPage;
 import net.oijon.susquehanna.gui.scenes.file.AddLangPage;
 import net.oijon.susquehanna.gui.scenes.file.InfoPage;
@@ -44,9 +37,8 @@ import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 
 import java.io.File;
-import java.io.InputStream;
 
-//last edit: 5/24/23 -N3
+//last edit: 5/26/23 -N3
 
 
 /**
@@ -59,82 +51,10 @@ public class App extends Application {
 	static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
 	
 	// Shared resources, mainly backgrounds
-	static InputStream is = App.class.getResourceAsStream("/font/Denyut.ttf");
-	static Font denyut20 = Font.loadFont(is, 20);
-	static InputStream is2 = App.class.getResourceAsStream("/font/OpenSans-Regular.ttf");
-	static Font opensans = Font.loadFont(is2, 16);
 	static VBox languageSelect = new VBox();
 	//static TextArea languageList = new TextArea();
-	
-	static BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
-	BackgroundFill backgroundFill = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
-	static BackgroundImage plankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/wood-texture.png")),
-			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	        stretchToFit);
-	public static Background woodBackground = new Background(plankImage);
-    Background background = new Background(backgroundFill);
-    
-    BackgroundImage bindingBackgroundImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/page-binding.png")),
-			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	        BackgroundSize.DEFAULT);
-    Background bindingBackground = new Background(bindingBackgroundImage);
     ImageView bindingImage = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
-    
-    BackgroundImage rightPlankImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/right-wood.png")),
-			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	        BackgroundSize.DEFAULT);
-	Background rightWoodBackground = new Background(rightPlankImage);
 	ImageView rightWood = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
-	
-    BackgroundImage paperImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/paper-texture.png")),
-			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-			stretchToFit);
-    Background paperBackground = new Background(paperImage);
-    
-    BackgroundImage padImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/pad-texture.png")),
-			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-			stretchToFit);
-    Background padBackground = new Background(padImage);
-    
-    BackgroundImage fileBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/file-bar.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background fileToolsBackground = new Background(fileBarImage);
-    
-    BackgroundImage phonologyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/phonology-bar.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background phonologyToolsBackground = new Background(phonologyBarImage);
-    
-    BackgroundImage orthographyBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/orthography-bar.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background orthographyToolsBackground = new Background(orthographyBarImage);
-    
-    BackgroundImage grammarBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/grammar-bar.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background grammarToolsBackground = new Background(grammarBarImage);
-    
-    BackgroundImage lexiconBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/lexicon-bar.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background lexiconToolsBackground = new Background(lexiconBarImage);
-    
-    BackgroundImage settingsBarImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/settings-bar.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background settingsToolsBackground = new Background(settingsBarImage);
-    
-    Image rightPad = new Image(App.class.getResourceAsStream("/img/right-pad.png"));
-    BackgroundImage rightPadBI = new BackgroundImage(rightPad, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
-    		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
-    Background rightPadBG = new Background(rightPadBI);
-    
-    BackgroundImage brushedMetalImage = new BackgroundImage(new Image(App.class.getResourceAsStream("/img/brushed-metal.png")),
-    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-	          	BackgroundSize.DEFAULT);
-    Background brushedMetal = new Background(brushedMetalImage);
 
     Image fileIndicator = new Image(App.class.getResourceAsStream("/img/file-bar.png"));
     Image phonologyIndicator = new Image(App.class.getResourceAsStream("/img/phonology-bar.png"));
@@ -160,7 +80,7 @@ public class App extends Application {
     	Label loadingText = new Label("Starting loading screen...");
     	loadingText.setTextFill(Color.WHITE);
     	VBox loadingVBox = new VBox(loadingText, loadingBar);
-    	loadingVBox.setBackground(background);
+    	loadingVBox.setBackground(Backgrounds.DEFAULT);
     	loadingVBox.setAlignment(Pos.CENTER);
     	Scene loadingScene = new Scene(loadingVBox);
     	loadingStage.setScene(loadingScene);
@@ -203,14 +123,14 @@ public class App extends Application {
         
         VBox navVBox = new VBox(fileButton, phonologyButton, orthographyButton, grammarButton, lexiconButton, settingsButton);
         //navVBox.setPrefHeight(screenBounds.getHeight());
-        navVBox.setBackground(woodBackground);
+        navVBox.setBackground(Backgrounds.WOOD);
         ScrollPane navBox = new ScrollPane();
         navBox.setContent(navVBox);
         navBox.setBorder(null);
         navBox.setPannable(true);
         navBox.setVbarPolicy(ScrollBarPolicy.NEVER);
         navBox.setHbarPolicy(ScrollBarPolicy.NEVER);
-        navBox.setBackground(woodBackground);
+        navBox.setBackground(Backgrounds.WOOD);
         navBox.setFitToHeight(true);
         navBox.setFitToWidth(true);
         navBox.setPadding(new Insets(0, 0, 0, 10));
@@ -239,17 +159,17 @@ public class App extends Application {
         
         HBox mainToolbox = new HBox();
         
-        Toolbox fileTools = new Toolbox(fileToolsBackground);
+        Toolbox fileTools = new Toolbox(Backgrounds.FILETOOLS);
         
-        Toolbox phonologyTools = new Toolbox(phonologyToolsBackground);
+        Toolbox phonologyTools = new Toolbox(Backgrounds.PHONOLOGYTOOLS);
         
-        Toolbox orthographyTools = new Toolbox(orthographyToolsBackground);
+        Toolbox orthographyTools = new Toolbox(Backgrounds.ORTHOGRAPHYTOOLS);
         
-        Toolbox grammarTools = new Toolbox(grammarToolsBackground);
+        Toolbox grammarTools = new Toolbox(Backgrounds.GRAMMARTOOLS);
         
-        Toolbox lexiconTools = new Toolbox(lexiconToolsBackground);
+        Toolbox lexiconTools = new Toolbox(Backgrounds.LEXICONTOOLS);
         
-        Toolbox settingsTools = new Toolbox(settingsToolsBackground);
+        Toolbox settingsTools = new Toolbox(Backgrounds.SETTINGSTOOLS);
         
       //Selection thread
     	Thread t1 = new Thread(new Runnable() {
@@ -299,10 +219,10 @@ public class App extends Application {
     	
         ImageView indicator = new ImageView(fileIndicator);
         VBox rightIndicator = new VBox(indicator);
-        rightIndicator.setBackground(fileToolsBackground);
+        rightIndicator.setBackground(Backgrounds.FILETOOLS);
         
         VBox rightWoodVBox = new VBox(rightWood);
-        rightWoodVBox.setBackground(rightWoodBackground);
+        rightWoodVBox.setBackground(Backgrounds.RIGHTWOOD);
         
         
         
@@ -320,7 +240,7 @@ public class App extends Application {
         rootHBox.setAlignment(Pos.TOP_LEFT);
         rootHBox.setHgrow(mainBook, Priority.ALWAYS);
         
-        rootHBox.setBackground(woodBackground);
+        rootHBox.setBackground(Backgrounds.WOOD);
         Scene root = new Scene(rootHBox);
         
         loadingText.setText("Loading Phonology...");

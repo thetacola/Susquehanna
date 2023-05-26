@@ -54,6 +54,7 @@ public class EditWordsPage extends Book {
 		addToLeft(wordInput);
 		addToLeft(meaningLabel);
 		addToLeft(meaningInput);
+		addToLeft(addWord);
 		
 		addToRight(wordScroll);
 	}

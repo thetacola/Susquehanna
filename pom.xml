@@ -39,7 +39,7 @@
 		<dependency>
 		    <groupId>net.oijon</groupId>
 		    <artifactId>utils</artifactId>
-		    <version>1.2.3</version>
+		    <version>1.2.2</version>
 		</dependency>
     </dependencies>
     <build>
