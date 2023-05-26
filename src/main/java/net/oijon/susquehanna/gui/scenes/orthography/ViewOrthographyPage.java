@@ -1,0 +1,100 @@
+package net.oijon.susquehanna.gui.scenes.orthography;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.utils.parser.data.Language;
+
+public class ViewOrthographyPage extends Book {
+
+	public ViewOrthographyPage() {
+		super();
+		
+		
+		this.leftPage.setAlignment(Pos.CENTER);
+		
+		// ortho guess
+		Label orthoGuessLabel = new Label("Convert to Orthography");
+		
+		VBox orthoGuessInputContainer = new VBox();
+		Label orthoGuessInputLabel = new Label("Insert Phonemes Here");
+		TextField orthoGuessInputField = new TextField();
+		orthoGuessInputContainer.getChildren().addAll(orthoGuessInputLabel, orthoGuessInputField);
+		
+		VBox orthoGuessOutputContainer = new VBox();
+		Label orthoGuessOutputLabel = new Label("Results will appear here");
+		TextField orthoGuessOutputField = new TextField();
+		orthoGuessOutputField.setEditable(false);
+		orthoGuessOutputContainer.getChildren().addAll(orthoGuessOutputLabel, orthoGuessOutputField);
+		
+		HBox orthoGuessFields = new HBox();
+		orthoGuessFields.setAlignment(Pos.CENTER);
+		orthoGuessFields.getChildren().addAll(orthoGuessInputContainer, orthoGuessOutputContainer);
+		
+		VBox orthoGuessContainer = new VBox();
+		orthoGuessContainer.setAlignment(Pos.CENTER);
+		Button orthoGuessButton = new Button("Guess Orthography");
+		orthoGuessButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Language selectedLang = App.getSelectedLang();
+				String output = selectedLang.getOrtho().orthoGuess(orthoGuessInputField.getText());
+				orthoGuessOutputField.setText(output);
+			}
+			
+		});
+		orthoGuessContainer.getChildren().addAll(orthoGuessLabel, orthoGuessFields, orthoGuessButton);
+		
+		//phono guess
+		Label phonoGuessLabel = new Label("Convert to Phonology");
+		
+		VBox phonoGuessInputContainer = new VBox();
+		Label phonoGuessInputLabel = new Label("Insert Text Here");
+		TextField phonoGuessInputField = new TextField();
+		phonoGuessInputContainer.getChildren().addAll(phonoGuessInputLabel, phonoGuessInputField);
+		
+		VBox phonoGuessOutputContainer = new VBox();
+		Label phonoGuessOutputLabel = new Label("Results will appear here");
+		TextField phonoGuessOutputField = new TextField();
+		phonoGuessOutputField.setEditable(false);
+		phonoGuessOutputContainer.getChildren().addAll(phonoGuessOutputLabel, phonoGuessOutputField);
+		
+		HBox phonoGuessFields = new HBox();
+		phonoGuessFields.setAlignment(Pos.CENTER);
+		phonoGuessFields.getChildren().addAll(phonoGuessInputContainer, phonoGuessOutputContainer);
+		
+		VBox phonoGuessContainer = new VBox();
+		phonoGuessContainer.setAlignment(Pos.CENTER);
+		Button phonoGuessButton = new Button("Guess Phonemes");
+		phonoGuessButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Language selectedLang = App.getSelectedLang();
+				String output = selectedLang.getOrtho().phonoGuess(phonoGuessInputField.getText());
+				phonoGuessOutputField.setText(output);
+			}
+			
+		});
+		phonoGuessContainer.getChildren().addAll(phonoGuessLabel, phonoGuessFields, phonoGuessButton);
+		
+		
+		addToLeft(orthoGuessContainer);
+		addToLeft(phonoGuessContainer);
+		
+	}
+	
+	@Override
+	public void refresh() {
+		
+	}
+
+}

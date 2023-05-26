@@ -16,6 +16,11 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>13</version>
         </dependency>
@@ -34,7 +39,7 @@
 		<dependency>
 		    <groupId>net.oijon</groupId>
 		    <artifactId>utils</artifactId>
-		    <version>1.2.0</version>
+		    <version>1.2.3</version>
 		</dependency>
     </dependencies>
     <build>

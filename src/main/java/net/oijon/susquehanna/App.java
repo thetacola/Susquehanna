@@ -2,12 +2,10 @@ package net.oijon.susquehanna;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
@@ -38,15 +36,17 @@ import net.oijon.susquehanna.gui.scenes.BlankPage;
 import net.oijon.susquehanna.gui.scenes.file.AddLangPage;
 import net.oijon.susquehanna.gui.scenes.file.InfoPage;
 import net.oijon.susquehanna.gui.scenes.file.OpenLangPage;
+import net.oijon.susquehanna.gui.scenes.file.ReportBugPage;
 import net.oijon.susquehanna.gui.scenes.lexicon.EditWordsPage;
 import net.oijon.susquehanna.gui.scenes.lexicon.ViewWordsPage;
+import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 
 import java.io.File;
 import java.io.InputStream;
 
-//last edit: 2/13/23 -N3
+//last edit: 5/24/23 -N3
 
 
 /**
@@ -231,6 +231,9 @@ public class App extends Application {
         ToolButton addLanguage = new ToolButton("New\nLanguage");
         addLanguage.createTransferAction(mainBook, new AddLangPage());
         ToolButton openLanguage = new ToolButton("Open\nLanguage");
+        ToolButton reportBug = new ToolButton("Report Bug");
+        reportBug.createTransferAction(mainBook, new ReportBugPage());
+        
         
         ToolButton info = new ToolButton("Info");
         
@@ -306,7 +309,7 @@ public class App extends Application {
         openLanguage.createTransferAction(mainBook, new OpenLangPage());
         info.createTransferAction(mainBook, new InfoPage());
         
-        fileTools.getChildren().addAll(addLanguage, openLanguage, info);
+        fileTools.getChildren().addAll(addLanguage, openLanguage, info, reportBug);
         mainToolbox.getChildren().add(fileTools);
         
         loadingText.setText("Loading root...");
@@ -350,7 +353,7 @@ public class App extends Application {
         
         fileButton.createTransferAction(mainBook, new InfoPage(), mainToolbox, fileTools, indicator, rightIndicator);
         phonologyButton.createTransferAction(mainBook, new ViewPhonoPage(), mainToolbox, phonologyTools, indicator, rightIndicator);
-        orthographyButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, orthographyTools, indicator, rightIndicator);
+        orthographyButton.createTransferAction(mainBook, new ViewOrthographyPage(), mainToolbox, orthographyTools, indicator, rightIndicator);
         grammarButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, grammarTools, indicator, rightIndicator);
         lexiconButton.createTransferAction(mainBook, new ViewWordsPage(), mainToolbox, lexiconTools, indicator, rightIndicator);
         settingsButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, settingsTools, indicator, rightIndicator);

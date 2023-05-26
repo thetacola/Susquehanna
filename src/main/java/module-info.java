@@ -4,5 +4,6 @@ module net.oijon.Susquehanna {
 	requires javafx.graphics;
 	requires JColor;
 	requires transitive utils;
+	requires javafx.web;
     exports net.oijon.susquehanna;
 }
