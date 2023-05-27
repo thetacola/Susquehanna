@@ -3,12 +3,12 @@ package net.oijon.susquehanna.gui.scenes.file;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.SystemInfo;
 import net.oijon.susquehanna.gui.scenes.Book;
 
 public class InfoPage extends Book {
 
+	
 	public InfoPage() {
 		super();
 		Label javaVersionLabel = new Label("Running on Java " + System.getProperty("java.version") + ".");
@@ -19,21 +19,19 @@ public class InfoPage extends Book {
         utilsVersionLabel.setFont(opensans);
         Label versionLabel = new Label("Version " + SystemInfo.susquehannaVersion());
         versionLabel.setFont(opensans);
-        Image bannerLogo = new Image(App.class.getResourceAsStream("/img/icon.png"));
-        ImageView bannerLogoView = new ImageView(bannerLogo);
+        ImageView logo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/icon.png")));
+        ImageView oijonLogo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/oijon.png")));
         
         Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
         madeByOijon.setFont(opensans);
-        Image oijonLogo = new Image(App.class.getResourceAsStream("/img/oijon.png"));
-        ImageView oijonView = new ImageView(oijonLogo);
         
-        addToLeft(bannerLogoView);
+        addToLeft(logo);
         addToLeft(javaVersionLabel);
         addToLeft(javaFXVersionLabel);
         addToLeft(utilsVersionLabel);
         addToLeft(versionLabel);
         
-        addToRight(oijonView);
+        addToRight(oijonLogo);
         addToRight(madeByOijon);
 	}
 

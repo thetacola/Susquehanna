@@ -2,6 +2,7 @@ package net.oijon.susquehanna.gui.scenes.orthography;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.utils.parser.data.Language;
 
@@ -22,6 +24,7 @@ public class ViewOrthographyPage extends Book {
 		
 		// ortho guess
 		Label orthoGuessLabel = new Label("Convert to Orthography");
+		orthoGuessLabel.setFont(Fonts.OPENSANS_BOLD);
 		
 		VBox orthoGuessInputContainer = new VBox();
 		Label orthoGuessInputLabel = new Label("Insert Phonemes Here");
@@ -51,10 +54,12 @@ public class ViewOrthographyPage extends Book {
 			}
 			
 		});
+		orthoGuessContainer.setPadding(new Insets(10, 10, 10, 10));
 		orthoGuessContainer.getChildren().addAll(orthoGuessLabel, orthoGuessFields, orthoGuessButton);
 		
 		//phono guess
 		Label phonoGuessLabel = new Label("Convert to Phonology");
+		phonoGuessLabel.setFont(Fonts.OPENSANS_BOLD);
 		
 		VBox phonoGuessInputContainer = new VBox();
 		Label phonoGuessInputLabel = new Label("Insert Text Here");
@@ -84,6 +89,7 @@ public class ViewOrthographyPage extends Book {
 			}
 			
 		});
+		phonoGuessContainer.setPadding(new Insets(10, 10, 10, 10));
 		phonoGuessContainer.getChildren().addAll(phonoGuessLabel, phonoGuessFields, phonoGuessButton);
 		
 		

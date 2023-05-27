@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -18,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import net.oijon.susquehanna.gui.resources.Backgrounds;
 import net.oijon.utils.parser.data.Language;
 import net.oijon.utils.parser.data.PhonoCategory;
 import net.oijon.utils.parser.data.PhonoSystem;
@@ -122,7 +124,10 @@ public class PHOSYSTable extends VBox {
 				// should add last column
 				tablePane.add(currentCell, (row.size() / dataPerCell), j + 1);
 			}
-			this.getChildren().add(tablePane);
+			ScrollPane scrollTable = new ScrollPane();
+			scrollTable.setContent(tablePane);
+			scrollTable.setBackground(Backgrounds.PAPER);
+			this.getChildren().add(scrollTable);
 		}
 		
 	}
@@ -276,7 +281,10 @@ public class PHOSYSTable extends VBox {
 				// should add last column
 				tablePane.add(currentCell, (row.size() / dataPerCell), j + 1);
 			}
-			this.getChildren().add(tablePane);
+			ScrollPane scrollTable = new ScrollPane();
+			scrollTable.setContent(tablePane);
+			scrollTable.setBackground(Backgrounds.PAPER);
+			this.getChildren().add(scrollTable);
 		}
 		
 		GridPane diacriticTable = new GridPane();

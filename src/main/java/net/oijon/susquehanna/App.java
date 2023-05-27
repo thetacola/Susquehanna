@@ -25,6 +25,7 @@ import net.oijon.susquehanna.gui.BinderTab;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
 import net.oijon.susquehanna.gui.resources.Backgrounds;
+import net.oijon.susquehanna.gui.resources.Indicator;
 import net.oijon.susquehanna.gui.scenes.BlankPage;
 import net.oijon.susquehanna.gui.scenes.file.AddLangPage;
 import net.oijon.susquehanna.gui.scenes.file.InfoPage;
@@ -49,22 +50,12 @@ import java.io.File;
 public class App extends Application {
 	
 	static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
-	
-	// Shared resources, mainly backgrounds
 	static VBox languageSelect = new VBox();
-	//static TextArea languageList = new TextArea();
-    ImageView bindingImage = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
-	ImageView rightWood = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
-
-    Image fileIndicator = new Image(App.class.getResourceAsStream("/img/file-bar.png"));
-    Image phonologyIndicator = new Image(App.class.getResourceAsStream("/img/phonology-bar.png"));
-    Image orthographyIndicator = new Image(App.class.getResourceAsStream("/img/orthography-bar.png"));
-    Image grammarIndicator = new Image(App.class.getResourceAsStream("/img/grammar-bar.png"));
-    Image lexiconIndicator = new Image(App.class.getResourceAsStream("/img/lexicon-bar.png"));
-    Image settingsIndicator = new Image(App.class.getResourceAsStream("/img/settings-bar.png"));
-    
+	//static TextArea languageList = new TextArea();    
     static Language selectedLanguage = Language.NULL;
     static File currentFile;
+    static ImageView BINDING = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
+	static ImageView RIGHTWOOD = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
     
     @SuppressWarnings("static-access") // Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
@@ -146,29 +137,16 @@ public class App extends Application {
 		InfoPage infoPage = new InfoPage();
 		mainBook.getChildren().add(infoPage);
 		mainBook.setHgrow(infoPage, Priority.ALWAYS);
-        
-                
-        ToolButton addLanguage = new ToolButton("New\nLanguage");
-        addLanguage.createTransferAction(mainBook, new AddLangPage());
-        ToolButton openLanguage = new ToolButton("Open\nLanguage");
-        ToolButton reportBug = new ToolButton("Report Bug");
-        reportBug.createTransferAction(mainBook, new ReportBugPage());
-        
-        
-        ToolButton info = new ToolButton("Info");
+
         
         HBox mainToolbox = new HBox();
         
+        // define toolboxes
         Toolbox fileTools = new Toolbox(Backgrounds.FILETOOLS);
-        
         Toolbox phonologyTools = new Toolbox(Backgrounds.PHONOLOGYTOOLS);
-        
         Toolbox orthographyTools = new Toolbox(Backgrounds.ORTHOGRAPHYTOOLS);
-        
         Toolbox grammarTools = new Toolbox(Backgrounds.GRAMMARTOOLS);
-        
         Toolbox lexiconTools = new Toolbox(Backgrounds.LEXICONTOOLS);
-        
         Toolbox settingsTools = new Toolbox(Backgrounds.SETTINGSTOOLS);
         
       //Selection thread
@@ -217,19 +195,16 @@ public class App extends Application {
     	t1.setDaemon(true);
     	t1.start();
     	
-        ImageView indicator = new ImageView(fileIndicator);
+        ImageView indicator = Indicator.FILE;
         VBox rightIndicator = new VBox(indicator);
         rightIndicator.setBackground(Backgrounds.FILETOOLS);
         
-        VBox rightWoodVBox = new VBox(rightWood);
+        VBox rightWoodVBox = new VBox(RIGHTWOOD);
         rightWoodVBox.setBackground(Backgrounds.RIGHTWOOD);
         
         
+       
         
-        openLanguage.createTransferAction(mainBook, new OpenLangPage());
-        info.createTransferAction(mainBook, new InfoPage());
-        
-        fileTools.getChildren().addAll(addLanguage, openLanguage, info, reportBug);
         mainToolbox.getChildren().add(fileTools);
         
         loadingText.setText("Loading root...");
@@ -245,29 +220,56 @@ public class App extends Application {
         
         loadingText.setText("Loading Phonology...");
         loadingBar.setProgress(1);
-        //Phonology
-        
-        ToolButton viewPhonology = new ToolButton("View\nPhonology");
-        viewPhonology.createTransferAction(mainBook, new ViewPhonoPage());
         
         
-        ToolButton editPhonemes = new ToolButton("Edit\nPhonology");
-        editPhonemes.createTransferAction(mainBook, new EditPhonoPage());
+    
         
-        ToolButton phonotactics = new ToolButton("Phonotactics");
-        phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
+        
         
         //Lexicon
-        ToolButton viewWords = new ToolButton("View Words");
-        viewWords.createTransferAction(mainBook, new ViewWordsPage());
         
-        ToolButton editWords = new ToolButton("Edit Words");
-        editWords.createTransferAction(mainBook, new EditWordsPage());
 
+        // create toolbuttons
+        ToolButton addLanguage = new ToolButton("New\nLanguage");
+        ToolButton openLanguage = new ToolButton("Open\nLanguage");
+        ToolButton reportBug = new ToolButton("Report Bug");
+        ToolButton info = new ToolButton("Info");
         
+        ToolButton viewPhonology = new ToolButton("View\nPhonology");
+        ToolButton editPhonemes = new ToolButton("Edit\nPhonology");
+        ToolButton phonotactics = new ToolButton("Phonotactics");
+        
+        ToolButton viewOrthography = new ToolButton("View\nOrthography");
+        ToolButton editOrthography = new ToolButton("Edit\nOrthography");
+        ToolButton script = new ToolButton("Script");
+        
+        ToolButton viewWords = new ToolButton("View Words");
+        ToolButton editWords = new ToolButton("Edit Words");
+        
+        // create button actions
+        addLanguage.createTransferAction(mainBook, new AddLangPage());
+        openLanguage.createTransferAction(mainBook, new OpenLangPage());
+        reportBug.createTransferAction(mainBook, new ReportBugPage());
+        info.createTransferAction(mainBook, new InfoPage());
+        
+        viewPhonology.createTransferAction(mainBook, new ViewPhonoPage());
+        editPhonemes.createTransferAction(mainBook, new EditPhonoPage());
+        phonotactics.createTransferAction(mainBook, new BlankPage());
+        
+        viewOrthography.createTransferAction(mainBook, new ViewOrthographyPage());
+        editOrthography.createTransferAction(mainBook, new BlankPage());
+        script.createTransferAction(mainBook, new BlankPage());
+        
+        viewWords.createTransferAction(mainBook, new ViewWordsPage());
+        editWords.createTransferAction(mainBook, new EditWordsPage());
+        
+        //add to toolbars
+        
+        fileTools.getChildren().addAll(addLanguage, openLanguage, info, reportBug);
+        phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
+        orthographyTools.getChildren().addAll(viewOrthography, editOrthography, script);
         lexiconTools.getChildren().addAll(viewWords, editWords);
         
-        //TODO: Enable/disable debug logging in settings
         
         //Navbox actions
         
