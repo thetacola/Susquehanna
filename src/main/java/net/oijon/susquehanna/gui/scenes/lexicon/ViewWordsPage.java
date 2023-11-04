@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.DetailedWordList;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.utils.parser.data.Language;
+import net.oijon.oling.datatypes.Language;
 
 public class ViewWordsPage extends Book {
 

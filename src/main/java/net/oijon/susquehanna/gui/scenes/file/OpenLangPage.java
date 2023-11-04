@@ -22,8 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.utils.parser.Parser;
-import net.oijon.utils.parser.data.Language;
+import net.oijon.oling.Parser;
+import net.oijon.oling.datatypes.Language;
 
 public class OpenLangPage extends Book {
 

@@ -3,7 +3,8 @@ module net.oijon.Susquehanna {
     requires transitive javafx.controls;
 	requires javafx.graphics;
 	requires JColor;
-	requires transitive utils;
 	requires javafx.web;
+	requires oling;
+	requires olog;
     exports net.oijon.susquehanna;
 }

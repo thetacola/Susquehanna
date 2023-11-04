@@ -1,6 +1,6 @@
 package net.oijon.susquehanna;
 
-//last edit: 2/13/23 -N3
+//last edit: 11/3/23 -N3
 
 /**
  * Allows access to version numbers throughout the program.
@@ -33,19 +33,20 @@ public class SystemInfo {
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "23w20a";
+    		return "23w44a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
     }
     
-    public static String utilsVersion() {
-    	return net.oijon.utils.info.Info.getVersion();
+    public static String olingVersion() {
+    	return net.oijon.oling.info.Info.getVersion();
     }
     
-    public static String utilsVersionNum() {
-    	return net.oijon.utils.info.Info.getVersionNum();
+    public static String olingVersionNum() {
+    	return net.oijon.oling.info.Info.getVersionNum();
     }
+        
     
     public static String susquehannaVersion() {
     	

@@ -10,17 +10,49 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.gui.OrthoList;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.utils.parser.data.Language;
+import net.oijon.oling.datatypes.Language;
 
 public class ViewOrthographyPage extends Book {
 
 	public ViewOrthographyPage() {
 		super();
+		refresh();
+	}
+	
+	@Override
+	public void refresh() {
+		clear();
+		if (hasViewableOrtho()) {
+			buildVisible();
+		} else {
+			buildNonVisible();
+		}
+	}
+
+	private boolean hasViewableOrtho() {
+		if (App.getSelectedLang().equals(Language.NULL)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private void buildNonVisible() {
+		clear();
 		
+		Label noLangViewOrtho = new Label("Could not display orthography."
+				+ " Either no language is selected, or the orthography is invalid.");
 		
+		addToLeft(noLangViewOrtho);
+	}
+	
+	private void buildVisible() {
+		clear();
 		this.leftPage.setAlignment(Pos.CENTER);
+		this.rightPage.setAlignment(Pos.CENTER);
 		
 		// ortho guess
 		Label orthoGuessLabel = new Label("Convert to Orthography");
@@ -92,15 +124,12 @@ public class ViewOrthographyPage extends Book {
 		phonoGuessContainer.setPadding(new Insets(10, 10, 10, 10));
 		phonoGuessContainer.getChildren().addAll(phonoGuessLabel, phonoGuessFields, phonoGuessButton);
 		
+		OrthoList orthoList = new OrthoList(App.getSelectedLang().getOrtho());
 		
 		addToLeft(orthoGuessContainer);
 		addToLeft(phonoGuessContainer);
 		
+		addToRight(orthoList);
 	}
 	
-	@Override
-	public void refresh() {
-		
-	}
-
 }

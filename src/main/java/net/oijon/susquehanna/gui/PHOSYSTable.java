@@ -20,11 +20,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import net.oijon.susquehanna.gui.resources.Backgrounds;
-import net.oijon.utils.parser.data.Language;
-import net.oijon.utils.parser.data.PhonoCategory;
-import net.oijon.utils.parser.data.PhonoSystem;
-import net.oijon.utils.parser.data.PhonoTable;
-import net.oijon.utils.parser.data.Phonology;
+import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.PhonoCategory;
+import net.oijon.oling.datatypes.PhonoSystem;
+import net.oijon.oling.datatypes.PhonoTable;
+import net.oijon.oling.datatypes.Phonology;
 
 
 /**

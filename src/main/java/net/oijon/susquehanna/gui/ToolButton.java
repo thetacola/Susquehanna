@@ -12,9 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.susquehanna.gui.scenes.file.OpenLangPage;
+
+//last edit: 6/25/23 -N3
 
 /**
  * Creates a button designed to work with the Toolbox

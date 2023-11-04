@@ -15,8 +15,8 @@ public class InfoPage extends Book {
         javaVersionLabel.setFont(opensans);
         Label javaFXVersionLabel = new Label("Bundled with JavaFX " + System.getProperty("javafx.runtime.version") + ".");
         javaFXVersionLabel.setFont(opensans);
-        Label utilsVersionLabel = new Label("Powered by " + SystemInfo.utilsVersion());
-        utilsVersionLabel.setFont(opensans);
+        Label olingVersionLabel = new Label("Powered by " + SystemInfo.olingVersion());
+        olingVersionLabel.setFont(opensans);
         Label versionLabel = new Label("Version " + SystemInfo.susquehannaVersion());
         versionLabel.setFont(opensans);
         ImageView logo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/icon.png")));
@@ -28,7 +28,7 @@ public class InfoPage extends Book {
         addToLeft(logo);
         addToLeft(javaVersionLabel);
         addToLeft(javaFXVersionLabel);
-        addToLeft(utilsVersionLabel);
+        addToLeft(olingVersionLabel);
         addToLeft(versionLabel);
         
         addToRight(oijonLogo);

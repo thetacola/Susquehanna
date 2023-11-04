@@ -3,8 +3,9 @@ package net.oijon.susquehanna.gui.scenes.phonology;
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.PHOSYSTable;
+import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.utils.parser.data.Language;
+import net.oijon.oling.datatypes.Language;
 
 public class ViewPhonoPage extends Book {
 
@@ -29,6 +30,7 @@ public class ViewPhonoPage extends Book {
 		clear();
 		
 		Label phonoLabel = new Label("Phonology");
+		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
 		PHOSYSTable table = new PHOSYSTable(App.getSelectedLang(), App.getCurrentFile());
 		
 		addToLeft(phonoLabel);

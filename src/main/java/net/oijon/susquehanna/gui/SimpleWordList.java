@@ -15,9 +15,9 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import net.oijon.utils.parser.data.Language;
-import net.oijon.utils.logger.Log;
-import net.oijon.utils.parser.data.Word;
+import net.oijon.oling.datatypes.Language;
+import net.oijon.olog.Log;
+import net.oijon.oling.datatypes.Word;
 
 public class SimpleWordList extends ScrollPane {
 

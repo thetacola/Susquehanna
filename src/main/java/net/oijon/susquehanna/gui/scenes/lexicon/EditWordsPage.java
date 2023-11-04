@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.SimpleWordList;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.utils.parser.data.Word;
+import net.oijon.oling.datatypes.Word;
 
 public class EditWordsPage extends Book {
 

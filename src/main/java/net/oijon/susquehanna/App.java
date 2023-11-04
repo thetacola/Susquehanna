@@ -18,9 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import net.oijon.utils.parser.data.Language;
-import net.oijon.utils.logger.Log;
-import net.oijon.utils.parser.data.PhonoSystem;
+import net.oijon.oling.datatypes.Language;
+import net.oijon.olog.Log;
+import net.oijon.oling.datatypes.PhonoSystem;
 import net.oijon.susquehanna.gui.BinderTab;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
@@ -33,13 +33,14 @@ import net.oijon.susquehanna.gui.scenes.file.OpenLangPage;
 import net.oijon.susquehanna.gui.scenes.file.ReportBugPage;
 import net.oijon.susquehanna.gui.scenes.lexicon.EditWordsPage;
 import net.oijon.susquehanna.gui.scenes.lexicon.ViewWordsPage;
+import net.oijon.susquehanna.gui.scenes.orthography.EditOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 
 import java.io.File;
 
-//last edit: 5/26/23 -N3
+//last edit: 11/3/23 -N3
 
 
 /**
@@ -257,7 +258,7 @@ public class App extends Application {
         phonotactics.createTransferAction(mainBook, new BlankPage());
         
         viewOrthography.createTransferAction(mainBook, new ViewOrthographyPage());
-        editOrthography.createTransferAction(mainBook, new BlankPage());
+        editOrthography.createTransferAction(mainBook, new EditOrthographyPage());
         script.createTransferAction(mainBook, new BlankPage());
         
         viewWords.createTransferAction(mainBook, new ViewWordsPage());

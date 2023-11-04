@@ -15,7 +15,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import net.oijon.susquehanna.App;
-import net.oijon.utils.logger.Log;
+import net.oijon.olog.Log;
 
 public abstract class Book extends HBox {
 
