@@ -40,7 +40,7 @@ import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 
 import java.io.File;
 
-//last edit: 11/3/23 -N3
+//last edit: 1/2/24 -N3
 
 
 /**
@@ -58,9 +58,13 @@ public class App extends Application {
     static ImageView BINDING = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
 	static ImageView RIGHTWOOD = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
     
+	public static Stage stage;
+	
     @SuppressWarnings("static-access") // Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
+    	this.stage = stage;
+    	
     	log.logSystemInfo();
     	log.info("Starting loading screen...");
     	Stage loadingStage = new Stage();
@@ -77,6 +81,7 @@ public class App extends Application {
     	Scene loadingScene = new Scene(loadingVBox);
     	loadingStage.setScene(loadingScene);
     	loadingStage.show();
+    	
     	log.info("Starting application...");
     	loadingText.setText("Starting application...");
     	loadingBar.setProgress(1/6);
@@ -339,6 +344,14 @@ public class App extends Application {
      */
     public Log getLog() {
     	return log;
+    }
+    
+    /**
+     * Gets the current stage. Useful for popup windows
+     * @return The current stage
+     */
+    public static Stage getStage() {
+    	return stage;
     }
     
     public static void main(String[] args) {

@@ -4,7 +4,7 @@ module net.oijon.Susquehanna {
 	requires javafx.graphics;
 	requires JColor;
 	requires javafx.web;
-	requires oling;
-	requires olog;
+	requires transitive olog;
+	requires transitive oling;
     exports net.oijon.susquehanna;
 }

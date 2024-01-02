@@ -2,7 +2,7 @@ package net.oijon.susquehanna.gui.scenes.phonology;
 
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.PHOSYSTable;
+import net.oijon.susquehanna.gui.PhonemeTable;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.oling.datatypes.Language;
@@ -31,10 +31,11 @@ public class ViewPhonoPage extends Book {
 		
 		Label phonoLabel = new Label("Phonology");
 		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
-		PHOSYSTable table = new PHOSYSTable(App.getSelectedLang(), App.getCurrentFile());
+		PhonemeTable testTable = new PhonemeTable(App.getSelectedLang().getPhono(), false);
+		//PHOSYSTable table = new PHOSYSTable(App.getSelectedLang(), App.getCurrentFile());
 		
 		addToLeft(phonoLabel);
-		addToLeft(table);
+		addToLeft(testTable);
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package net.oijon.susquehanna.gui.scenes;
 import java.io.InputStream;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -18,7 +19,7 @@ import net.oijon.susquehanna.App;
 import net.oijon.olog.Log;
 
 public abstract class Book extends HBox {
-
+	
 	private static InputStream is2 = App.class.getResourceAsStream("/font/OpenSans-Regular.ttf");
 	public static Font opensans = Font.loadFont(is2, 16);
 	public static BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
@@ -28,6 +29,10 @@ public abstract class Book extends HBox {
 	
 	protected VBox leftPage = new VBox();
 	protected VBox rightPage = new VBox();
+	
+	private ScrollPane leftScroll = new ScrollPane();
+	private ScrollPane rightScroll = new ScrollPane();
+	
 	
 	/**
 	 * Creates an empty book, with default background
@@ -49,6 +54,14 @@ public abstract class Book extends HBox {
         leftPage.setPrefWidth(400);
         rightPage.setPrefWidth(400);  
 		
+        leftScroll.setContent(leftPage);
+        rightScroll.setContent(rightPage);
+        
+        leftScroll.setFitToHeight(true);
+        rightScroll.setFitToHeight(true);
+        leftScroll.setFitToWidth(true);
+        rightScroll.setFitToWidth(true);
+        
 		build();
 	}
 	
@@ -107,10 +120,10 @@ public abstract class Book extends HBox {
 		// should also make sure that Java properly shows changes
 		// I know that this is most likely pass-by-reference, but JavaFX is a bit funky
 		this.getChildren().clear();
-		this.getChildren().addAll(makeLeftPages(), leftPage, makeBinding(),
-				rightPage, makeRightPages());
-		this.setHgrow(leftPage, Priority.ALWAYS);
-	    this.setHgrow(rightPage, Priority.ALWAYS);
+		this.getChildren().addAll(makeLeftPages(), leftScroll, makeBinding(),
+				rightScroll, makeRightPages());
+		this.setHgrow(leftScroll, Priority.ALWAYS);
+	    this.setHgrow(rightScroll, Priority.ALWAYS);
 		
 	}
 	
