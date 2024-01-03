@@ -90,6 +90,7 @@ public class PhonemeTable extends Parent {
 					Queue<PhonemeButton> addPerSound = new LinkedList<PhonemeButton>();
 					for (int k = 0; k < p.getList().size(); k++) {
 						String phoneme = p.getList().get(k);
+						String firstNonDiacriticChar = Character.toString(phoneme.replace(diacriticRegex, "").charAt(0));
 						if (phoneme.equals(sound)) {
 							if (pb.isInPhono()) {
 								PhonemeButton newPb = new PhonemeButton(pb);
@@ -97,7 +98,7 @@ public class PhonemeTable extends Parent {
 							} else {
 								pb.setInPhono(true);
 							}
-						} else if (Pattern.matches(diacriticRegex + sound + diacriticRegex, phoneme)) {
+						} else if (Pattern.matches(diacriticRegex + sound + diacriticRegex, phoneme)  || firstNonDiacriticChar.equals(sound)) {
 							PhonemeButton newPb = new PhonemeButton(phoneme, this, isEditable);
 							newPb.setInPhono(true);
 							addPerSound.add(newPb);
