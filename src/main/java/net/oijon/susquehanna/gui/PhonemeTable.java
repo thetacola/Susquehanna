@@ -67,6 +67,9 @@ public class PhonemeTable extends Parent {
 		// top labels
 		for (int i = 0; i < pt.getColumnNames().size(); i++) {
 			Label l = new Label(pt.getColumnNames().get(i));
+			if (l.getText().equals("No column names")) {
+				l.setText("");
+			}
 			// TODO: this text does not align correctly
 			l.setAlignment(Pos.CENTER);
 			GridPane.setRowIndex(l, 0);

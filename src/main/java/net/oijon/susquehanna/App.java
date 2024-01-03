@@ -65,50 +65,19 @@ public class App extends Application {
     public void start(Stage stage) {
     	this.stage = stage;
     	
-    	log.logSystemInfo();
-    	log.info("Starting loading screen...");
-    	Stage loadingStage = new Stage();
-    	loadingStage.setTitle("Susquehanna Conlang Manager - Loading...");
-    	loadingStage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
-    	
-    	ProgressBar loadingBar = new ProgressBar();
-    	loadingBar.setProgress(0);
-    	Label loadingText = new Label("Starting loading screen...");
-    	loadingText.setTextFill(Color.WHITE);
-    	VBox loadingVBox = new VBox(loadingText, loadingBar);
-    	loadingVBox.setBackground(Backgrounds.DEFAULT);
-    	loadingVBox.setAlignment(Pos.CENTER);
-    	Scene loadingScene = new Scene(loadingVBox);
-    	loadingStage.setScene(loadingScene);
-    	loadingStage.show();
-    	
     	log.info("Starting application...");
-    	loadingText.setText("Starting application...");
-    	loadingBar.setProgress(1/6);
-    	
-    	while (!loadingStage.isShowing()) {
-    		try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-    	}
     	
     	//Verify IPA is intact
     	PhonoSystem IPA = PhonoSystem.IPA;
     	IPA.toFile();
     	PhonoSystem IPAFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
     	if (IPAFile.toString().equals(IPA.toString())) {
-    		loadingText.setText("IPA phonology system successfully verified!");
-    		loadingBar.setProgress(2/6);
     		log.debug("IPA phonology system successfully verified!");
     	} else {
     		log.err("IPA phonology system could not be verified!");
     	}
     	
-    	loadingText.setText("Loading Navbox...");
-    	loadingBar.setProgress(3/6);
+    	
         //Navbox
     	
     	BinderTab fileButton = new BinderTab("file");
@@ -132,8 +101,7 @@ public class App extends Application {
         navBox.setFitToWidth(true);
         navBox.setPadding(new Insets(0, 0, 0, 10));
         
-        loadingText.setText("Loading File...");
-        loadingBar.setProgress(4/6);
+       
     	//File
         
         // final because it won't compile otherwise :(
@@ -213,8 +181,7 @@ public class App extends Application {
         
         mainToolbox.getChildren().add(fileTools);
         
-        loadingText.setText("Loading root...");
-        loadingBar.setProgress(5/6);
+        
         //Root
         HBox rootHBox = new HBox(navBox, mainToolbox, mainBook, rightIndicator, rightWoodVBox);
         
@@ -223,14 +190,6 @@ public class App extends Application {
         
         rootHBox.setBackground(Backgrounds.WOOD);
         Scene root = new Scene(rootHBox);
-        
-        loadingText.setText("Loading Phonology...");
-        loadingBar.setProgress(1);
-        
-        
-    
-        
-        
         
         //Lexicon
         
@@ -291,7 +250,6 @@ public class App extends Application {
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
         stage.show();
-        loadingStage.close();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
@@ -342,7 +300,7 @@ public class App extends Application {
      * Gets the currently used log.
      * @return The log being used
      */
-    public Log getLog() {
+    public static Log getLog() {
     	return log;
     }
     
