@@ -269,9 +269,9 @@ public class PhonemeButton extends Parent {
                 			p.remove(phoneme);
                 			p.add(submitArea.getText());
                 		}
-                		popup.close();
                 		write();
                 		refreshTable();
+                		popup.close();            
                 	}
                 });
                 bottomBar.getChildren().addAll(submitArea, submitButton);
@@ -284,6 +284,8 @@ public class PhonemeButton extends Parent {
                 
                 popup.setScene(dialogScene);
                 popup.show();
+                write();
+        		refreshTable();
 			}
 		});
 		VBox.setMargin(edit, Insets.EMPTY);

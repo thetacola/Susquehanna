@@ -1,5 +1,6 @@
 package net.oijon.susquehanna.gui;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ public class PhonemeTable extends Parent {
 	private Phonology p;
 	private VBox container;
 	private boolean isEditable = true;
+	private ArrayList<GridPane> tableList = new ArrayList<GridPane>();
 	// TODO: make this a bit more efficient! This is so much better than the previous iteration, but still a bit slow...
 	
 	public PhonemeTable(Phonology p) {
@@ -31,11 +33,13 @@ public class PhonemeTable extends Parent {
 		this.p = p;
 		this.isEditable = isEditable;
 		build();
+		createContainer();
 	}
 	
 	public void refresh() {
-		this.getChildren().clear();
-		build();
+		for (int i = 0; i < tableList.size(); i++) {
+			tableList.set(i, generateTable(p.getPhonoSystem().getTables().get(i), p));
+		}
 	}
 	
 	private void build() {
@@ -45,9 +49,15 @@ public class PhonemeTable extends Parent {
 	
 	private void generateFromPhonosys() {
 		PhonoSystem ps = p.getPhonoSystem();
-		container = new VBox();
 		for (int i = 0; i < ps.getTables().size(); i++) {
-			container.getChildren().add(generateTable(ps.getTables().get(i), p));
+			tableList.add(generateTable(ps.getTables().get(i), p));
+		}
+	}
+	
+	private void createContainer() {
+		container = new VBox();
+		for (int i = 0; i < tableList.size(); i++) {
+			container.getChildren().add(tableList.get(i));
 		}
 		this.getChildren().add(container);
 	}
