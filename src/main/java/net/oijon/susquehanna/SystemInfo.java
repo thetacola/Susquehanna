@@ -20,11 +20,11 @@ public class SystemInfo {
     }
     
     public static String susquehannaVerNum() {
-    	return "0.0.3";
+    	return "0.1.0";
     }
     
     public static String susquehannaVerName() {
-    	return "Otsego";
+    	return "Cooperstown";
     }
     
     public static boolean isSnapshot() {
