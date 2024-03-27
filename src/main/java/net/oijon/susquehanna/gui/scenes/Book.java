@@ -25,13 +25,13 @@ public abstract class Book extends HBox {
 	public static BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
 	
 	
-	protected static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
+	protected static Log log = App.getLog();
 	
 	protected VBox leftPage = new VBox();
 	protected VBox rightPage = new VBox();
 	
-	private ScrollPane leftScroll = new ScrollPane();
-	private ScrollPane rightScroll = new ScrollPane();
+	protected ScrollPane leftScroll = new ScrollPane();
+	protected ScrollPane rightScroll = new ScrollPane();
 	
 	
 	/**
@@ -110,10 +110,7 @@ public abstract class Book extends HBox {
 	
 	/**
 	 * Builds the book, including both pages, binding, and left/right page images
-	 * 
-	 * The SuppressWarnings is here because Java does not like how setting HGrows works
 	 */
-	@SuppressWarnings("static-access")
 	protected void build() {
 		// if left page and right page are still stored in vars, this should
 		// (hopefully) prevent them from data being wiped
@@ -122,8 +119,8 @@ public abstract class Book extends HBox {
 		this.getChildren().clear();
 		this.getChildren().addAll(makeLeftPages(), leftScroll, makeBinding(),
 				rightScroll, makeRightPages());
-		this.setHgrow(leftScroll, Priority.ALWAYS);
-	    this.setHgrow(rightScroll, Priority.ALWAYS);
+		Book.setHgrow(leftScroll, Priority.ALWAYS);
+		Book.setHgrow(rightScroll, Priority.ALWAYS);
 		
 	}
 	
@@ -141,7 +138,7 @@ public abstract class Book extends HBox {
 	 * Makes the left pages decoration
 	 * @return The left pages decoration
 	 */
-	private VBox makeLeftPages() {
+	protected VBox makeLeftPages() {
 		Image leftPapers = new Image(Book.class.getResourceAsStream("/img/left-papers.png"));
 	    BackgroundImage leftPapersBI = new BackgroundImage(leftPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
 	    		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 
@@ -156,7 +153,7 @@ public abstract class Book extends HBox {
 	 * Makes the right pages decoration
 	 * @return The right pages decoration
 	 */
-	private VBox makeRightPages() {
+	protected VBox makeRightPages() {
 		Image rightPapers = new Image(Book.class.getResourceAsStream("/img/right-papers.png"));
 	    BackgroundImage rightPapersBI = new BackgroundImage(rightPapers, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, 
 	    		BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT); 

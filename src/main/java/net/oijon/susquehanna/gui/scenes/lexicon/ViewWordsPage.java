@@ -2,7 +2,7 @@ package net.oijon.susquehanna.gui.scenes.lexicon;
 
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.DetailedWordList;
+import net.oijon.susquehanna.gui.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.oling.datatypes.Language;
 
@@ -25,9 +25,9 @@ public class ViewWordsPage extends Book {
 	private void buildViewable() {
 		clear();
 		
-		DetailedWordList wordList = new DetailedWordList(App.getSelectedLang());
-		
-		addToLeft(wordList);
+		for (int i = 0; i < App.getSelectedLang().getLexicon().size(); i++) {
+			addToLeft(new WordDisplay(App.getSelectedLang().getLexicon().getWord(i), true));
+		}
 	}
 	
 	private void buildNonViewable() {

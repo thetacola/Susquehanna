@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import net.oijon.oling.datatypes.PhonoCategory;
 import net.oijon.oling.datatypes.PhonoSystem;
@@ -129,7 +130,9 @@ public class PhonemeTable extends Parent {
 				if ((j + 1) % pt.dataPerCell() == 0) {
 					HBox cell = new HBox();
 					while (thingsToAdd.size() > 0) {
-						cell.getChildren().add(thingsToAdd.poll());
+						PhonemeButton pb = thingsToAdd.poll();
+						HBox.setHgrow(pb, Priority.ALWAYS);
+						cell.getChildren().add(pb);
 					}
 					GridPane.setRowIndex(cell, i + 1);
 					GridPane.setColumnIndex(cell, colIndicator);

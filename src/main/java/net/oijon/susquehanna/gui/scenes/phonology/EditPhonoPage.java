@@ -3,10 +3,10 @@ package net.oijon.susquehanna.gui.scenes.phonology;
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.PhonemeTable;
-import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.scenes.OnePageBook;
 import net.oijon.oling.datatypes.Language;
 
-public class EditPhonoPage extends Book {
+public class EditPhonoPage extends OnePageBook {
 
 	public EditPhonoPage() {
 		super();

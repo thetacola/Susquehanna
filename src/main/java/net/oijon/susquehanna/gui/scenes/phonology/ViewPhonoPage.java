@@ -4,10 +4,10 @@ import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.PhonemeTable;
 import net.oijon.susquehanna.gui.resources.Fonts;
-import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.scenes.OnePageBook;
 import net.oijon.oling.datatypes.Language;
 
-public class ViewPhonoPage extends Book {
+public class ViewPhonoPage extends OnePageBook {
 
 	public ViewPhonoPage() {
 		super();

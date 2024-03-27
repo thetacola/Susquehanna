@@ -11,11 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -83,11 +82,14 @@ public class PhonemeButton extends Parent {
 			phonemeButton.setStyle("");
 		}
 		
+		//TODO: make buttons grow with their table
+		
 		phonemeButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		phonemeButton.setMinSize(45, 45);
 		
 		HBox mainHBox = new HBox();
 		HBox.setMargin(phonemeButton, new Insets(0));
+		HBox.setHgrow(phonemeButton, Priority.ALWAYS);
 		mainHBox.getChildren().add(phonemeButton);
 		
 		phonemeButton.setOnAction(new EventHandler<ActionEvent> () {
@@ -111,6 +113,7 @@ public class PhonemeButton extends Parent {
 		}
 		
 		this.getChildren().add(mainHBox);
+		HBox.setHgrow(mainHBox, Priority.ALWAYS);
 	}
 	
 	/**
@@ -243,7 +246,6 @@ public class PhonemeButton extends Parent {
 	private void buildEdit() {
 		edit = new ToolButton("edit");
 		edit.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		PhonemeButton me = this;
 		edit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

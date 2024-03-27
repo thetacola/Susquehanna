@@ -1,6 +1,6 @@
 package net.oijon.susquehanna;
 
-//last edit: 11/3/23 -N3
+//last edit: 1/9/24 -N3
 
 /**
  * Allows access to version numbers throughout the program.
@@ -9,8 +9,12 @@ package net.oijon.susquehanna;
  * @author alex
  *
  */
-public class SystemInfo {
+public final class SystemInfo {
 
+	private SystemInfo() {
+		
+	}
+	
     public static String javaVersion() {
         return System.getProperty("java.version");
     }
