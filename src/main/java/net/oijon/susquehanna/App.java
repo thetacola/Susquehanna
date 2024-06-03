@@ -2,6 +2,8 @@ package net.oijon.susquehanna;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.application.Preloader.PreloaderNotification;
+import javafx.application.Preloader.ProgressNotification;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -77,7 +79,6 @@ public class App extends Application {
     		log.err("IPA phonology system could not be verified!");
     	}
     	
-    	
         //Navbox
     	
     	BinderTab fileButton = new BinderTab("file");
@@ -122,6 +123,7 @@ public class App extends Application {
         Toolbox grammarTools = new Toolbox(Backgrounds.GRAMMARTOOLS);
         Toolbox lexiconTools = new Toolbox(Backgrounds.LEXICONTOOLS);
         Toolbox settingsTools = new Toolbox(Backgrounds.SETTINGSTOOLS);
+        
         
       //Selection thread
     	Thread t1 = new Thread(new Runnable() {
@@ -169,6 +171,7 @@ public class App extends Application {
     	t1.setDaemon(true);
     	t1.start();
     	
+    	
         ImageView indicator = Indicator.FILE;
         VBox rightIndicator = new VBox(indicator);
         rightIndicator.setBackground(Backgrounds.FILETOOLS);
@@ -190,6 +193,7 @@ public class App extends Application {
         
         rootHBox.setBackground(Backgrounds.WOOD);
         Scene root = new Scene(rootHBox);
+        
         
         //Lexicon
         
@@ -244,6 +248,7 @@ public class App extends Application {
         grammarButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, grammarTools, indicator, rightIndicator);
         lexiconButton.createTransferAction(mainBook, new ViewWordsPage(), mainToolbox, lexiconTools, indicator, rightIndicator);
         settingsButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, settingsTools, indicator, rightIndicator);
+        
         
         stage.setScene(root);
         stage.setMaximized(true);
@@ -313,6 +318,7 @@ public class App extends Application {
     }
     
     public static void main(String[] args) {
+    	System.setProperty("javafx.preloader", LoadingScreen.class.getName());
         launch();
     }
 
