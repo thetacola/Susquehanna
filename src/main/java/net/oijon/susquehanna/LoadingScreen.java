@@ -32,11 +32,8 @@ public class LoadingScreen extends Preloader {
 		
 		ProgressBar bar = new ProgressBar();
 		bar.setPrefWidth(640);
-		bar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
 		
 		VBox rootVBox = new VBox(loadingImg, bar);
-        rootVBox.setAlignment(Pos.TOP_LEFT);
-        
         Scene root = new Scene(rootVBox);
 		
         stage.setScene(root);
