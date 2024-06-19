@@ -41,6 +41,7 @@ import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 
 import java.io.File;
+import java.io.IOException;
 
 //last edit: 1/2/24 -N3
 
@@ -254,7 +255,6 @@ public class App extends Application {
         stage.setMaximized(true);
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
-        stage.show();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
@@ -264,6 +264,7 @@ public class App extends Application {
 			}
         	
         });
+        stage.show();
         log.info("Started!");
     }
 
@@ -316,6 +317,19 @@ public class App extends Application {
     public static Stage getStage() {
     	return stage;
     }
+    
+    /**
+     * Writes the current contents of the selected language to the file.
+     */
+    public static void writeToSelectedLang() {
+		Language lang = getSelectedLang();
+		File file = getCurrentFile();
+		try {
+			lang.toFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
     
     public static void main(String[] args) {
     	System.setProperty("javafx.preloader", LoadingScreen.class.getName());

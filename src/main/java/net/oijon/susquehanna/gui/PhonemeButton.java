@@ -1,25 +1,17 @@
 package net.oijon.susquehanna.gui;
 
-import java.io.File;
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import net.oijon.oling.datatypes.Language;
-import net.oijon.oling.datatypes.Phonology;
 import net.oijon.susquehanna.App;
 
 public class PhonemeButton extends Parent {
@@ -200,16 +192,6 @@ public class PhonemeButton extends Parent {
 		}
 	}
 	
-	private void write() {
-		Language lang = App.getSelectedLang();
-		File file = App.getCurrentFile();
-		try {
-			lang.toFile(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	private void buildAdd() {
 		add = new ToolButton("add");		
 		add.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -236,7 +218,7 @@ public class PhonemeButton extends Parent {
 				// might break in the future...
 				Language lang = App.getSelectedLang();
 				lang.getPhono().add(phoneme);
-				write();
+				App.writeToSelectedLang();
 				refreshTable();
 			}
 		});
@@ -249,44 +231,9 @@ public class PhonemeButton extends Parent {
 		edit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				final Stage popup = new Stage();
-				popup.initModality(Modality.APPLICATION_MODAL);
-				popup.initOwner(App.getStage());
-				popup.setTitle("Changing phoneme: " + phoneme);
-				
-                VBox dialogVbox = new VBox();         
-                
-                HBox bottomBar = new HBox();
-                TextField submitArea = new TextField(phoneme);
-                submitArea.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                Button submitButton = new Button("Submit");
-                submitButton.setDefaultButton(true);
-                submitButton.setOnAction(new EventHandler<ActionEvent>() {
-                	@Override
-                	public void handle(ActionEvent event) {
-                		Language lang = App.getSelectedLang();
-                		Phonology p = lang.getPhono();
-                		String newPhoneme = submitArea.getText();
-                		if (p.getPhonoSystem().isIn(newPhoneme) & !newPhoneme.isBlank()) {
-                			p.remove(phoneme);
-                			p.add(submitArea.getText());
-                		}
-                		write();
-                		refreshTable();
-                		popup.close();            
-                	}
-                });
-                bottomBar.getChildren().addAll(submitArea, submitButton);
-                
-                PhonemeKeyboard keyboard = new PhonemeKeyboard(App.getSelectedLang().getPhono().getPhonoSystem(),
-                		submitArea);
-                
-                dialogVbox.getChildren().addAll(keyboard, bottomBar);
-                Scene dialogScene = new Scene(dialogVbox);
-                
-                popup.setScene(dialogScene);
+				final PhonemeEditPopup popup = new PhonemeEditPopup(phoneme, pt);
                 popup.show();
-                write();
+                App.writeToSelectedLang();
         		refreshTable();
 			}
 		});
@@ -303,7 +250,7 @@ public class PhonemeButton extends Parent {
 				me.setInPhono(false);
 				Language lang = App.getSelectedLang();
 				lang.getPhono().remove(phoneme);
-				write();
+				App.writeToSelectedLang();
 				refreshTable();
 			}			
 		});
