@@ -10,7 +10,8 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import net.oijon.oling.datatypes.Word;
+import net.oijon.oling.datatypes.lexicon.Word;
+import net.oijon.oling.datatypes.lexicon.WordProperty;
 
 public class WordDisplay extends Parent {
 	
@@ -41,14 +42,14 @@ public class WordDisplay extends Parent {
 	}
 	
 	public void refresh() {
-		wordLabel.setText(word.getName());
-		meaningLabel.setText(word.getMeaning());
-		pronounciationLabel.setText("/" + word.getPronounciation() + "/");
-		etymologyLabel.setText("Etymology: " + word.getEtymology());
+		wordLabel.setText(word.getProperties().getProperty(WordProperty.NAME));
+		meaningLabel.setText(word.getProperties().getProperty(WordProperty.MEANING));
+		pronounciationLabel.setText("/" + word.getProperties().getProperty(WordProperty.PRONOUNCIATION) + "/");
+		etymologyLabel.setText("Etymology: " + word.getProperties().getProperty(WordProperty.ETYMOLOGY));
 		// FIXME: show source language!
 		sourceLangLabel.setText("");
-		createdLabel.setText("Created: " + word.getCreationDate());
-		editedLabel.setText("Last Edited: " + word.getEditDate());
+		createdLabel.setText("Created: " + word.getProperties().getCreationDate());
+		editedLabel.setText("Last Edited: " + word.getProperties().getEditDate());
 	}
 	
 	private void build() {

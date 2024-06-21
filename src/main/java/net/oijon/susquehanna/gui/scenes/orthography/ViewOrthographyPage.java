@@ -13,7 +13,8 @@ import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.OrthoList;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.orthography.Guesser;
 
 public class ViewOrthographyPage extends Book {
 
@@ -81,7 +82,7 @@ public class ViewOrthographyPage extends Book {
 			@Override
 			public void handle(ActionEvent event) {
 				Language selectedLang = App.getSelectedLang();
-				String output = selectedLang.getOrtho().orthoGuess(orthoGuessInputField.getText());
+				String output = Guesser.orthoGuess(orthoGuessInputField.getText(), selectedLang.getOrtho());
 				orthoGuessOutputField.setText(output);
 			}
 			
@@ -116,7 +117,7 @@ public class ViewOrthographyPage extends Book {
 			@Override
 			public void handle(ActionEvent event) {
 				Language selectedLang = App.getSelectedLang();
-				String output = selectedLang.getOrtho().phonoGuess(phonoGuessInputField.getText());
+				String output = Guesser.phonoGuess(phonoGuessInputField.getText(), selectedLang.getOrtho());
 				phonoGuessOutputField.setText(output);
 			}
 			

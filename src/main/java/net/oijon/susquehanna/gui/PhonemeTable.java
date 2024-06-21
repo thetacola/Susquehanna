@@ -12,10 +12,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.PhonoCategory;
-import net.oijon.oling.datatypes.PhonoSystem;
-import net.oijon.oling.datatypes.PhonoTable;
-import net.oijon.oling.datatypes.Phonology;
+import net.oijon.oling.datatypes.phonology.PhonoCategory;
+import net.oijon.oling.datatypes.phonology.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.PhonoTable;
+import net.oijon.oling.datatypes.phonology.Phonology;
 
 public class PhonemeTable extends Parent {
 	

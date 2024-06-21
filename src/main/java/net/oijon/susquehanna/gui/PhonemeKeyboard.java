@@ -8,8 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.PhonoSystem;
-import net.oijon.oling.datatypes.PhonoTable;
+import net.oijon.oling.datatypes.phonology.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.PhonoTable;
 
 public class PhonemeKeyboard extends Parent {
 

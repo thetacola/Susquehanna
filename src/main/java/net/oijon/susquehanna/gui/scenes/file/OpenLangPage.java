@@ -22,7 +22,8 @@ import javafx.stage.Stage;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.oling.Parser;
-import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.language.LanguageProperty;
 
 public class OpenLangPage extends Book {
 
@@ -46,8 +47,8 @@ public class OpenLangPage extends Book {
 	
 	@Override
 	public void refresh() {
-		@SuppressWarnings("deprecation")
-		File[] files = Language.getLanguageFiles();
+		File[] files = Language.getLanguageFiles(
+				new File(System.getProperty("user.home") + "/Susquehanna/"));
     	log.info("Found " + files.length + " language(s)");
     	log.debug("Language(s) found:");
     	for (int i = 0; i < files.length; i++) {
@@ -108,7 +109,8 @@ public class OpenLangPage extends Book {
 								log.err("Unable to select language!");
 								log.err(e.toString());
 							}
-							log.info("Selected language: " + App.getSelectedLang().getName());
+							log.info("Selected language: "
+							+ App.getSelectedLang().getProperties().getProperty(LanguageProperty.NAME));
 						}
 	                	
 	                });
@@ -130,7 +132,8 @@ public class OpenLangPage extends Book {
 									File mainFolder = new File(System.getProperty("user.home") + "/Susquehanna/" + name);
 									File langFile = new File(System.getProperty("user.home") + "/Susquehanna/" + name + ".language");
 									
-									if (App.getSelectedLang().getName() == name) {
+									if (App.getSelectedLang().getProperties().getProperty(LanguageProperty.NAME)
+											== name) {
 										App.setSelectedLangNull();
 										log.err("The currently selected language is being deleted! Unselecting " + name + "...");
 									}

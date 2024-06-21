@@ -14,8 +14,9 @@ import javafx.scene.control.TextField;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.oling.datatypes.Language;
-import net.oijon.oling.datatypes.Word;
+import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.lexicon.Word;
+import net.oijon.oling.datatypes.lexicon.WordProperty;
 
 public class EditWordsPage extends Book {
 
@@ -38,7 +39,8 @@ public class EditWordsPage extends Book {
 		ObservableList<String> options = FXCollections.observableArrayList();
 		options.add(" ");
 		// TODO: make this get from selected language dir
-		File[] langs = Language.getLanguageFiles();
+		File[] langs = Language.getLanguageFiles(
+				new File(System.getProperty("user.home") + "/Susquehanna/"));
 		for (int i = 0; i < langs.length; i++) {
 			options.add(langs[i].getName().replace(".language", ""));
 		}
@@ -52,8 +54,12 @@ public class EditWordsPage extends Book {
 					if (!meaningInput.getText().isBlank()) {
 						// not in the constructor for testing
 						Word word = new Word(wordInput.getText(), meaningInput.getText());
-						word.setPronounciation(pronounciationInput.getText());
-						word.setEtymology(etymologyInput.getText());
+						word.getProperties().setProperty(
+								WordProperty.PRONOUNCIATION,
+								pronounciationInput.getText());
+						word.getProperties().setProperty(
+								WordProperty.ETYMOLOGY,
+								etymologyInput.getText());
 						
 						// get source language from selected
 						
@@ -67,7 +73,8 @@ public class EditWordsPage extends Book {
 						try {
 							App.getSelectedLang().toFile(App.getCurrentFile());
 						} catch (IOException e) {
-							log.err(e.toString() + " - Could not add word " + word.getName());
+							log.err(e.toString() + " - Could not add word " +
+									word.getProperties().getProperty(WordProperty.NAME));
 							e.printStackTrace();
 						}
 						refresh();

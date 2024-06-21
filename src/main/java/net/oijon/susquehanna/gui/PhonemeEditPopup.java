@@ -9,8 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import net.oijon.oling.datatypes.Language;
-import net.oijon.oling.datatypes.Phonology;
+import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.phonology.Phonology;
 import net.oijon.susquehanna.App;
 
 public class PhonemeEditPopup extends Stage {
@@ -53,8 +53,8 @@ public class PhonemeEditPopup extends Stage {
         		Language lang = App.getSelectedLang();
         		Phonology p = lang.getPhono();
         		String newPhoneme = submitArea.getText();
-        		if (p.getPhonoSystem().isIn(newPhoneme) & !newPhoneme.isBlank()) {
-        			p.remove(phoneme);
+        		if (p.getPhonoSystem().contains(newPhoneme) & !newPhoneme.isBlank()) {
+        			p.getList().remove(phoneme);
         			p.add(submitArea.getText());
         		}
         		App.writeToSelectedLang();

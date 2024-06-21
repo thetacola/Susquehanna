@@ -20,9 +20,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.language.LanguageProperty;
+import net.oijon.oling.datatypes.phonology.PhonoSystem;
 import net.oijon.olog.Log;
-import net.oijon.oling.datatypes.PhonoSystem;
 import net.oijon.susquehanna.gui.BinderTab;
 import net.oijon.susquehanna.gui.ToolButton;
 import net.oijon.susquehanna.gui.Toolbox;
@@ -43,7 +44,7 @@ import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 import java.io.File;
 import java.io.IOException;
 
-//last edit: 1/2/24 -N3
+//last edit: 6/20/24 -N3
 
 
 /**
@@ -132,17 +133,19 @@ public class App extends Application {
 			@Override
 			public void run() {
 				while(true) {
-					if (selectedLanguage != Language.NULL & selectedLanguage.getName().equals(fileTools.getSelected()) == false) {
+					if (selectedLanguage != Language.NULL &
+							selectedLanguage.getProperties().getProperty(LanguageProperty.NAME).equals(
+									fileTools.getSelected()) == false) {
 						Platform.runLater(new Runnable() {
 							//This is very silly, but JavaFX cannot be edited from other threads, which is annoying
 						    @Override
 						    public void run() {
-						    	fileTools.setSelected(selectedLanguage.getName());
-						    	phonologyTools.setSelected(selectedLanguage.getName());
-						    	orthographyTools.setSelected(selectedLanguage.getName());
-						    	grammarTools.setSelected(selectedLanguage.getName());
-						    	lexiconTools.setSelected(selectedLanguage.getName());
-						    	settingsTools.setSelected(selectedLanguage.getName());
+						    	fileTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
+						    	phonologyTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
+						    	orthographyTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
+						    	grammarTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
+						    	lexiconTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
+						    	settingsTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
 						    }
 						});
 					} else if (selectedLanguage == Language.NULL & fileTools.getSelected().equals("No language selected") == false) {

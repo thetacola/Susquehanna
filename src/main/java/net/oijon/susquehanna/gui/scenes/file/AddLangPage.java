@@ -8,7 +8,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.susquehanna.gui.scenes.Book;
 
 public class AddLangPage extends Book {
@@ -30,14 +31,15 @@ public class AddLangPage extends Book {
 			public void handle(ActionEvent arg0) {
 				log.info("Creating new language...");
 				Language newLang = new Language(languageName.getText());
-				newLang.setAutonym(languageAutonym.getText());
+				newLang.getProperties().setProperty(LanguageProperty.AUTONYM,
+						languageAutonym.getText());
 				try {
 					newLang.toFile(new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".language"));
 				} catch (IOException e) {
 					log.err(e.toString() + " - Could not write new language to file!");
 					e.printStackTrace();
 				}
-				log.info(newLang.getName() + " has been created!");
+				log.info(newLang.getProperties().getProperty(LanguageProperty.NAME) + " has been created!");
 			}
         	
         });

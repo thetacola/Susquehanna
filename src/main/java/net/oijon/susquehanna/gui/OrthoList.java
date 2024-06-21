@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import net.oijon.susquehanna.gui.resources.Fonts;
-import net.oijon.oling.datatypes.Orthography;
+import net.oijon.oling.datatypes.orthography.Orthography;
 
 public class OrthoList extends ScrollPane {
 

@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.language.Language;
 import net.oijon.susquehanna.App;
 
 public class PhonemeButton extends Parent {
@@ -249,7 +249,7 @@ public class PhonemeButton extends Parent {
 			public void handle(ActionEvent event) {
 				me.setInPhono(false);
 				Language lang = App.getSelectedLang();
-				lang.getPhono().remove(phoneme);
+				lang.getPhono().getList().remove(phoneme);
 				App.writeToSelectedLang();
 				refreshTable();
 			}			

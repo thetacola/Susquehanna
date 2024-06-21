@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.OrthoList;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.oling.datatypes.Language;
+import net.oijon.oling.datatypes.language.Language;
 
 public class EditOrthographyPage extends Book {
 
