@@ -1,12 +1,10 @@
 package net.oijon.susquehanna.gui.scenes.file;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.Properties;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.oijon.oling.datatypes.language.Language;
@@ -15,6 +13,8 @@ import net.oijon.susquehanna.gui.scenes.Book;
 
 public class InfoPage extends Book {
 
+
+    TextArea debug = new TextArea();
 	
 	public InfoPage() {
 		super();
@@ -47,7 +47,6 @@ public class InfoPage extends Book {
 
         Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
         Label debugInfo = new Label("Debug information:");
-        TextArea debug = new TextArea();
         debug.setText(generateDebugInfo());
         madeByOijon.setFont(opensans);
         
@@ -76,7 +75,7 @@ public class InfoPage extends Book {
 
 	@Override
 	public void refresh() {
-		
+		debug.setText(generateDebugInfo());
 	}
 	
 	private String generateDebugInfo() {
