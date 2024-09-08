@@ -6,33 +6,50 @@ import javafx.animation.FadeTransition;
 import javafx.application.Preloader;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.oijon.olog.Log;
+import javafx.scene.layout.CornerRadii;
 
 public class LoadingScreen extends Preloader {
 
 	Log log = App.getLog();
 	Stage stage;
 
+	
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		Background color = new Background(new BackgroundFill(Color.web("#064288"),
+				CornerRadii.EMPTY, Insets.EMPTY));
+		
 		this.stage = stage;
 		
 		log.debug("Starting loading screen at " + Instant.now());
 		
-		ImageView loadingImg = new ImageView(new Image(App.class.getResourceAsStream("/img/loading-screen.png")));
+		ImageView iv = new ImageView(new Image(App.class.getResourceAsStream("/img/loading-screen.png")));
 		
-		ProgressBar bar = new ProgressBar();
-		bar.setPrefWidth(640);
+		Label version = new Label();
+		version.setBackground(color);
+		version.setTextFill(Color.web("#ecca00"));
+		version.setText(SystemInfo.susquehannaVersion());
+		version.setContentDisplay(ContentDisplay.CENTER);
 		
-		VBox rootVBox = new VBox(loadingImg, bar);
+		VBox rootVBox = new VBox(iv, version);
+		rootVBox.setAlignment(Pos.BOTTOM_CENTER);
+		rootVBox.setBackground(color);
         Scene root = new Scene(rootVBox);
 		
         stage.setScene(root);
