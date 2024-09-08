@@ -1,7 +1,5 @@
 package net.oijon.susquehanna;
 
-//last edit: 6/19/24 -N3
-
 /**
  * Allows access to version numbers throughout the program.
  * 
@@ -49,6 +47,14 @@ public final class SystemInfo {
     
     public static String olingVersionNum() {
     	return net.oijon.oling.info.Info.getVersionNum();
+    }
+    
+    public static String ologVersion() {
+    	return net.oijon.olog.info.Info.getVersion();
+    }
+    
+    public static String ologVersionNum() {
+    	return net.oijon.olog.info.Info.getVersionNum();
     }
         
     
