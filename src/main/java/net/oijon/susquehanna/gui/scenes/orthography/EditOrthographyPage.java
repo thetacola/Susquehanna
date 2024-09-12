@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.OrthoList;
+import net.oijon.susquehanna.gui.components.OrthoList;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.oling.datatypes.language.Language;
 

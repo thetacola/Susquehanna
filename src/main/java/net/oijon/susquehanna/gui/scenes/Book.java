@@ -1,8 +1,13 @@
 package net.oijon.susquehanna.gui.scenes;
 
 import java.io.InputStream;
+
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,17 +38,15 @@ public abstract class Book extends HBox {
 	protected ScrollPane leftScroll = new ScrollPane();
 	protected ScrollPane rightScroll = new ScrollPane();
 	
+	private BackgroundImage paperImage = new BackgroundImage(new Image(Book.class.getResourceAsStream("/img/paper-texture.png")),
+			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+			stretchToFit);
+	private Background paperBackground = new Background(paperImage);
 	
 	/**
 	 * Creates an empty book, with default background
 	 */
-	@SuppressWarnings("static-access")
 	public Book() {
-		
-		 BackgroundImage paperImage = new BackgroundImage(new Image(Book.class.getResourceAsStream("/img/paper-texture.png")),
-					BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-					stretchToFit);
-		    Background paperBackground = new Background(paperImage);
 		
 		leftPage.setBackground(paperBackground);
 		rightPage.setBackground(paperBackground);
@@ -117,6 +120,46 @@ public abstract class Book extends HBox {
 		// should also make sure that Java properly shows changes
 		// I know that this is most likely pass-by-reference, but JavaFX is a bit funky
 		this.getChildren().clear();
+		
+		Task<Parent> createBook = new Task<Parent>() {
+
+			@Override
+			protected Parent call() throws Exception {
+				HBox loadedData = new HBox();
+				loadedData.getChildren().addAll(makeLeftPages(), leftScroll, makeBinding(),
+						rightScroll, makeRightPages());
+				Book.setHgrow(leftScroll, Priority.ALWAYS);
+				Book.setHgrow(rightScroll, Priority.ALWAYS);
+				return loadedData;
+			}
+			
+		};
+		
+		ProgressBar leftBar = new ProgressBar();
+		leftBar.progressProperty().bind(createBook.progressProperty());
+		Label leftStatus = new Label();
+		leftStatus.textProperty().bind(createBook.messageProperty());
+		
+		VBox leftPlaceholder = new VBox();
+		leftPlaceholder.getChildren().addAll(leftBar, leftStatus);
+		
+		ProgressBar rightBar = new ProgressBar();
+		rightBar.progressProperty().bind(createBook.progressProperty());
+		Label rightStatus = new Label();
+		rightStatus.textProperty().bind(createBook.messageProperty());
+		
+		VBox rightPlaceholder = new VBox();
+		rightPlaceholder.getChildren().addAll(leftBar, leftStatus);
+		
+		leftPlaceholder.setBackground(paperBackground);
+		rightPlaceholder.setBackground(paperBackground);
+		
+		leftPlaceholder.setAlignment(Pos.CENTER);
+		rightPlaceholder.setAlignment(Pos.CENTER);
+        
+		leftPlaceholder.setPrefWidth(400);
+        rightPlaceholder.setPrefWidth(400);  
+		
 		this.getChildren().addAll(makeLeftPages(), leftScroll, makeBinding(),
 				rightScroll, makeRightPages());
 		Book.setHgrow(leftScroll, Priority.ALWAYS);

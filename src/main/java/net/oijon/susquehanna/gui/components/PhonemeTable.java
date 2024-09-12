@@ -1,8 +1,6 @@
-package net.oijon.susquehanna.gui;
+package net.oijon.susquehanna.gui.components;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.regex.Pattern;
 
 import javafx.geometry.Pos;
@@ -10,14 +8,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import net.oijon.oling.datatypes.phonology.PhonoCategory;
 import net.oijon.oling.datatypes.phonology.PhonoSystem;
 import net.oijon.oling.datatypes.phonology.PhonoTable;
 import net.oijon.oling.datatypes.phonology.Phonology;
 
-public class PhonemeTable extends Parent {
+public class PhonemeTable extends Parent implements Runnable {
 	
 	private Phonology p;
 	private VBox container;
@@ -27,7 +24,7 @@ public class PhonemeTable extends Parent {
 	
 	public PhonemeTable(Phonology p) {
 		this.p = p;
-		build();
+		run();
 	}
 	
 	public PhonemeTable(Phonology p, boolean isEditable) {
@@ -39,7 +36,7 @@ public class PhonemeTable extends Parent {
 	
 	public void refresh() {
 		for (int i = 0; i < tableList.size(); i++) {
-			tableList.set(i, generateTable(p.getPhonoSystem().getTables().get(i), p));
+			tableList.set(i, generateTable(p.getPhonoSystem().getTables().get(i)));
 		}
 	}
 	
@@ -51,7 +48,7 @@ public class PhonemeTable extends Parent {
 	private void generateFromPhonosys() {
 		PhonoSystem ps = p.getPhonoSystem();
 		for (int i = 0; i < ps.getTables().size(); i++) {
-			tableList.add(generateTable(ps.getTables().get(i), p));
+			tableList.add(generateTable(ps.getTables().get(i)));
 		}
 	}
 	
@@ -63,8 +60,7 @@ public class PhonemeTable extends Parent {
 		this.getChildren().add(container);
 	}
 	
-	private GridPane generateTable(PhonoTable pt, Phonology p) {
-		GridPane gp = new GridPane();
+	private GridPane generateLabels(PhonoTable pt, GridPane gp) {
 		// top labels
 		for (int i = 0; i < pt.getColumnNames().size(); i++) {
 			Label l = new Label(pt.getColumnNames().get(i));
@@ -77,71 +73,92 @@ public class PhonemeTable extends Parent {
 			GridPane.setColumnIndex(l, i + 1);
 			gp.getChildren().add(l);
 		}
-		// generate diacritic regex match string
+		return gp;
+	}
+	
+	private String generateDiacriticRegex() {
 		String diacriticRegex = "[";
 		for (int i = 0; i < p.getPhonoSystem().getDiacritics().size(); i++) {
 			diacriticRegex += p.getPhonoSystem().getDiacritics().get(i);
 		}
 		diacriticRegex += "]*";
+		return diacriticRegex;
+	}
+	
+	private ArrayList<String> findPhonemes(String query) {		
+		ArrayList<String> foundPhonemes = new ArrayList<String>();
+		String diacriticRegex = generateDiacriticRegex();
 		
-		for (int i = 0; i < pt.size(); i++) {
-			Label label = new Label(pt.getRow(i).getName());
-			// TODO: this text also does not align correctly
-			label.setAlignment(Pos.CENTER_RIGHT);
-			GridPane.setRowIndex(label, i + 1);
-			GridPane.setColumnIndex(label, 0);
-			PhonoCategory row = pt.getRow(i);
-			gp.getChildren().add(label);
-			// cell is needed as, although phonosystems have a predictable amount of sounds per category, phonologies do not
-			Queue<PhonemeButton> thingsToAdd = new LinkedList<PhonemeButton>();
-			int colIndicator = 1;
-			for (int j = 0; j < row.size(); j++) {
-				String sound = row.getSound(j);
-				if (!sound.equals("*") & !sound.equals("#")) {
-					PhonemeButton pb = new PhonemeButton(row.getSound(j), this, isEditable);
-					// search through phonology, mark as in phono if found, and add as many as
-					// appear in phono
-					Queue<PhonemeButton> addPerSound = new LinkedList<PhonemeButton>();
-					for (int k = 0; k < p.getList().size(); k++) {
-						String phoneme = p.getList().get(k);
-						String firstNonDiacriticChar = Character.toString(phoneme.replace(diacriticRegex, "").charAt(0));
-						if (phoneme.equals(sound)) {
-							if (pb.isInPhono()) {
-								PhonemeButton newPb = new PhonemeButton(pb);
-								addPerSound.add(newPb);
-							} else {
-								pb.setInPhono(true);
-							}
-						} else if (Pattern.matches(diacriticRegex + sound + diacriticRegex, phoneme)  || firstNonDiacriticChar.equals(sound)) {
-							PhonemeButton newPb = new PhonemeButton(phoneme, this, isEditable);
-							newPb.setInPhono(true);
-							addPerSound.add(newPb);
-						}
-					}
-					thingsToAdd.add(pb);
-					while (addPerSound.size() > 0) {
-						thingsToAdd.add(addPerSound.poll());
-					}
-				} else {
-					PhonemeButton pb = new PhonemeButton("");
-					pb.getMainButton().setDisable(true);
-					thingsToAdd.add(pb);
-				}
-				if ((j + 1) % pt.dataPerCell() == 0) {
-					HBox cell = new HBox();
-					while (thingsToAdd.size() > 0) {
-						PhonemeButton pb = thingsToAdd.poll();
-						HBox.setHgrow(pb, Priority.ALWAYS);
-						cell.getChildren().add(pb);
-					}
-					GridPane.setRowIndex(cell, i + 1);
-					GridPane.setColumnIndex(cell, colIndicator);
-					gp.getChildren().add(cell);
-					colIndicator++;
-				}
+		for (int i = 0; i < p.getList().size(); i++) {
+			if (Pattern.matches(diacriticRegex + query + diacriticRegex, p.getList().get(i)) ) {
+				foundPhonemes.add(p.getList().get(i));
 			}
 		}
+		return foundPhonemes;
+	}
+	
+	private GridPane generateRow(PhonoCategory pw, GridPane gp) {
+		int rowIndex = gp.getRowCount();
+		
+		// label
+		Label label = new Label(pw.getName());
+		// TODO: this text also does not align correctly
+		label.setAlignment(Pos.CENTER_RIGHT);
+		GridPane.setRowIndex(label, rowIndex);
+		GridPane.setColumnIndex(label, 0);
+		gp.getChildren().add(label);
+		
+		for (int i = 0; i < pw.size(); i++) {
+			HBox cell = new HBox();
+			// filter out blanks
+			if (!pw.getSound(i).equals("#") & !pw.getSound(i).equals("*")) {
+				// find phonemes in phonology, and mark them
+				ArrayList<String> phonemesInCell = findPhonemes(pw.getSound(i));
+				if (phonemesInCell.size() > 0) {
+					for (int j = 0; j < phonemesInCell.size(); j++) {
+						PhonemeButton pb = new PhonemeButton(phonemesInCell.get(j), this, isEditable);
+						pb.setInPhono(true);
+						cell.getChildren().add(pb);
+					}
+				} else {
+					PhonemeButton pb = new PhonemeButton(pw.getSound(i), this, isEditable);
+					pb.getMainButton().setDisable(true);
+					cell.getChildren().add(pb);
+				}
+			} else {
+				PhonemeButton pb = new PhonemeButton("", this, false);
+				cell.getChildren().add(pb);
+			}
+			GridPane.setRowIndex(cell, rowIndex);
+			GridPane.setColumnIndex(cell, i + 1);
+			gp.getChildren().add(cell);
+		}
+		
+		
 		return gp;
+	}
+	
+	private GridPane generateTable(PhonoTable pt) {
+		GridPane gp = new GridPane();
+		gp.setAlignment(Pos.CENTER);
+
+		gp = generateLabels(pt, gp);
+		
+		String[] phonoList = new String[p.getList().size()];
+		for (int i = 0; i < p.getList().size(); i++) {
+			phonoList[i] = new String(p.getList().get(i));
+		}
+		
+		for (int i = 0; i < pt.size(); i++) {
+			gp = generateRow(pt.getRow(i), gp);
+		}
+		
+		return gp;
+	}
+
+	@Override
+	public void run() {
+		build();
 	}
 
 }

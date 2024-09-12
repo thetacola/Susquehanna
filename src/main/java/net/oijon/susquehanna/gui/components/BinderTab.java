@@ -1,4 +1,4 @@
-package net.oijon.susquehanna.gui;
+package net.oijon.susquehanna.gui.components;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

@@ -12,7 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.WordDisplay;
+import net.oijon.susquehanna.gui.components.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.oling.datatypes.lexicon.Word;

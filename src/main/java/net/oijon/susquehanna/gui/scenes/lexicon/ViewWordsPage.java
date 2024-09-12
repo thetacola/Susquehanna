@@ -2,7 +2,7 @@ package net.oijon.susquehanna.gui.scenes.lexicon;
 
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.WordDisplay;
+import net.oijon.susquehanna.gui.components.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.oling.datatypes.language.Language;
 
