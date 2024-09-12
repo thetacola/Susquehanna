@@ -35,6 +35,12 @@ public class ViewOrthographyPage extends Book {
 			buildNonVisible();
 		}
 	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
+		refresh();
+	}
 
 	private boolean hasViewableOrtho() {
 		if (App.getSelectedLang().equals(Language.NULL)) {
