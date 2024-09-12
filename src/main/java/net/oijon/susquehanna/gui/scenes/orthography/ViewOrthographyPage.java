@@ -13,6 +13,7 @@ import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.components.OrthoList;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.oling.datatypes.orthography.Guesser;
 
@@ -20,6 +21,8 @@ public class ViewOrthographyPage extends Book {
 
 	public ViewOrthographyPage() {
 		super();
+		id = "ortho.view";
+		toolbox = new OrthographyTools();
 		refresh();
 	}
 	

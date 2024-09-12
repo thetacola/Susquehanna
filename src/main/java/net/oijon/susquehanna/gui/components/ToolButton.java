@@ -1,5 +1,7 @@
 package net.oijon.susquehanna.gui.components;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,13 +10,10 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
-
-//last edit: 6/25/23 -N3
 
 /**
  * Creates a button designed to work with the Toolbox
@@ -42,20 +41,21 @@ public class ToolButton extends Button {
         createActions();
 	}
 	/**
-	 * Crea
-	 * @param container
-	 * @param book
+	 * Sets the book that this button should transfer the main stage to
+	 * @param book The book to be changed to when this button is pressed
 	 */
-	@SuppressWarnings("static-access")
-	public void createTransferAction(HBox container, Book book) {
+	public void createTransferAction(String id) {
 		this.setOnAction(new EventHandler<ActionEvent>() {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		container.getChildren().clear();
-        		container.getChildren().add(book);
-        		container.setHgrow(book, Priority.ALWAYS);
-        		book.refresh();
+        		ArrayList<Book> books = App.getSceneList();
+        		for (int i = 0; i < books.size(); i++) {
+        			if (books.get(i).getID().equals(id)) {
+        				App.setScene(books.get(i));
+        				break;
+        			}
+        		}
         	}
         });
 	}

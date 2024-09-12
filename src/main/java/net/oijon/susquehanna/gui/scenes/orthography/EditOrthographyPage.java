@@ -13,12 +13,15 @@ import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.components.OrthoList;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.oling.datatypes.language.Language;
 
 public class EditOrthographyPage extends Book {
 
 	public EditOrthographyPage() {
 		super();
+		id = "ortho.edit";
+		toolbox = new OrthographyTools();
 		refresh();
 	}
 	

@@ -9,7 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.susquehanna.SystemInfo;
+import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.FileTools;
 
 public class InfoPage extends Book {
 
@@ -18,22 +20,25 @@ public class InfoPage extends Book {
 	
 	public InfoPage() {
 		super();
+		id = "file.info";
+		toolbox = new FileTools();
+		
 		Label javaVersionLabel = new Label("Java - " + System.getProperty("java.version"));
-        javaVersionLabel.setFont(opensans);
+        javaVersionLabel.setFont(Fonts.OPENSANS);
         Label javaFXVersionLabel = new Label("JavaFX - " + System.getProperty("javafx.runtime.version"));
-        javaFXVersionLabel.setFont(opensans);
+        javaFXVersionLabel.setFont(Fonts.OPENSANS);
         Label jcolorVersionLabel = new Label("JColor - v5.5.1");
-        jcolorVersionLabel.setFont(opensans);
+        jcolorVersionLabel.setFont(Fonts.OPENSANS);
         Label olingVersionLabel = new Label(SystemInfo.olingVersion());
-        olingVersionLabel.setFont(opensans);
+        olingVersionLabel.setFont(Fonts.OPENSANS);
         Label ologVersionLabel = new Label(SystemInfo.ologVersion());
-        ologVersionLabel.setFont(opensans);
+        ologVersionLabel.setFont(Fonts.OPENSANS);
         Label opennlpVersionLabel = new Label("OpenNLP Tools - v1.8.4");
-        opennlpVersionLabel.setFont(opensans);
+        opennlpVersionLabel.setFont(Fonts.OPENSANS);
         Label otimeVersionLabel = new Label("OTime - v0.0.1");
-        otimeVersionLabel.setFont(opensans);
+        otimeVersionLabel.setFont(Fonts.OPENSANS);
         Label versionLabel = new Label("Version " + SystemInfo.susquehannaVersion());
-        versionLabel.setFont(opensans);
+        versionLabel.setFont(Fonts.OPENSANS);
         
         ImageView susquehannalogo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/icon.png")));
         ImageView oijonLogo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/oijon.png")));
@@ -48,7 +53,7 @@ public class InfoPage extends Book {
         Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
         Label debugInfo = new Label("Debug information:");
         debug.setText(generateDebugInfo());
-        madeByOijon.setFont(opensans);
+        madeByOijon.setFont(Fonts.OPENSANS);
         
         addToLeft(susquehannalogo);
         addToLeft(versionLabel);

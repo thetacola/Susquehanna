@@ -1,20 +1,16 @@
 package net.oijon.susquehanna.gui.components;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.Toolbox;
 
 public class BinderTab extends Button {
 
@@ -30,21 +26,19 @@ public class BinderTab extends Button {
         this.setBackground(null);
 	}
 	
-	@SuppressWarnings("static-access")
-	public void createTransferAction(HBox bookContainer, Book book,
-			HBox toolContainer, Toolbox tools, ImageView leftIndicator, VBox rightIndicator) {
+	public void createTransferAction(String id) {
 		this.setOnAction(new EventHandler<ActionEvent>() {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		bookContainer.getChildren().clear();
-        		bookContainer.getChildren().add(book);
-        		toolContainer.getChildren().clear();
-        		toolContainer.getChildren().add(tools);
-        		bookContainer.setHgrow(book, Priority.ALWAYS);
-        		leftIndicator.setImage(getIndicatorImage());
-        		rightIndicator.setBackground(getIndicatorBackground());
-        		book.refresh();
+        		ArrayList<Book> books = App.getSceneList();
+        		for (int i = 0; i < books.size(); i++) {
+        			String bookID = books.get(i).getID();
+        			if (bookID.equals(id)) {
+        				App.setScene(books.get(i));
+        				break;
+        			}
+        		}
         	}
         });
 	}
@@ -68,19 +62,5 @@ public class BinderTab extends Button {
 			fileName += currentChar;
 		}
 		return fileName;
-	}
-	
-	private Image getIndicatorImage() {
-		String fileName = "/img/";
-		fileName += name;
-		fileName += "-bar.png";
-		return new Image(BinderTab.class.getResourceAsStream(fileName));
-	}
-	
-	private Background getIndicatorBackground() {
-		BackgroundImage bgImg = new BackgroundImage(getIndicatorImage(),
-	    		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-		          	BackgroundSize.DEFAULT);
-	    return new Background(bgImg);
 	}
 }

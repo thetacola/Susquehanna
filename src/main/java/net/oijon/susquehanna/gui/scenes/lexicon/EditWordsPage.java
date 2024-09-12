@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.components.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.LexiconTools;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.oling.datatypes.lexicon.Word;
 import net.oijon.oling.datatypes.lexicon.WordProperty;
@@ -22,6 +23,8 @@ public class EditWordsPage extends Book {
 
 	public EditWordsPage() {
 		super();
+		id = "lexicon.edit";
+		toolbox = new LexiconTools();
 		refresh();
 		Label wordLabel = new Label("Word: ");
 		TextField wordInput = new TextField();
@@ -95,6 +98,12 @@ public class EditWordsPage extends Book {
 		addToLeft(sourceLanguageLabel);
 		addToLeft(sourceLanguageInput);
 		addToLeft(addWord);
+	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
+		refresh();
 	}
 	
 	@Override

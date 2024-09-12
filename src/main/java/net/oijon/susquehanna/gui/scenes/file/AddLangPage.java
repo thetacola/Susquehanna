@@ -10,18 +10,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.oling.datatypes.language.LanguageProperty;
+import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.FileTools;
 
 public class AddLangPage extends Book {
 
 	public AddLangPage() {
 		super();
+		id = "file.add";
+		toolbox = new FileTools();
 		
 		Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
-	    languageNameLabel.setFont(opensans);
+	    languageNameLabel.setFont(Fonts.OPENSANS);
 	    TextField languageName = new TextField();
 	    Label languageAutonymLabel = new Label("Language Autonym");
-	    languageAutonymLabel.setFont(opensans);
+	    languageAutonymLabel.setFont(Fonts.OPENSANS);
 	    TextField languageAutonym = new TextField();
 	    Button createLanguage = new Button("Create!");
 	    

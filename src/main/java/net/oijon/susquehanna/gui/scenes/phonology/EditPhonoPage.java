@@ -5,13 +5,23 @@ import java.time.Instant;
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.components.PhonemeTable;
+import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.OnePageBook;
+import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 import net.oijon.oling.datatypes.language.Language;
 
 public class EditPhonoPage extends OnePageBook {
 
 	public EditPhonoPage() {
 		super();
+		id = "phono.edit";
+		toolbox = new PhonologyTools();
+		refresh();
+	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
 		refresh();
 	}
 	
@@ -30,6 +40,7 @@ public class EditPhonoPage extends OnePageBook {
 		clear();
 		
 		Label phonoLabel = new Label("Phonology");
+		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
 		PhonemeTable table = new PhonemeTable(App.getSelectedLang().getPhono(), true);
 		
 		addToLeft(phonoLabel);

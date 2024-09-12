@@ -36,6 +36,10 @@ public class Backgrounds {
 			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 			STRETCH_TO_FIT_SIZE);
     
+	private static BackgroundImage emptyBarImage = new BackgroundImage(new Image(Backgrounds.class.getResourceAsStream("/img/empty-bar.png")),
+			BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+			BackgroundSize.DEFAULT);
+	
 	private static BackgroundImage fileBarImage = new BackgroundImage(new Image(Backgrounds.class.getResourceAsStream("/img/file-bar.png")),
     		BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
 	          	BackgroundSize.DEFAULT);
@@ -79,6 +83,7 @@ public class Backgrounds {
     public static Background RIGHTWOOD = new Background(rightPlankImage);
     public static Background PAPER = new Background(paperImage);
     public static Background PAD = new Background(padImage);
+    public static Background EMPTYTOOLS = new Background(emptyBarImage);
     public static Background FILETOOLS = new Background(fileBarImage);
     public static Background PHONOLOGYTOOLS = new Background(phonologyBarImage);
     public static Background ORTHOGRAPHYTOOLS = new Background(orthographyBarImage);

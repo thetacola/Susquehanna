@@ -6,11 +6,20 @@ import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.components.PhonemeTable;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.OnePageBook;
+import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 
 public class ViewPhonoPage extends OnePageBook {
 
 	public ViewPhonoPage() {
 		super();
+		id = "phono.view";
+		toolbox = new PhonologyTools();
+		refresh();
+	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
 		refresh();
 	}
 	
