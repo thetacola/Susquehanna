@@ -2,8 +2,6 @@ package net.oijon.susquehanna.gui.toolboxes;
 
 import net.oijon.susquehanna.gui.components.ToolButton;
 import net.oijon.susquehanna.gui.resources.Backgrounds;
-import net.oijon.susquehanna.gui.scenes.lexicon.EditWordsPage;
-import net.oijon.susquehanna.gui.scenes.lexicon.ViewWordsPage;
 
 public class LexiconTools extends Toolbox {
 

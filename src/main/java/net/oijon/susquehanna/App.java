@@ -15,6 +15,7 @@ import net.oijon.olog.Log;
 import net.oijon.susquehanna.gui.Navbox;
 import net.oijon.susquehanna.gui.resources.Backgrounds;
 import net.oijon.susquehanna.gui.resources.Indicator;
+import net.oijon.susquehanna.gui.scenes.BlankPage;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.scenes.file.AddLangPage;
 import net.oijon.susquehanna.gui.scenes.file.InfoPage;
@@ -27,6 +28,9 @@ import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
+import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
+import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,19 +72,45 @@ public class App extends Application {
     		log.err("IPA phonology system could not be verified!");
     	}
         
-    	log.debug("Loading scenes...");
+    	log.info("Loading scenes...");
+    	// Create blank placeholders
+    	BlankPage phonotactics = new BlankPage();
+    	phonotactics.setID("phono.phonotactics");
+    	phonotactics.setToolbox(new PhonologyTools());
+    	
+    	BlankPage script = new BlankPage();
+    	script.setID("ortho.script");
+    	script.setToolbox(new OrthographyTools());
+    	
+    	BlankPage grammar = new BlankPage();
+    	grammar.setID("grammar.null");
+    	
+    	BlankPage settings = new BlankPage();
+    	settings.setID("settings.null");
     	// Book instanciation
+    	// Has the nice side effect of preloading everything, so no lag when switching scenes :D
+    	// file
     	books.add(new InfoPage());
     	books.add(new AddLangPage());
     	books.add(new OpenLangPage());
     	books.add(new ReportBugPage());
+    	// phono
     	books.add(new EditPhonoPage());
     	books.add(new ViewPhonoPage());
+    	books.add(phonotactics);
+    	// ortho
     	books.add(new EditOrthographyPage());
     	books.add(new ViewOrthographyPage());
+    	books.add(script);
+    	// grammar
+    	books.add(grammar);
+    	// lexicon
     	books.add(new EditWordsPage());
     	books.add(new ViewWordsPage());
-    	log.debug("Loaded " + books.size() + " scenes!");
+    	// settings
+    	books.add(settings);
+    	
+    	log.info("Loaded " + books.size() + " scenes!");
     	
         ImageView indicator = Indicator.FILE;
         VBox rightIndicator = new VBox(indicator);

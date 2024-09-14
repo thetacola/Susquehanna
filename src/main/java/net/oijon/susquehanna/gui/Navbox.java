@@ -39,7 +39,9 @@ public class Navbox extends ScrollPane {
     	fileButton.createTransferAction("file.info");
     	phonologyButton.createTransferAction("phono.view");
     	orthographyButton.createTransferAction("ortho.view");
+    	grammarButton.createTransferAction("grammar.null");
     	lexiconButton.createTransferAction("lexicon.view");
+    	settingsButton.createTransferAction("settings.null");
 	}
 	
 }
