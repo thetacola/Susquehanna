@@ -177,6 +177,10 @@ public abstract class Book extends Scene {
 		return id;
 	}
 	
+	public HBox getMainHBox() {
+		return root;
+	}
+	
 	/**
 	 * Refreshes the content on both pages. Some Books do not need this.
 	 */

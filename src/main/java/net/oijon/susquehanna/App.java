@@ -1,18 +1,15 @@
 package net.oijon.susquehanna;
 
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 import net.oijon.oling.datatypes.language.Language;
-import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.oling.datatypes.phonology.PhonoSystem;
 import net.oijon.olog.Log;
 import net.oijon.susquehanna.gui.Navbox;
@@ -30,13 +27,11 @@ import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
-import net.oijon.susquehanna.gui.toolboxes.Toolbox;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//last edit: 9/12/24 -N3
+//last edit: 9/14/24 -N3
 
 
 /**
@@ -126,11 +121,40 @@ public class App extends Application {
 		// TODO: change to loading scene, then change to actual scene once finished loading
 		if (s instanceof Book) {
 			Book b = (Book) s;
+			
+			// prevents flashing between scenes
+			// getting the stage size includes the window decorations, so
+			// if that was used instead, each scene would grow a little bit on switch
+			Scene oldScene = stage.getScene();
+			HBox hbox = b.getMainHBox();
+			hbox.setPrefHeight(oldScene.getHeight());
+			hbox.setPrefWidth(oldScene.getWidth());
+			
 			Navbox nb = b.getNavbox();
 			nb.createTransferActions();
 		}
 		
 		stage.setScene(s);
+	}
+	
+	public static void refreshPhonology() {
+		refreshType("phono");
+	}
+	
+	public static void refreshOrthography() {
+		refreshType("ortho");
+	}
+	
+	public static void refreshLexicon() {
+		refreshType("lexicon");
+	}
+	
+	public static void refreshType(String type) {
+		for (int i = 0; i < books.size(); i++) {
+			if (books.get(i).getID().startsWith(type)) {
+				books.get(i).refresh();
+			}
+		}
 	}
 	
     /**

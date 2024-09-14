@@ -87,7 +87,7 @@ public class EditOrthographyPage extends Book {
 				}
 				phonemes.clear();
 				graphemes.clear();
-				refresh();
+				App.refreshOrthography();
 			}
 			
 		});

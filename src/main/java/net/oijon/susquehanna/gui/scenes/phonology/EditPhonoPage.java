@@ -1,7 +1,5 @@
 package net.oijon.susquehanna.gui.scenes.phonology;
 
-import java.time.Instant;
-
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.components.PhonemeTable;
@@ -27,13 +25,11 @@ public class EditPhonoPage extends OnePageBook {
 	
 	@Override
 	public void refresh() {
-		log.debug("Started loading edit phono page at " + Instant.now());
 		if (hasViewablePhono()) {
 			buildViewable();
 		} else {
 			buildNonViewable();
 		}
-		log.debug("Finished loading edit phono page at " + Instant.now());
 	}
 
 	private void buildViewable() {
