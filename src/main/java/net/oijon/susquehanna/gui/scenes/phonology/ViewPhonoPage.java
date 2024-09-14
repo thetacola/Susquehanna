@@ -10,26 +10,32 @@ import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 
 public class ViewPhonoPage extends OnePageBook {
 
+	PhonemeTable table;
+	
 	public ViewPhonoPage() {
 		super();
 		id = "phono.view";
 		toolbox = new PhonologyTools();
-		refresh();
+		refreshOnNewTable();
 	}
 	
 	@Override
 	public void updateOnLanguageChange() {
 		super.updateOnLanguageChange();
-		refresh();
+		refreshOnNewTable();
 	}
 	
 	@Override
 	public void refresh() {
+		table.refresh();
+	}
+	
+	public void refreshOnNewTable() {
 		if (hasViewablePhono()) {
 			buildViewable();
 		} else {
 			buildNonViewable();
-		}		
+		}
 	}
 
 	/**
@@ -40,11 +46,10 @@ public class ViewPhonoPage extends OnePageBook {
 		
 		Label phonoLabel = new Label("Phonology");
 		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
-		PhonemeTable testTable = new PhonemeTable(App.getSelectedLang().getPhono(), false);
-		//PHOSYSTable table = new PHOSYSTable(App.getSelectedLang(), App.getCurrentFile());
+		table = new PhonemeTable(App.getSelectedLang().getPhono(), false);
 		
 		addToLeft(phonoLabel);
-		addToLeft(testTable);
+		addToLeft(table);
 	}
 	
 	/**

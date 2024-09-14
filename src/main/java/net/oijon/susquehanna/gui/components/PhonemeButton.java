@@ -37,6 +37,7 @@ public class PhonemeButton extends Parent {
 	
 	public PhonemeButton (PhonemeButton pb) {
 		this.phoneme = pb.phoneme;
+		this.pt = pb.pt;
 		this.isEditable = pb.isEditable;
 		this.inPhono = pb.inPhono;
 		build();
@@ -182,13 +183,15 @@ public class PhonemeButton extends Parent {
 	}
 	
 	public void setInPhono(boolean inPhono) {
-		this.inPhono = inPhono;
-		if (inPhono == true) {
-			phonemeButton.setStyle("-fx-base: #00AA00;");
-			actionButtons.getChildren().addAll(edit, trash);
-		} else {
-			phonemeButton.setStyle("");
-			actionButtons.getChildren().removeAll(edit, trash);
+		if (this.inPhono != inPhono) {
+			this.inPhono = inPhono;
+			if (inPhono == true) {
+				phonemeButton.setStyle("-fx-base: #00AA00;");
+				actionButtons.getChildren().addAll(edit, trash);
+			} else {
+				phonemeButton.setStyle("");
+				actionButtons.getChildren().removeAll(edit, trash);
+			}
 		}
 	}
 	
@@ -219,7 +222,7 @@ public class PhonemeButton extends Parent {
 				Language lang = App.getSelectedLang();
 				lang.getPhono().add(phoneme);
 				App.writeToSelectedLang();
-				refreshTable();
+				App.refreshType("phono");
 			}
 		});
 		VBox.setMargin(add, Insets.EMPTY);
@@ -234,7 +237,7 @@ public class PhonemeButton extends Parent {
 				final PhonemeEditPopup popup = new PhonemeEditPopup(phoneme, pt);
                 popup.show();
                 App.writeToSelectedLang();
-        		refreshTable();
+                App.refreshType("phono");
 			}
 		});
 		VBox.setMargin(edit, Insets.EMPTY);
@@ -251,16 +254,10 @@ public class PhonemeButton extends Parent {
 				Language lang = App.getSelectedLang();
 				lang.getPhono().getList().remove(phoneme);
 				App.writeToSelectedLang();
-				refreshTable();
+				App.refreshType("phono");
 			}			
 		});
 		VBox.setMargin(trash, Insets.EMPTY);
-	}
-	
-	private void refreshTable() {
-		if (pt != null) {
-			pt.refresh();
-		}
 	}
 	
 	

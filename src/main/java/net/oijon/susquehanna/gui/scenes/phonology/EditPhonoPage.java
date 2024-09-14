@@ -10,21 +10,27 @@ import net.oijon.oling.datatypes.language.Language;
 
 public class EditPhonoPage extends OnePageBook {
 
+	PhonemeTable table;
+	
 	public EditPhonoPage() {
 		super();
 		id = "phono.edit";
 		toolbox = new PhonologyTools();
-		refresh();
+		refreshOnNewTable();
 	}
 	
 	@Override
 	public void updateOnLanguageChange() {
 		super.updateOnLanguageChange();
-		refresh();
+		refreshOnNewTable();
 	}
 	
 	@Override
 	public void refresh() {
+		table.refresh();
+	}
+	
+	public void refreshOnNewTable() {
 		if (hasViewablePhono()) {
 			buildViewable();
 		} else {
@@ -37,7 +43,7 @@ public class EditPhonoPage extends OnePageBook {
 		
 		Label phonoLabel = new Label("Phonology");
 		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
-		PhonemeTable table = new PhonemeTable(App.getSelectedLang().getPhono(), true);
+		table = new PhonemeTable(App.getSelectedLang().getPhono(), true);
 		
 		addToLeft(phonoLabel);
 		addToLeft(table);

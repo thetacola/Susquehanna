@@ -16,12 +16,10 @@ import net.oijon.susquehanna.App;
 public class PhonemeEditPopup extends Stage {
 
 	private String phoneme = "";
-	private PhonemeTable pt;
 	
 	public PhonemeEditPopup(String phoneme, PhonemeTable pt) {
 		this.phoneme = phoneme;
-		this.pt = pt;
-		initPopup();
+		initPopup(pt);
 	}
 	
 	public String getPhoneme() {
@@ -32,7 +30,7 @@ public class PhonemeEditPopup extends Stage {
 		this.phoneme = phoneme;
 	}
 	
-	private void initPopup() {
+	private void initPopup(PhonemeTable pt) {
 		this.initModality(Modality.APPLICATION_MODAL);
 		this.initOwner(App.getStage());
 		this.setTitle("Changing phoneme: " + phoneme);
@@ -45,7 +43,6 @@ public class PhonemeEditPopup extends Stage {
         Button submitButton = new Button("Submit");
         submitButton.setDefaultButton(true);
         // used to make popup close properly on submit
-        @SuppressWarnings("unused")
 		PhonemeEditPopup popup = this;
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
@@ -53,13 +50,11 @@ public class PhonemeEditPopup extends Stage {
         		Language lang = App.getSelectedLang();
         		Phonology p = lang.getPhono();
         		String newPhoneme = submitArea.getText();
-        		if (p.getPhonoSystem().contains(newPhoneme) & !newPhoneme.isBlank()) {
-        			p.getList().remove(phoneme);
-        			p.add(submitArea.getText());
-        		}
+        		p.getList().remove(phoneme);
+    			p.add(newPhoneme);
         		App.writeToSelectedLang();
-        		pt.refresh();
-        		popup.close();            
+        		popup.close();
+        		App.refreshType("phono");
         	}
         });
         bottomBar.getChildren().addAll(submitArea, submitButton);
