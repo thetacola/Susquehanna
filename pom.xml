@@ -193,7 +193,8 @@
 						</goals>
 						<configuration>
 							<headerType>gui</headerType>
-							<outfile>target/susquehanna.exe</outfile>
+							<icon>logo.ico</icon>
+							<outfile>target/Susquehanna.exe</outfile>
 							<jar>target/Susquehanna-${project.version}.jar</jar>
 							<errTitle>Susquehanna</errTitle>
 							<classPath>
@@ -212,7 +213,7 @@
 								<txtProductVersion>Susquehanna - v${project.version}</txtProductVersion>
 								<productName>Susquehanna</productName>
 								<internalName>susquehanna</internalName>
-								<originalFilename>susquehanna.exe</originalFilename>
+								<originalFilename>Susquehanna.exe</originalFilename>
 							</versionInfo>
 							<messages>
 								<jreVersionErr>JRE 11 or later was not found, and is required to run this application. Please download the latest version from https://www.oracle.com/java/technologies/downloads</jreVersionErr>
