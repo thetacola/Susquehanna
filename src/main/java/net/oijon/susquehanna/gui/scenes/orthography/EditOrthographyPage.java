@@ -11,14 +11,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.OrthoList;
+import net.oijon.susquehanna.gui.components.OrthoList;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.oling.datatypes.language.Language;
 
 public class EditOrthographyPage extends Book {
 
 	public EditOrthographyPage() {
 		super();
+		id = "ortho.edit";
+		toolbox = new OrthographyTools();
 		refresh();
 	}
 	
@@ -30,6 +33,12 @@ public class EditOrthographyPage extends Book {
 		} else {
 			buildNonVisible();
 		}
+	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
+		refresh();
 	}
 
 	private boolean hasViewableOrtho() {
@@ -78,7 +87,7 @@ public class EditOrthographyPage extends Book {
 				}
 				phonemes.clear();
 				graphemes.clear();
-				refresh();
+				App.refreshType("ortho");
 			}
 			
 		});

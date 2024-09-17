@@ -1,35 +1,22 @@
 package net.oijon.susquehanna;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.application.Preloader.PreloaderNotification;
-import javafx.application.Preloader.ProgressNotification;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.oijon.oling.datatypes.language.Language;
-import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.oling.datatypes.phonology.PhonoSystem;
 import net.oijon.olog.Log;
-import net.oijon.susquehanna.gui.BinderTab;
-import net.oijon.susquehanna.gui.ToolButton;
-import net.oijon.susquehanna.gui.Toolbox;
+import net.oijon.susquehanna.gui.Navbox;
 import net.oijon.susquehanna.gui.resources.Backgrounds;
 import net.oijon.susquehanna.gui.resources.Indicator;
 import net.oijon.susquehanna.gui.scenes.BlankPage;
+import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.scenes.file.AddLangPage;
 import net.oijon.susquehanna.gui.scenes.file.InfoPage;
 import net.oijon.susquehanna.gui.scenes.file.OpenLangPage;
@@ -40,11 +27,15 @@ import net.oijon.susquehanna.gui.scenes.orthography.EditOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
+import net.oijon.susquehanna.gui.toolboxes.FileTools;
+import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
+import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
-//last edit: 6/20/24 -N3
+//last edit: 9/14/24 -N3
 
 
 /**
@@ -54,6 +45,7 @@ import java.io.IOException;
  */
 public class App extends Application {
 	
+	static ArrayList<Book> books = new ArrayList<Book>();
 	static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
 	static VBox languageSelect = new VBox();
 	//static TextArea languageList = new TextArea();    
@@ -64,10 +56,9 @@ public class App extends Application {
     
 	public static Stage stage;
 	
-    @SuppressWarnings("static-access") // Eclipse does not like how you make specific HBoxes fix the screen.
 	@Override
     public void start(Stage stage) {
-    	this.stage = stage;
+    	App.stage = stage;
     	
     	log.info("Starting application...");
     	
@@ -80,101 +71,46 @@ public class App extends Application {
     	} else {
     		log.err("IPA phonology system could not be verified!");
     	}
+        
+    	log.info("Loading scenes...");
+    	// Create blank placeholders
+    	BlankPage phonotactics = new BlankPage();
+    	phonotactics.setID("phono.phonotactics");
+    	phonotactics.setToolbox(new PhonologyTools());
     	
-        //Navbox
+    	BlankPage script = new BlankPage();
+    	script.setID("ortho.script");
+    	script.setToolbox(new OrthographyTools());
     	
-    	BinderTab fileButton = new BinderTab("file");
-    	BinderTab phonologyButton = new BinderTab("phonology");
-    	BinderTab orthographyButton = new BinderTab("orthography");
-    	BinderTab grammarButton = new BinderTab("grammar");
-    	BinderTab lexiconButton = new BinderTab("lexicon");
-    	BinderTab settingsButton = new BinderTab("settings");
-        
-        VBox navVBox = new VBox(fileButton, phonologyButton, orthographyButton, grammarButton, lexiconButton, settingsButton);
-        //navVBox.setPrefHeight(screenBounds.getHeight());
-        navVBox.setBackground(Backgrounds.WOOD);
-        ScrollPane navBox = new ScrollPane();
-        navBox.setContent(navVBox);
-        navBox.setBorder(null);
-        navBox.setPannable(true);
-        navBox.setVbarPolicy(ScrollBarPolicy.NEVER);
-        navBox.setHbarPolicy(ScrollBarPolicy.NEVER);
-        navBox.setBackground(Backgrounds.WOOD);
-        navBox.setFitToHeight(true);
-        navBox.setFitToWidth(true);
-        navBox.setPadding(new Insets(0, 0, 0, 10));
-        
-       
-    	//File
-        
-        // final because it won't compile otherwise :(
-    	// shouldn't affect the scuffed way I'm editing it though...
-    	final HBox mainBook = new HBox(new InfoPage());        
-    	mainBook.getChildren().clear();
-		InfoPage infoPage = new InfoPage();
-		mainBook.getChildren().add(infoPage);
-		mainBook.setHgrow(infoPage, Priority.ALWAYS);
-
-        
-        HBox mainToolbox = new HBox();
-        
-        // define toolboxes
-        Toolbox fileTools = new Toolbox(Backgrounds.FILETOOLS);
-        Toolbox phonologyTools = new Toolbox(Backgrounds.PHONOLOGYTOOLS);
-        Toolbox orthographyTools = new Toolbox(Backgrounds.ORTHOGRAPHYTOOLS);
-        Toolbox grammarTools = new Toolbox(Backgrounds.GRAMMARTOOLS);
-        Toolbox lexiconTools = new Toolbox(Backgrounds.LEXICONTOOLS);
-        Toolbox settingsTools = new Toolbox(Backgrounds.SETTINGSTOOLS);
-        
-        
-      //Selection thread
-    	Thread t1 = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				while(true) {
-					if (selectedLanguage != Language.NULL &
-							selectedLanguage.getProperties().getProperty(LanguageProperty.NAME).equals(
-									fileTools.getSelected()) == false) {
-						Platform.runLater(new Runnable() {
-							//This is very silly, but JavaFX cannot be edited from other threads, which is annoying
-						    @Override
-						    public void run() {
-						    	fileTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
-						    	phonologyTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
-						    	orthographyTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
-						    	grammarTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
-						    	lexiconTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
-						    	settingsTools.setSelected(selectedLanguage.getProperties().getProperty(LanguageProperty.NAME));
-						    }
-						});
-					} else if (selectedLanguage == Language.NULL & fileTools.getSelected().equals("No language selected") == false) {
-						Platform.runLater(new Runnable() {
-						    @Override
-						    public void run() {
-						    	fileTools.setSelected("No language selected");
-						    	phonologyTools.setSelected("No language selected");
-						    	orthographyTools.setSelected("No language selected");
-						    	grammarTools.setSelected("No language selected");
-						    	lexiconTools.setSelected("No language selected");
-						    	settingsTools.setSelected("No language selected");
-						    }
-						});
-					}
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						log.err(e.toString());
-						e.printStackTrace();
-					}
-				}
-				
-			}
-    		
-    	});
-    	t1.setDaemon(true);
-    	t1.start();
+    	BlankPage grammar = new BlankPage();
+    	grammar.setID("grammar.null");
     	
+    	BlankPage settings = new BlankPage();
+    	settings.setID("settings.null");
+    	// Book instanciation
+    	// Has the nice side effect of preloading everything, so no lag when switching scenes :D
+    	// file
+    	books.add(new InfoPage());
+    	books.add(new AddLangPage());
+    	books.add(new OpenLangPage());
+    	books.add(new ReportBugPage());
+    	// phono
+    	books.add(new EditPhonoPage());
+    	books.add(new ViewPhonoPage());
+    	books.add(phonotactics);
+    	// ortho
+    	books.add(new EditOrthographyPage());
+    	books.add(new ViewOrthographyPage());
+    	books.add(script);
+    	// grammar
+    	books.add(grammar);
+    	// lexicon
+    	books.add(new EditWordsPage());
+    	books.add(new ViewWordsPage());
+    	// settings
+    	books.add(settings);
+    	
+    	log.info("Loaded " + books.size() + " scenes!");
     	
         ImageView indicator = Indicator.FILE;
         VBox rightIndicator = new VBox(indicator);
@@ -183,78 +119,14 @@ public class App extends Application {
         VBox rightWoodVBox = new VBox(RIGHTWOOD);
         rightWoodVBox.setBackground(Backgrounds.RIGHTWOOD);
         
+        Navbox navbox = new Navbox();
+        navbox.createTransferActions();
         
-       
+        Book book = new InfoPage();
+        book.setNavbox(navbox);
+        book.setToolbox(new FileTools());
         
-        mainToolbox.getChildren().add(fileTools);
-        
-        
-        //Root
-        HBox rootHBox = new HBox(navBox, mainToolbox, mainBook, rightIndicator, rightWoodVBox);
-        
-        rootHBox.setAlignment(Pos.TOP_LEFT);
-        rootHBox.setHgrow(mainBook, Priority.ALWAYS);
-        
-        rootHBox.setBackground(Backgrounds.WOOD);
-        Scene root = new Scene(rootHBox);
-        
-        
-        //Lexicon
-        
-
-        // create toolbuttons
-        ToolButton addLanguage = new ToolButton("New\nLanguage");
-        ToolButton openLanguage = new ToolButton("Open\nLanguage");
-        ToolButton reportBug = new ToolButton("Report Bug");
-        ToolButton info = new ToolButton("Info");
-        
-        ToolButton viewPhonology = new ToolButton("View\nPhonology");
-        ToolButton editPhonemes = new ToolButton("Edit\nPhonology");
-        ToolButton phonotactics = new ToolButton("Phonotactics");
-        
-        ToolButton viewOrthography = new ToolButton("View\nOrthography");
-        ToolButton editOrthography = new ToolButton("Edit\nOrthography");
-        ToolButton script = new ToolButton("Script");
-        
-        ToolButton viewWords = new ToolButton("View Words");
-        ToolButton editWords = new ToolButton("Edit Words");
-        
-        // create button actions
-        addLanguage.createTransferAction(mainBook, new AddLangPage());
-        openLanguage.createTransferAction(mainBook, new OpenLangPage());
-        reportBug.createTransferAction(mainBook, new ReportBugPage());
-        info.createTransferAction(mainBook, new InfoPage());
-        
-        viewPhonology.createTransferAction(mainBook, new ViewPhonoPage());
-        editPhonemes.createTransferAction(mainBook, new EditPhonoPage());
-        phonotactics.createTransferAction(mainBook, new BlankPage());
-        
-        viewOrthography.createTransferAction(mainBook, new ViewOrthographyPage());
-        editOrthography.createTransferAction(mainBook, new EditOrthographyPage());
-        script.createTransferAction(mainBook, new BlankPage());
-        
-        viewWords.createTransferAction(mainBook, new ViewWordsPage());
-        editWords.createTransferAction(mainBook, new EditWordsPage());
-        
-        //add to toolbars
-        
-        fileTools.getChildren().addAll(addLanguage, openLanguage, info, reportBug);
-        phonologyTools.getChildren().addAll(viewPhonology, editPhonemes, phonotactics);
-        orthographyTools.getChildren().addAll(viewOrthography, editOrthography, script);
-        lexiconTools.getChildren().addAll(viewWords, editWords);
-        
-        
-        //Navbox actions
-        
-        fileButton.createTransferAction(mainBook, new InfoPage(), mainToolbox, fileTools, indicator, rightIndicator);
-        phonologyButton.createTransferAction(mainBook, new ViewPhonoPage(), mainToolbox, phonologyTools, indicator, rightIndicator);
-        orthographyButton.createTransferAction(mainBook, new ViewOrthographyPage(), mainToolbox, orthographyTools, indicator, rightIndicator);
-        grammarButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, grammarTools, indicator, rightIndicator);
-        lexiconButton.createTransferAction(mainBook, new ViewWordsPage(), mainToolbox, lexiconTools, indicator, rightIndicator);
-        settingsButton.createTransferAction(mainBook, new BlankPage(), mainToolbox, settingsTools, indicator, rightIndicator);
-        
-        
-        stage.setScene(root);
+        stage.setScene(book);
         stage.setMaximized(true);
         stage.setTitle("Susquehanna Conlang Manager");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
@@ -271,12 +143,43 @@ public class App extends Application {
         log.info("Started!");
     }
 
+	public static ArrayList<Book> getSceneList() {
+		return books;
+	}
+	
+	public static void setScene(Scene s) {
+		// TODO: change to loading scene, then change to actual scene once finished loading
+		if (s instanceof Book) {
+			Book b = (Book) s;
+			
+			// prevents flashing between scenes
+			// getting the stage size includes the window decorations, so
+			// if that was used instead, each scene would grow a little bit on switch
+			Scene oldScene = stage.getScene();
+			HBox hbox = b.getMainHBox();
+			hbox.setPrefHeight(oldScene.getHeight());
+			hbox.setPrefWidth(oldScene.getWidth());
+			
+			Navbox nb = b.getNavbox();
+			nb.createTransferActions();
+		}
+		
+		stage.setScene(s);
+	}
+	
+	public static void refreshType(String type) {
+		for (int i = 0; i < books.size(); i++) {
+			if (books.get(i).getID().startsWith(type)) {
+				books.get(i).refresh();
+			}
+		}
+	}
+	
     /**
      * Sets the currently selected language to Language.NULL
      */
     public static void setSelectedLangNull() {
-    	selectedLanguage = Language.NULL;
-    	currentFile = null;
+    	setSelectedLang(Language.NULL, null);
     }
     
     /**
@@ -287,6 +190,9 @@ public class App extends Application {
     public static void setSelectedLang(Language l, File f) {
     	selectedLanguage = l;
     	currentFile = f;
+    	for (int i = 0; i < books.size(); i++) {
+    		books.get(i).updateOnLanguageChange();
+    	}
     } 
     
     /**

@@ -3,24 +3,39 @@ package net.oijon.susquehanna.gui.scenes.phonology;
 import javafx.scene.control.Label;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.PhonemeTable;
+import net.oijon.susquehanna.gui.components.PhonemeTable;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.OnePageBook;
+import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 
 public class ViewPhonoPage extends OnePageBook {
 
+	PhonemeTable table;
+	
 	public ViewPhonoPage() {
 		super();
-		refresh();
+		id = "phono.view";
+		toolbox = new PhonologyTools();
+		refreshOnNewTable();
+	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
+		refreshOnNewTable();
 	}
 	
 	@Override
 	public void refresh() {
+		table.refresh();
+	}
+	
+	public void refreshOnNewTable() {
 		if (hasViewablePhono()) {
 			buildViewable();
 		} else {
 			buildNonViewable();
-		}		
+		}
 	}
 
 	/**
@@ -31,11 +46,10 @@ public class ViewPhonoPage extends OnePageBook {
 		
 		Label phonoLabel = new Label("Phonology");
 		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
-		PhonemeTable testTable = new PhonemeTable(App.getSelectedLang().getPhono(), false);
-		//PHOSYSTable table = new PHOSYSTable(App.getSelectedLang(), App.getCurrentFile());
+		table = new PhonemeTable(App.getSelectedLang().getPhono(), false);
 		
 		addToLeft(phonoLabel);
-		addToLeft(testTable);
+		addToLeft(table);
 	}
 	
 	/**

@@ -10,5 +10,10 @@ public class BlankPage extends Book {
 	public void refresh() {
 		
 	}
+	
+	public void setID(String id) {
+		super.id = id;
+	}
+	
 
 }

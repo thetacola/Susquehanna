@@ -7,14 +7,16 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import net.oijon.susquehanna.gui.resources.Backgrounds;
 
 public abstract class OnePageBook extends Book {
 
 	public OnePageBook() {
 		BackgroundImage paperImage = new BackgroundImage(new Image(Book.class.getResourceAsStream("/img/paper-texture.png")),
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-				stretchToFit);
+				Backgrounds.STRETCH_TO_FIT_SIZE);
 	    Background paperBackground = new Background(paperImage);
 	
 		leftPage.setBackground(paperBackground);
@@ -44,9 +46,19 @@ public abstract class OnePageBook extends Book {
 	
 	@Override
 	protected void build() {
-		this.getChildren().clear();
-		this.getChildren().addAll(makeLeftPages(), leftScroll, makeRightPages());
-		Book.setHgrow(leftScroll, Priority.ALWAYS);		
+bookProper.getChildren().clear();
+		
+		bookProper.getChildren().addAll(makeLeftPages(), leftScroll, makeRightPages());
+        HBox.setHgrow(leftScroll, Priority.ALWAYS);
+        HBox.setHgrow(rightScroll, Priority.ALWAYS);
+        
+        HBox.setHgrow(bookProper, Priority.ALWAYS);
+        
+        indicator.setBackground(toolbox.getBackground());
+        
+        root.getChildren().clear();
+        root.getChildren().addAll(navbox, toolbox, bookProper, indicator, rightWood);
+		
 	}
 
 }

@@ -1,8 +1,8 @@
 package net.oijon.susquehanna.gui.scenes;
 
-import java.io.InputStream;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,23 +13,33 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.gui.Navbox;
+import net.oijon.susquehanna.gui.resources.Backgrounds;
+import net.oijon.susquehanna.gui.toolboxes.EmptyTools;
+import net.oijon.susquehanna.gui.toolboxes.Toolbox;
 import net.oijon.olog.Log;
 
-public abstract class Book extends HBox {
-	
-	private static InputStream is2 = App.class.getResourceAsStream("/font/OpenSans-Regular.ttf");
-	public static Font opensans = Font.loadFont(is2, 16);
-	public static BackgroundSize stretchToFit = new BackgroundSize(100, 100, true, true, true, true);
-	
-	
+public abstract class Book extends Scene {
+	protected String id = "null.null";
 	protected static Log log = App.getLog();
+	// root hbox
+	protected HBox root = new HBox();
 	
+	// main components
+	
+	// TODO: move book proper to new object
+	protected Navbox navbox = new Navbox();
+	protected Toolbox toolbox = new EmptyTools();
+	protected HBox bookProper = new HBox();
+	protected VBox indicator = new VBox();
+	protected VBox rightWood = new VBox();
+	
+	// non-static entities
 	protected VBox leftPage = new VBox();
 	protected VBox rightPage = new VBox();
-	
 	protected ScrollPane leftScroll = new ScrollPane();
 	protected ScrollPane rightScroll = new ScrollPane();
 	
@@ -37,32 +47,45 @@ public abstract class Book extends HBox {
 	/**
 	 * Creates an empty book, with default background
 	 */
-	@SuppressWarnings("static-access")
 	public Book() {
+		// silly, but java does not like instance vars in subconstructors
+		super(new HBox());
+		// root
+		root.setBackground(Backgrounds.WOOD);
 		
-		 BackgroundImage paperImage = new BackgroundImage(new Image(Book.class.getResourceAsStream("/img/paper-texture.png")),
-					BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-					stretchToFit);
-		    Background paperBackground = new Background(paperImage);
-		
-		leftPage.setBackground(paperBackground);
-		rightPage.setBackground(paperBackground);
-		
+		// left page
+		leftPage.setBackground(Backgrounds.PAPER);
 		leftPage.setAlignment(Pos.CENTER);
-        rightPage.setAlignment(Pos.CENTER);
-        
         leftPage.setPrefWidth(400);
-        rightPage.setPrefWidth(400);  
-		
         leftScroll.setContent(leftPage);
-        rightScroll.setContent(rightPage);
-        
         leftScroll.setFitToHeight(true);
-        rightScroll.setFitToHeight(true);
         leftScroll.setFitToWidth(true);
+        
+        // right page
+        rightPage.setBackground(Backgrounds.PAPER);
+        rightPage.setAlignment(Pos.CENTER);
+        rightPage.setPrefWidth(400);
+        rightScroll.setContent(rightPage);
+        rightScroll.setFitToHeight(true);
         rightScroll.setFitToWidth(true);
         
-		build();
+        Region spacer1 = new Region();
+        spacer1.setPrefWidth(80);
+        indicator.getChildren().addAll(spacer1);
+        HBox.setHgrow(spacer1, Priority.ALWAYS);
+        
+        Region spacer2 = new Region();
+        spacer2.setPrefWidth(60);
+        rightWood.getChildren().add(spacer2);
+        HBox.setHgrow(spacer2, Priority.SOMETIMES);
+        rightWood.setBackground(Backgrounds.RIGHTWOOD);
+        
+        build();
+		super.setRoot(root);
+	}
+	
+	public void updateOnLanguageChange() {
+		toolbox.refreshSelected();
 	}
 	
 	/**
@@ -116,12 +139,48 @@ public abstract class Book extends HBox {
 		// (hopefully) prevent them from data being wiped
 		// should also make sure that Java properly shows changes
 		// I know that this is most likely pass-by-reference, but JavaFX is a bit funky
-		this.getChildren().clear();
-		this.getChildren().addAll(makeLeftPages(), leftScroll, makeBinding(),
-				rightScroll, makeRightPages());
-		Book.setHgrow(leftScroll, Priority.ALWAYS);
-		Book.setHgrow(rightScroll, Priority.ALWAYS);
+		bookProper.getChildren().clear();
 		
+		bookProper.getChildren().addAll(makeLeftPages(), leftScroll, makeBinding(),
+				rightScroll, makeRightPages());
+        HBox.setHgrow(leftScroll, Priority.ALWAYS);
+        HBox.setHgrow(rightScroll, Priority.ALWAYS);
+        
+        HBox.setHgrow(bookProper, Priority.ALWAYS);
+        
+        indicator.setBackground(toolbox.getBackground());
+        
+        root.getChildren().clear();
+        root.getChildren().addAll(navbox, toolbox, bookProper, indicator, rightWood);
+        
+		
+	}
+	
+	public void setToolbox(Toolbox toolbox) {
+		this.toolbox = toolbox;
+		indicator.setBackground(toolbox.getBackground());
+		build();
+	}
+	
+	public Toolbox getToolbox() {
+		return toolbox;
+	}
+	
+	public void setNavbox(Navbox navbox) {
+		this.navbox = navbox;
+		build();
+	}
+	
+	public Navbox getNavbox() {
+		return navbox;
+	}
+	
+	public String getID() {
+		return id;
+	}
+	
+	public HBox getMainHBox() {
+		return root;
 	}
 	
 	/**

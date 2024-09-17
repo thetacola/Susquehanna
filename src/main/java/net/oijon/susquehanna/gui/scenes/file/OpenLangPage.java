@@ -20,7 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.FileTools;
 import net.oijon.oling.Parser;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.oling.datatypes.language.LanguageProperty;
@@ -31,6 +33,9 @@ public class OpenLangPage extends Book {
 	
 	public OpenLangPage() {
 		super();
+		id = "file.open";
+		toolbox = new FileTools();
+		
 		refresh();
 		Button refreshLanguageList = new Button("Refresh");
         
@@ -59,11 +64,11 @@ public class OpenLangPage extends Book {
     	if (files != null) {
 	        for (int i = 0; i < files.length; i++) {
 	        	Label nameLabel = new Label();
-	        	nameLabel.setFont(opensans);
+	        	nameLabel.setFont(Fonts.OPENSANS);
 	        	Label timeCreatedLabel = new Label();
-	        	timeCreatedLabel.setFont(opensans);
+	        	timeCreatedLabel.setFont(Fonts.OPENSANS);
 	        	Label lastAccessedLabel = new Label();
-	        	lastAccessedLabel.setFont(opensans);
+	        	lastAccessedLabel.setFont(Fonts.OPENSANS);
 	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
 	        	ImageView iconView = new ImageView(icon);
 	        	Button select = new Button("Select");

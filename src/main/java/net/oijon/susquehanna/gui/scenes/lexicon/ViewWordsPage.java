@@ -2,14 +2,23 @@ package net.oijon.susquehanna.gui.scenes.lexicon;
 
 import javafx.scene.control.Label;
 import net.oijon.susquehanna.App;
-import net.oijon.susquehanna.gui.WordDisplay;
+import net.oijon.susquehanna.gui.components.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
+import net.oijon.susquehanna.gui.toolboxes.LexiconTools;
 import net.oijon.oling.datatypes.language.Language;
 
 public class ViewWordsPage extends Book {
 
 	public ViewWordsPage() {
 		super();
+		id = "lexicon.view";
+		toolbox = new LexiconTools();
+		refresh();
+	}
+	
+	@Override
+	public void updateOnLanguageChange() {
+		super.updateOnLanguageChange();
 		refresh();
 	}
 	
