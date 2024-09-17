@@ -104,12 +104,15 @@ public class PhonemeTable extends Parent {
 					// find duplicates that are marked in phono but not, remove them
 					// this state happens when phonemes are edited
 					for (int k = 0; k < cell.size(); k++) {
-						int count = 0;
+						int count = -1;
 						for (int l = 0; l < p.getList().size(); l++) {
-							if (cell.get(k).getPhoneme().equals(p.getList().get(l))) {
+							String phonemeK = cell.get(k).getPhoneme();
+							String phonemeL = p.getList().get(l);
+							if (phonemeK.equals(phonemeL)) {
 								count++;
 							}
 						}
+						
 						for (int l = 0; l < cell.size(); l++) {
 							if (k != l) {
 								if (cell.get(k).getPhoneme().equals(cell.get(l).getPhoneme()) &
