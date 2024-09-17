@@ -36,7 +36,10 @@ public class OrthoList extends ScrollPane {
 		sortedOrtho = new String[o.size()][2];
 		
 		for (int i = 0; i < o.size(); i++) {
-			//sortedOrtho[i] = o.getPair(i);
+			String[] pair = new String[2];
+			pair[0] = o.getPair(i).getPhonemes();
+			pair[1] = o.getPair(i).getGraphemes();
+			sortedOrtho[i] = pair;
 		}
 		
 		boolean sorted = false;
