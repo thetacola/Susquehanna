@@ -167,18 +167,6 @@ public class App extends Application {
 		stage.setScene(s);
 	}
 	
-	public static void refreshPhonology() {
-		refreshType("phono");
-	}
-	
-	public static void refreshOrthography() {
-		refreshType("ortho");
-	}
-	
-	public static void refreshLexicon() {
-		refreshType("lexicon");
-	}
-	
 	public static void refreshType(String type) {
 		for (int i = 0; i < books.size(); i++) {
 			if (books.get(i).getID().startsWith(type)) {
