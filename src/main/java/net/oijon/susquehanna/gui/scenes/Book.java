@@ -29,6 +29,8 @@ public abstract class Book extends Scene {
 	protected HBox root = new HBox();
 	
 	// main components
+	
+	// TODO: move book proper to new object
 	protected Navbox navbox = new Navbox();
 	protected Toolbox toolbox = new EmptyTools();
 	protected HBox bookProper = new HBox();

@@ -35,7 +35,7 @@ public class InfoPage extends Book {
         ologVersionLabel.setFont(Fonts.OPENSANS);
         Label opennlpVersionLabel = new Label("OpenNLP Tools - v1.8.4");
         opennlpVersionLabel.setFont(Fonts.OPENSANS);
-        Label otimeVersionLabel = new Label("OTime - v0.0.1");
+        Label otimeVersionLabel = new Label("OTime - v0.0.2");
         otimeVersionLabel.setFont(Fonts.OPENSANS);
         Label versionLabel = new Label("Version " + SystemInfo.susquehannaVersion());
         versionLabel.setFont(Fonts.OPENSANS);
