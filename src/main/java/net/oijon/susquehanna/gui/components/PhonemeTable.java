@@ -191,10 +191,8 @@ public class PhonemeTable extends Parent {
 				PhonemeButton p1 = buttons.get(i);
 				PhonemeButton p2 = buttons.get(j);
 				// checks that the phonemes are equal, both in the same cell,
-				// not the *exact* same button, not null phonemes, and not a blank spacer
-					if (p1.getPhoneme() != null &
-						p2.getPhoneme() != null &
-						!p1.getPhoneme().equals("") &
+				// not the *exact* same button, and not a blank spacer
+					if (!"".equals(p1.getPhoneme()) &
 						p1.getPhoneme().equals(p2.getPhoneme()) &
 						cell.getChildren().contains(p1) &
 						cell.getChildren().contains(p2) &
