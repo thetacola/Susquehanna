@@ -1,8 +1,8 @@
 package net.oijon.susquehanna.gui.components;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
@@ -40,11 +40,11 @@ public class PhonemeTable extends Parent {
 	}
 	
 	public void refresh() {
-		ArrayList<HBox> cells = generateCellList();
+		List<HBox> cells = generateCellList();
 		
 		for (int i = 0; i < cells.size(); i++) {
-			ArrayList<PhonemeButton> cell = getButtonsInCell(cells.get(i));
-			ArrayList<String> phonemesInCell = getPhonemesFromButtons(cell);
+			List<PhonemeButton> cell = getButtonsInCell(cells.get(i));
+			List<String> phonemesInCell = getPhonemesFromButtons(cell);
 			
 			checkPhonemesInCell(cells.get(i), cell, phonemesInCell);
 			removeDuplicates(cells.get(i), cell, phonemesInCell);
@@ -56,11 +56,11 @@ public class PhonemeTable extends Parent {
 		generateFromPhonosys();
 	}
 	
-	private void checkPhonemesInCell(HBox cell, ArrayList<PhonemeButton> buttons, ArrayList<String> phonemes) {
+	private void checkPhonemesInCell(HBox cell, List<PhonemeButton> buttons, List<String> phonemes) {
 		for (int i = 0; i < buttons.size(); i++) {
 			boolean inPhono = p.getList().contains(buttons.get(i).getPhoneme());
 			buttons.get(i).setInPhono(inPhono);
-			ArrayList<String> diacritics = getListOfDiacritisizedPhonemes(buttons.get(i).getPhoneme());
+			List<String> diacritics = getListOfDiacritisizedPhonemes(buttons.get(i).getPhoneme());
 			
 			for (int j = 0; j < diacritics.size(); j++) {
 				if (!phonemes.contains(diacritics.get(j))) {
@@ -81,7 +81,7 @@ public class PhonemeTable extends Parent {
 		this.getChildren().add(container);
 	}
 	
-	private ArrayList<HBox> generateCellList() {
+	private List<HBox> generateCellList() {
 		ArrayList<HBox> cells = new ArrayList<HBox>();
 		
 		// loop through each table
@@ -135,7 +135,7 @@ public class PhonemeTable extends Parent {
 		return gp;
 	}
 	
-	private ArrayList<PhonemeButton> getButtonsInCell(HBox cell) {
+	private List<PhonemeButton> getButtonsInCell(HBox cell) {
 		ArrayList<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
 		ObservableList<Node> children = cell.getChildren();
 		
@@ -150,7 +150,7 @@ public class PhonemeTable extends Parent {
 		return buttonList;
 	}
 	
-	private ArrayList<String> getListOfDiacritisizedPhonemes(String phoneme) {
+	private List<String> getListOfDiacritisizedPhonemes(String phoneme) {
 		ArrayList<String> list = new ArrayList<String>();
 		List<String> phonemes = p.getList();
 		
@@ -164,7 +164,7 @@ public class PhonemeTable extends Parent {
 		return list;
 	}
 	
-	private ArrayList<String> getPhonemesFromButtons(ArrayList<PhonemeButton> buttons) {
+	private List<String> getPhonemesFromButtons(List<PhonemeButton> buttons) {
 		ArrayList<String> phonemes = new ArrayList<String>();
 		
 		for (int i = 0; i < buttons.size(); i++) {
@@ -174,7 +174,7 @@ public class PhonemeTable extends Parent {
 		return phonemes;
 	}
 	
-	private void removeDuplicates(HBox cell, ArrayList<PhonemeButton> buttons, ArrayList<String> phonemes) {
+	private void removeDuplicates(HBox cell, List<PhonemeButton> buttons, List<String> phonemes) {
 		for (int i = 0; i < buttons.size(); i++) {
 			
 			// used to find duplicates that might still be marked as in the phonology
