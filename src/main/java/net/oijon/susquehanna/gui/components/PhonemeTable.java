@@ -120,7 +120,7 @@ public class PhonemeTable extends Parent {
 		// top labels
 		for (int i = 0; i < pt.getColumnNames().size(); i++) {
 			Label l = new Label(pt.getColumnNames().get(i));
-			if (l.getText().equals("No column names")) {
+			if ("No column names".equals(l.getText())) {
 				l.setText("");
 			}
 			// TODO: this text does not align correctly
@@ -233,7 +233,7 @@ public class PhonemeTable extends Parent {
 			int colIndicator = 1;
 			for (int j = 0; j < row.size(); j++) {
 				String sound = row.getSound(j);
-				if (!sound.equals("*") & !sound.equals("#")) {
+				if (!"*".equals(sound) & !"#".equals(sound)) {
 					PhonemeButton pb = new PhonemeButton(row.getSound(j), this, isEditable);
 					thingsToAdd.add(pb);					
 				} else {
@@ -244,7 +244,7 @@ public class PhonemeTable extends Parent {
 				if ((j + 1) % pt.dataPerCell() == 0) {
 					// cell is needed as, although phonosystems have a predictable amount of sounds per category, phonologies do not
 					HBox cell = new HBox();
-					while (thingsToAdd.size() > 0) {
+					while (!thingsToAdd.isEmpty()) {
 						PhonemeButton pb = thingsToAdd.poll();
 						HBox.setHgrow(pb, Priority.ALWAYS);
 						cell.getChildren().add(pb);
