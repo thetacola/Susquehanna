@@ -42,12 +42,12 @@ public class PhonemeTable extends Parent {
 	public void refresh() {
 		List<HBox> cells = generateCellList();
 		
-		for (int i = 0; i < cells.size(); i++) {
-			List<PhonemeButton> cell = getButtonsInCell(cells.get(i));
+		for (HBox hbox : cells) {
+			List<PhonemeButton> cell = getButtonsInCell(hbox);
 			List<String> phonemesInCell = getPhonemesFromButtons(cell);
 			
-			checkPhonemesInCell(cells.get(i), cell, phonemesInCell);
-			removeDuplicates(cells.get(i), cell, phonemesInCell);
+			checkPhonemesInCell(hbox, cell, phonemesInCell);
+			removeDuplicates(hbox, cell, phonemesInCell);
 		}
 	}
 	
@@ -155,9 +155,9 @@ public class PhonemeTable extends Parent {
 		List<String> phonemes = p.getList();
 		
 		String diacriticRegex = generateDiacriticRegex();
-		for (int i = 0; i < phonemes.size(); i++) {
-			if (Pattern.matches(diacriticRegex + phoneme + diacriticRegex, phonemes.get(i))) {
-				list.add(phonemes.get(i));
+		for (String listPhoneme : phonemes) {
+			if (Pattern.matches(diacriticRegex + phoneme + diacriticRegex, listPhoneme)) {
+				list.add(listPhoneme);
 			}
 		}		
 		
@@ -167,8 +167,8 @@ public class PhonemeTable extends Parent {
 	private List<String> getPhonemesFromButtons(List<PhonemeButton> buttons) {
 		List<String> phonemes = new ArrayList<String>();
 		
-		for (int i = 0; i < buttons.size(); i++) {
-			phonemes.add(buttons.get(i).getPhoneme());
+		for (PhonemeButton button : buttons) {
+			phonemes.add(button.getPhoneme());
 		}
 		
 		return phonemes;
