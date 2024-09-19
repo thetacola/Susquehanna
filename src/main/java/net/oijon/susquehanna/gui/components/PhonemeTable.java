@@ -41,13 +41,6 @@ public class PhonemeTable extends Parent {
 		createContainer();
 	}
 	
-	
-	
-	private void build() {
-		container = new VBox();
-		generateFromPhonosys();
-	}
-	
 	public void refresh() {
 		ArrayList<HBox> cells = generateCellList();
 		
@@ -60,49 +53,9 @@ public class PhonemeTable extends Parent {
 		}
 	}
 	
-	private ArrayList<HBox> generateCellList() {
-		ArrayList<HBox> cells = new ArrayList<HBox>();
-		
-		// loop through each table
-		for (int i = 0; i < tableList.size(); i++) {
-			GridPane gp = tableList.get(i);
-			ObservableList<Node> children = gp.getChildren();
-			// loop through each cell in table
-			for (int j = 0; j < children.size(); j++) {
-				Node node = children.get(j);
-				if (node instanceof HBox) {
-					HBox cell = (HBox) node;
-					cells.add(cell);
-				}
-			}
-		}
-		
-		return cells;
-	}
-	
-	private ArrayList<PhonemeButton> getButtonsInCell(HBox cell) {
-		ArrayList<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
-		ObservableList<Node> children = cell.getChildren();
-		
-		for (int i = 0; i < children.size(); i++) {
-			Node child = children.get(i);
-			if (child instanceof PhonemeButton) {
-				PhonemeButton pb = (PhonemeButton) child;
-				buttonList.add(pb);
-			}
-		}
-		
-		return buttonList;
-	}
-	
-	private ArrayList<String> getPhonemesFromButtons(ArrayList<PhonemeButton> buttons) {
-		ArrayList<String> phonemes = new ArrayList<String>();
-		
-		for (int i = 0; i < buttons.size(); i++) {
-			phonemes.add(buttons.get(i).getPhoneme());
-		}
-		
-		return phonemes;
+	private void build() {
+		container = new VBox();
+		generateFromPhonosys();
 	}
 	
 	private void checkPhonemesInCell(HBox cell, ArrayList<PhonemeButton> buttons, ArrayList<String> phonemes) {
@@ -120,6 +73,14 @@ public class PhonemeTable extends Parent {
 				}
 			}
 		}
+	}
+	
+	private void createContainer() {
+		container = new VBox();
+		for (int i = 0; i < tableList.size(); i++) {
+			container.getChildren().add(tableList.get(i));
+		}
+		this.getChildren().add(container);
 	}
 	
 	private void findDuplicates(HBox cell, ArrayList<PhonemeButton> buttons, ArrayList<String> phonemes) {
@@ -162,18 +123,24 @@ public class PhonemeTable extends Parent {
 		}
 	}
 	
-	private ArrayList<String> getListOfDiacritisizedPhonemes(String phoneme) {
-		ArrayList<String> list = new ArrayList<String>();
-		List<String> phonemes = p.getList();
+	private ArrayList<HBox> generateCellList() {
+		ArrayList<HBox> cells = new ArrayList<HBox>();
 		
-		String diacriticRegex = generateDiacriticRegex();
-		for (int i = 0; i < phonemes.size(); i++) {
-			if (Pattern.matches(diacriticRegex + phoneme + diacriticRegex, phonemes.get(i))) {
-				list.add(phonemes.get(i));
+		// loop through each table
+		for (int i = 0; i < tableList.size(); i++) {
+			GridPane gp = tableList.get(i);
+			ObservableList<Node> children = gp.getChildren();
+			// loop through each cell in table
+			for (int j = 0; j < children.size(); j++) {
+				Node node = children.get(j);
+				if (node instanceof HBox) {
+					HBox cell = (HBox) node;
+					cells.add(cell);
+				}
 			}
-		}		
+		}
 		
-		return list;
+		return cells;
 	}
 	
 	private String generateDiacriticRegex() {
@@ -192,12 +159,43 @@ public class PhonemeTable extends Parent {
 		}
 	}
 	
-	private void createContainer() {
-		container = new VBox();
-		for (int i = 0; i < tableList.size(); i++) {
-			container.getChildren().add(tableList.get(i));
+	private ArrayList<PhonemeButton> getButtonsInCell(HBox cell) {
+		ArrayList<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
+		ObservableList<Node> children = cell.getChildren();
+		
+		for (int i = 0; i < children.size(); i++) {
+			Node child = children.get(i);
+			if (child instanceof PhonemeButton) {
+				PhonemeButton pb = (PhonemeButton) child;
+				buttonList.add(pb);
+			}
 		}
-		this.getChildren().add(container);
+		
+		return buttonList;
+	}
+	
+	private ArrayList<String> getListOfDiacritisizedPhonemes(String phoneme) {
+		ArrayList<String> list = new ArrayList<String>();
+		List<String> phonemes = p.getList();
+		
+		String diacriticRegex = generateDiacriticRegex();
+		for (int i = 0; i < phonemes.size(); i++) {
+			if (Pattern.matches(diacriticRegex + phoneme + diacriticRegex, phonemes.get(i))) {
+				list.add(phonemes.get(i));
+			}
+		}		
+		
+		return list;
+	}
+	
+	private ArrayList<String> getPhonemesFromButtons(ArrayList<PhonemeButton> buttons) {
+		ArrayList<String> phonemes = new ArrayList<String>();
+		
+		for (int i = 0; i < buttons.size(); i++) {
+			phonemes.add(buttons.get(i).getPhoneme());
+		}
+		
+		return phonemes;
 	}
 	
 	private GridPane generateTable(PhonoTable pt, Phonology p) {
