@@ -22,18 +22,18 @@ import net.oijon.oling.datatypes.phonology.Phonology;
 
 public class PhonemeTable extends Parent {
 	
-	private Phonology p;
+	private Phonology phonology;
 	private VBox container;
 	private boolean isEditable = true;
 	private List<GridPane> tableList = new ArrayList<GridPane>();
 	
-	public PhonemeTable(Phonology p) {
-		this.p = p;
+	public PhonemeTable(Phonology phonology) {
+		this.phonology = phonology;
 		build();
 	}
 	
-	public PhonemeTable(Phonology p, boolean isEditable) {
-		this.p = p;
+	public PhonemeTable(Phonology phonology, boolean isEditable) {
+		this.phonology = phonology;
 		this.isEditable = isEditable;
 		build();
 		createContainer();
@@ -57,17 +57,17 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private void checkPhonemesInCell(HBox cell, List<PhonemeButton> buttons, List<String> phonemes) {
-		for (int i = 0; i < buttons.size(); i++) {
-			boolean inPhono = p.getList().contains(buttons.get(i).getPhoneme());
-			buttons.get(i).setInPhono(inPhono);
-			List<String> diacritics = getListOfDiacritisizedPhonemes(buttons.get(i).getPhoneme());
+		for (PhonemeButton button : buttons) {
+			boolean inPhono = phonology.getList().contains(button.getPhoneme());
+			button.setInPhono(inPhono);
+			List<String> diacritics = getListOfDiacritisizedPhonemes(button.getPhoneme());
 			
-			for (int j = 0; j < diacritics.size(); j++) {
-				if (!phonemes.contains(diacritics.get(j))) {
-					PhonemeButton pb = new PhonemeButton(diacritics.get(j), this, isEditable);
+			for (String diacriticPhoneme : diacritics) {
+				if (!phonemes.contains(diacriticPhoneme)) {
+					PhonemeButton pb = new PhonemeButton(diacriticPhoneme, this, isEditable);
 					pb.setInPhono(true);
 					cell.getChildren().add(pb);
-					phonemes.add(diacritics.get(j));
+					phonemes.add(diacriticPhoneme);
 				}
 			}
 		}
@@ -75,8 +75,8 @@ public class PhonemeTable extends Parent {
 	
 	private void createContainer() {
 		container = new VBox();
-		for (int i = 0; i < tableList.size(); i++) {
-			container.getChildren().add(tableList.get(i));
+		for (GridPane grid : tableList) {
+			container.getChildren().add(grid);
 		}
 		this.getChildren().add(container);
 	}
@@ -85,14 +85,12 @@ public class PhonemeTable extends Parent {
 		List<HBox> cells = new ArrayList<HBox>();
 		
 		// loop through each table
-		for (int i = 0; i < tableList.size(); i++) {
-			GridPane gp = tableList.get(i);
-			ObservableList<Node> children = gp.getChildren();
+		for (GridPane table : tableList) {
+			ObservableList<Node> children = table.getChildren();
 			// loop through each cell in table
-			for (int j = 0; j < children.size(); j++) {
-				Node node = children.get(j);
-				if (node instanceof HBox) {
-					HBox cell = (HBox) node;
+			for (Node child : children) {
+				if (child instanceof HBox) {
+					HBox cell = (HBox) child;
 					cells.add(cell);
 				}
 			}
@@ -103,17 +101,17 @@ public class PhonemeTable extends Parent {
 	
 	private String generateDiacriticRegex() {
 		String diacriticRegex = "[";
-		for (int i = 0; i < p.getPhonoSystem().getDiacritics().size(); i++) {
-			diacriticRegex += p.getPhonoSystem().getDiacritics().get(i);
+		for (int i = 0; i < phonology.getPhonoSystem().getDiacritics().size(); i++) {
+			diacriticRegex += phonology.getPhonoSystem().getDiacritics().get(i);
 		}
 		diacriticRegex += "]*";
 		return diacriticRegex;
 	}
 	
 	private void generateFromPhonosys() {
-		PhonoSystem ps = p.getPhonoSystem();
+		PhonoSystem ps = phonology.getPhonoSystem();
 		for (int i = 0; i < ps.getTables().size(); i++) {
-			tableList.add(generateTable(ps.getTables().get(i), p));
+			tableList.add(generateTable(ps.getTables().get(i), phonology));
 		}
 		refresh();
 	}
@@ -152,7 +150,7 @@ public class PhonemeTable extends Parent {
 	
 	private List<String> getListOfDiacritisizedPhonemes(String phoneme) {
 		List<String> list = new ArrayList<String>();
-		List<String> phonemes = p.getList();
+		List<String> phonemes = phonology.getList();
 		
 		String diacriticRegex = generateDiacriticRegex();
 		for (String listPhoneme : phonemes) {
@@ -179,9 +177,9 @@ public class PhonemeTable extends Parent {
 			
 			// used to find duplicates that might still be marked as in the phonology
 			int count = 0;
-			for (int j = 0; j < p.getList().size(); j++) {
+			for (int j = 0; j < phonology.getList().size(); j++) {
 				String p1 = buttons.get(i).getPhoneme();
-				String p2 = p.getList().get(j);
+				String p2 = phonology.getList().get(j);
 				if (p1.equals(p2)) {
 					count++;
 				}
