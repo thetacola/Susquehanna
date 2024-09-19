@@ -41,91 +41,121 @@ public class PhonemeTable extends Parent {
 		createContainer();
 	}
 	
+	
+	
+	private void build() {
+		container = new VBox();
+		generateFromPhonosys();
+	}
+	
 	public void refresh() {
-		// FIXME: REFACTOR THIS!!! This is spaghetti right now
-		ArrayList<String> phonoList = new ArrayList<String>();
-		for (int i = 0; i < p.getList().size(); i++) {
-			phonoList.add(new String(p.getList().get(i)));
+		ArrayList<HBox> cells = generateCellList();
+		
+		for (int i = 0; i < cells.size(); i++) {
+			ArrayList<PhonemeButton> cell = getButtonsInCell(cells.get(i));
+			ArrayList<String> phonemesInCell = getPhonemesFromButtons(cell);
+			
+			checkPhonemesInCell(cells.get(i), cell, phonemesInCell);
+			findDuplicates(cells.get(i), cell, phonemesInCell);
 		}
+	}
+	
+	private ArrayList<HBox> generateCellList() {
+		ArrayList<HBox> cells = new ArrayList<HBox>();
+		
+		// loop through each table
 		for (int i = 0; i < tableList.size(); i++) {
 			GridPane gp = tableList.get(i);
 			ObservableList<Node> children = gp.getChildren();
+			// loop through each cell in table
 			for (int j = 0; j < children.size(); j++) {
-				Node c1 = children.get(j);
-				if (c1 instanceof HBox) {
-					ArrayList<PhonemeButton> cell = new ArrayList<PhonemeButton>();
-					ArrayList<String> phonemesInCell = new ArrayList<String>();
-					HBox hbox = (HBox) c1;
-					
-					// generate list of phonemes and phonemebuttons in cell
-					for (int k = 0; k < hbox.getChildren().size(); k++) {
-						Node c2 = hbox.getChildren().get(k);
-						if (c2 instanceof PhonemeButton) {
-							PhonemeButton pb = (PhonemeButton) c2;
-							cell.add(pb);
-							phonemesInCell.add(pb.getPhoneme());
-						}
+				Node node = children.get(j);
+				if (node instanceof HBox) {
+					HBox cell = (HBox) node;
+					cells.add(cell);
+				}
+			}
+		}
+		
+		return cells;
+	}
+	
+	private ArrayList<PhonemeButton> getButtonsInCell(HBox cell) {
+		ArrayList<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
+		ObservableList<Node> children = cell.getChildren();
+		
+		for (int i = 0; i < children.size(); i++) {
+			Node child = children.get(i);
+			if (child instanceof PhonemeButton) {
+				PhonemeButton pb = (PhonemeButton) child;
+				buttonList.add(pb);
+			}
+		}
+		
+		return buttonList;
+	}
+	
+	private ArrayList<String> getPhonemesFromButtons(ArrayList<PhonemeButton> buttons) {
+		ArrayList<String> phonemes = new ArrayList<String>();
+		
+		for (int i = 0; i < buttons.size(); i++) {
+			phonemes.add(buttons.get(i).getPhoneme());
+		}
+		
+		return phonemes;
+	}
+	
+	private void checkPhonemesInCell(HBox cell, ArrayList<PhonemeButton> buttons, ArrayList<String> phonemes) {
+		for (int i = 0; i < buttons.size(); i++) {
+			boolean inPhono = p.getList().contains(buttons.get(i).getPhoneme());
+			buttons.get(i).setInPhono(inPhono);
+			ArrayList<String> diacritics = getListOfDiacritisizedPhonemes(buttons.get(i).getPhoneme());
+			
+			for (int j = 0; j < diacritics.size(); j++) {
+				if (!phonemes.contains(diacritics.get(j))) {
+					PhonemeButton pb = new PhonemeButton(diacritics.get(j), this, isEditable);
+					pb.setInPhono(true);
+					cell.getChildren().add(pb);
+					phonemes.add(diacritics.get(j));
+				}
+			}
+		}
+	}
+	
+	private void findDuplicates(HBox cell, ArrayList<PhonemeButton> buttons, ArrayList<String> phonemes) {
+		for (int i = 0; i < buttons.size(); i++) {
+			
+			// used to find duplicates that might still be marked as in the phonology
+			int count = 0;
+			for (int j = 0; j < p.getList().size(); j++) {
+				String p1 = buttons.get(i).getPhoneme();
+				String p2 = p.getList().get(j);
+				if (p1.equals(p2)) {
+					count++;
+				}
+			}
+			// subtract one for when i == j above
+			// counted when i == j & j == i, so count will be off by one
+			count--;
+			
+			for (int j = 0; j < buttons.size(); j++) {
+				PhonemeButton p1 = buttons.get(i);
+				PhonemeButton p2 = buttons.get(j);
+				if (p1.getPhoneme().equals(p2.getPhoneme()) &
+						cell.getChildren().contains(buttons.get(i)) &
+						cell.getChildren().contains(buttons.get(j)) &
+						i != j) {
+					// filter out button duplicates already marked as not in phono
+					if (!p2.isInPhono()) {
+						cell.getChildren().remove(p2);
+					} else if (!p1.isInPhono()) {
+						cell.getChildren().remove(p1);
 					}
-					
-					// a bit of a design flaw in the phono tables makes it so that multiple
-					// phonemes are in the same cell... as such, *every* phoneme needs
-					// their diacritics checked
-					for (int k = 0; k < cell.size(); k++) {
-						cell.get(k).setInPhono(p.getList().contains(cell.get(k).getPhoneme()));
-						ArrayList<String> diacritics = getListOfDiacritisizedPhonemes(cell.get(k).getPhoneme());
-						
-						for (int l = 0; l < diacritics.size(); l++) {
-							if (!phonemesInCell.contains(diacritics.get(l))) {
-								PhonemeButton pb = new PhonemeButton(diacritics.get(l), this, isEditable);
-								pb.setInPhono(true);
-								hbox.getChildren().add(pb);
-								cell.add(pb);
-								phonemesInCell.add(diacritics.get(l));
-							}
-						}
-					}
-					
-					// find duplicates not in phono, remove them
-					for (int k = 0; k < cell.size(); k++) {
-						for (int l = 0; l < cell.size(); l++) {
-							if (k != l) {
-								if (cell.get(k).getPhoneme().equals(cell.get(l).getPhoneme()) &
-										hbox.getChildren().contains(cell.get(k)) &
-										hbox.getChildren().contains(cell.get(l))) {
-									if (!cell.get(l).isInPhono()) {
-										hbox.getChildren().remove(cell.get(l));
-									} else if (!cell.get(k).isInPhono()) {
-										hbox.getChildren().remove(cell.get(k));
-									}
-								}
-							}
-						}
-					}
-					// find duplicates that are marked in phono but not, remove them
-					// this state happens when phonemes are edited
-					for (int k = 0; k < cell.size(); k++) {
-						int count = -1;
-						for (int l = 0; l < p.getList().size(); l++) {
-							String phonemeK = cell.get(k).getPhoneme();
-							String phonemeL = p.getList().get(l);
-							if (phonemeK.equals(phonemeL)) {
-								count++;
-							}
-						}
-						
-						for (int l = 0; l < cell.size(); l++) {
-							if (k != l) {
-								if (cell.get(k).getPhoneme().equals(cell.get(l).getPhoneme()) &
-										hbox.getChildren().contains(cell.get(k)) &
-										hbox.getChildren().contains(cell.get(l))) {
-									if (count > 0) {
-										count--;
-									} else {
-										hbox.getChildren().remove(cell.get(l));
-									}
-								}
-							}
-						}
+					// filter out button duplicates still marked as in phono
+					if (count > 0) {
+						count--;
+					} else {
+						cell.getChildren().remove(p2);
 					}
 				}
 			}
@@ -153,11 +183,6 @@ public class PhonemeTable extends Parent {
 		}
 		diacriticRegex += "]*";
 		return diacriticRegex;
-	}
-	
-	private void build() {
-		container = new VBox();
-		generateFromPhonosys();
 	}
 	
 	private void generateFromPhonosys() {
