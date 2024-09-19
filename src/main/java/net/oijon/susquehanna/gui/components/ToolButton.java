@@ -50,9 +50,9 @@ public class ToolButton extends Button {
         	@Override
         	public void handle(ActionEvent event) {
         		ArrayList<Book> books = App.getSceneList();
-        		for (int i = 0; i < books.size(); i++) {
-        			if (books.get(i).getID().equals(id)) {
-        				App.setScene(books.get(i));
+        		for (Book book : books) {
+        			if (book.getID().equals(id)) {
+        				App.setScene(book);
         				break;
         			}
         		}

@@ -105,10 +105,10 @@ public class OrthoList extends ScrollPane {
 		chartHeaders.setAlignment(Pos.TOP_CENTER);
 		orthoBox.getChildren().add(chartHeaders);
 		orthoBox.setAlignment(Pos.CENTER);
-		for (int i = 0; i < sortedOrtho.length; i++) {
+		for (String[] pair : sortedOrtho) {
 			HBox cell = new HBox();
-			Label phoneme = new Label(sortedOrtho[i][0]);
-			Label grapheme = new Label(sortedOrtho[i][1]);
+			Label phoneme = new Label(pair[0]);
+			Label grapheme = new Label(pair[1]);
 			phoneme.setPadding(new Insets(0, 10, 0, 10));
 			grapheme.setPadding(new Insets(0, 10, 0, 10));
 			phoneme.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null , null)));
