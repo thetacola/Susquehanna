@@ -47,7 +47,7 @@ public class PhonemeTable extends Parent {
 			List<String> phonemesInCell = getPhonemesFromButtons(cell);
 			
 			checkPhonemesInCell(hbox, cell, phonemesInCell);
-			removeDuplicates(hbox, cell, phonemesInCell);
+			removeDuplicates(hbox, cell);
 		}
 	}
 	
@@ -111,7 +111,7 @@ public class PhonemeTable extends Parent {
 	private void generateFromPhonosys() {
 		PhonoSystem ps = phonology.getPhonoSystem();
 		for (int i = 0; i < ps.getTables().size(); i++) {
-			tableList.add(generateTable(ps.getTables().get(i), phonology));
+			tableList.add(generateTable(ps.getTables().get(i)));
 		}
 		refresh();
 	}
@@ -172,7 +172,7 @@ public class PhonemeTable extends Parent {
 		return phonemes;
 	}
 	
-	private void removeDuplicates(HBox cell, List<PhonemeButton> buttons, List<String> phonemes) {
+	private void removeDuplicates(HBox cell, List<PhonemeButton> buttons) {
 		for (int i = 0; i < buttons.size(); i++) {
 			
 			// used to find duplicates that might still be marked as in the phonology
@@ -192,29 +192,31 @@ public class PhonemeTable extends Parent {
 				PhonemeButton p2 = buttons.get(j);
 				// checks that the phonemes are equal, both in the same cell,
 				// not the *exact* same button, and not a blank spacer
-				if (p1.getPhoneme().equals(p2.getPhoneme()) &
-						cell.getChildren().contains(p1) &
-						cell.getChildren().contains(p2) &
-						!p1.getPhoneme().equals("") &
-						i != j) {
-					// filter out button duplicates already marked as not in phono
-					if (!p2.isInPhono()) {
-						cell.getChildren().remove(p2);
-					} else if (!p1.isInPhono()) {
-						cell.getChildren().remove(p1);
-					}
-					// filter out button duplicates still marked as in phono
-					if (count > 0) {
-						count--;
-					} else {
-						cell.getChildren().remove(p2);
+				if (p1.getPhoneme() != null & p2.getPhoneme() != null) {
+					if (p1.getPhoneme().equals(p2.getPhoneme()) &
+							cell.getChildren().contains(p1) &
+							cell.getChildren().contains(p2) &
+							!p1.getPhoneme().equals("") &
+							i != j) {
+						// filter out button duplicates already marked as not in phono
+						if (!p2.isInPhono()) {
+							cell.getChildren().remove(p2);
+						} else if (!p1.isInPhono()) {
+							cell.getChildren().remove(p1);
+						}
+						// filter out button duplicates still marked as in phono
+						if (count > 0) {
+							count--;
+						} else {
+							cell.getChildren().remove(p2);
+						}
 					}
 				}
 			}
 		}
 	}
 	
-	private GridPane generateTable(PhonoTable pt, Phonology p) {
+	private GridPane generateTable(PhonoTable pt) {
 		GridPane gp = generatePaneWithLabels(pt);
 		
 		for (int i = 0; i < pt.size(); i++) {
