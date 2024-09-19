@@ -25,7 +25,7 @@ public class PhonemeTable extends Parent {
 	private Phonology p;
 	private VBox container;
 	private boolean isEditable = true;
-	private ArrayList<GridPane> tableList = new ArrayList<GridPane>();
+	private List<GridPane> tableList = new ArrayList<GridPane>();
 	
 	public PhonemeTable(Phonology p) {
 		this.p = p;
@@ -82,7 +82,7 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private List<HBox> generateCellList() {
-		ArrayList<HBox> cells = new ArrayList<HBox>();
+		List<HBox> cells = new ArrayList<HBox>();
 		
 		// loop through each table
 		for (int i = 0; i < tableList.size(); i++) {
@@ -136,7 +136,7 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private List<PhonemeButton> getButtonsInCell(HBox cell) {
-		ArrayList<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
+		List<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
 		ObservableList<Node> children = cell.getChildren();
 		
 		for (int i = 0; i < children.size(); i++) {
@@ -151,7 +151,7 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private List<String> getListOfDiacritisizedPhonemes(String phoneme) {
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		List<String> phonemes = p.getList();
 		
 		String diacriticRegex = generateDiacriticRegex();
@@ -165,7 +165,7 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private List<String> getPhonemesFromButtons(List<PhonemeButton> buttons) {
-		ArrayList<String> phonemes = new ArrayList<String>();
+		List<String> phonemes = new ArrayList<String>();
 		
 		for (int i = 0; i < buttons.size(); i++) {
 			phonemes.add(buttons.get(i).getPhoneme());
