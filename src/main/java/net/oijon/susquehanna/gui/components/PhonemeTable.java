@@ -23,7 +23,6 @@ import net.oijon.oling.datatypes.phonology.Phonology;
 public class PhonemeTable extends Parent {
 	
 	private Phonology phonology;
-	private VBox container;
 	private boolean isEditable = true;
 	private List<GridPane> tableList = new ArrayList<GridPane>();
 	
@@ -52,7 +51,6 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private void build() {
-		container = new VBox();
 		generateFromPhonosys();
 	}
 	
@@ -74,7 +72,8 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private void createContainer() {
-		container = new VBox();
+		this.getChildren().removeAll();
+		VBox container = new VBox();
 		for (GridPane grid : tableList) {
 			container.getChildren().add(grid);
 		}
