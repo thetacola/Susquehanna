@@ -5,7 +5,8 @@ As there are currently no full release versions, the current build will be suppo
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.0.2   | :white_check_mark: |
+| 0.1.0   | ✅ |
+| 0.0.2   | X |
 | 0.0.1   | X |
 
 ## Reporting a Vulnerability
