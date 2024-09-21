@@ -63,10 +63,10 @@ public class App extends Application {
     	log.info("Starting application...");
     	
     	//Verify IPA is intact
-    	PhonoSystem IPA = PhonoSystem.IPA;
-    	IPA.toFile();
-    	PhonoSystem IPAFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
-    	if (IPAFile.toString().equals(IPA.toString())) {
+    	PhonoSystem ipa = PhonoSystem.IPA;
+    	ipa.toFile();
+    	PhonoSystem ipaFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
+    	if (ipaFile.toString().equals(ipa.toString())) {
     		log.debug("IPA phonology system successfully verified!");
     	} else {
     		log.err("IPA phonology system could not be verified!");
