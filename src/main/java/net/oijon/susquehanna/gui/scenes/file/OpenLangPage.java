@@ -55,9 +55,11 @@ public class OpenLangPage extends Book {
 		File[] files = Language.getLanguageFiles(
 				new File(System.getProperty("user.home") + "/Susquehanna/"));
     	log.info("Found " + files.length + " language(s)");
-    	log.debug("Language(s) found:");
-    	for (File file : files) {
-    		log.debug(file.getName());
+    	if (log.isDebug()) {
+	    	log.debug("Language(s) found:");
+	    	for (File file : files) {
+	    		log.debug(file.getName());
+	    	}
     	}
     	languageSelect.getChildren().clear();
     	
