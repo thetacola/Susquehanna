@@ -38,7 +38,7 @@ public class PhonemeKeyboard extends Parent {
 			for (int j = 0; j < pt.getRow(i).size(); j++) {
 				String phoneme = pt.getRow(i).getSound(j);
 				Button button = new Button();
-				if (!phoneme.equals("#") & !phoneme.equals("*")) {
+				if (!"#".equals(phoneme) & !"*".equals(phoneme)) {
 					button = new Button(phoneme);
 					
 					button.setOnAction(new EventHandler<ActionEvent>() {
