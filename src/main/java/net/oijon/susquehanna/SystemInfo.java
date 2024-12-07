@@ -30,7 +30,7 @@ public final class SystemInfo {
     }
     
     public static boolean isSnapshot() {
-    	return true;
+    	return false;
     }
     
     public static String buildName() {
