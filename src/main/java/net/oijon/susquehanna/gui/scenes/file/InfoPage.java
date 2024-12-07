@@ -96,8 +96,8 @@ public class InfoPage extends Book {
 		list += "=== OLog Settings ===\n";
 		list += "Log location=" + log.getLogFile() + "\n";
 		list += "=== System Settings ===\n";
-		for (int i = 0; i < propArray.length; i++) {
-			list += propArray[i] + "\n";
+		for (String prop : propArray) {
+			list += prop + "\n";
 		}
 		return list;
 	}

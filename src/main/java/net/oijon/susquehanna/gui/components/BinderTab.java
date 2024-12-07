@@ -1,6 +1,6 @@
 package net.oijon.susquehanna.gui.components;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
-import net.oijon.susquehanna.gui.toolboxes.Toolbox;
 
 public class BinderTab extends Button {
 
@@ -31,11 +30,11 @@ public class BinderTab extends Button {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		ArrayList<Book> books = App.getSceneList();
-        		for (int i = 0; i < books.size(); i++) {
-        			String bookID = books.get(i).getID();
+        		List<Book> books = App.getSceneList();
+        		for (Book book : books) {
+        			String bookID = book.getID();
         			if (bookID.equals(id)) {
-        				App.setScene(books.get(i));
+        				App.setScene(book);
         				break;
         			}
         		}

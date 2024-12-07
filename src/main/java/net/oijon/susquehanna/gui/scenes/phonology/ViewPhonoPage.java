@@ -69,11 +69,7 @@ public class ViewPhonoPage extends OnePageBook {
 	 * @return
 	 */
 	private boolean hasViewablePhono() {
-		if (App.getSelectedLang().equals(Language.NULL)) {
-			return false;
-		} else {
-			return true;
-		}
+		return !App.getSelectedLang().equals(Language.NULL);
 	}
 	
 }

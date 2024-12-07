@@ -37,7 +37,9 @@ public class LoadingScreen extends Preloader {
 		
 		this.stage = stage;
 		
-		log.debug("Starting loading screen at " + Instant.now());
+		if (log.isDebug()) {
+			log.debug("Starting loading screen at " + Instant.now());
+		}
 		
 		ImageView iv = new ImageView(new Image(App.class.getResourceAsStream("/img/loading-screen.png")));
 		
@@ -57,7 +59,9 @@ public class LoadingScreen extends Preloader {
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/img/icon.png")));
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
-        log.debug("Finished loading screen at " + Instant.now());
+        if (log.isDebug()) {
+        	log.debug("Finished loading screen at " + Instant.now());
+        }
 	}
 	
 	

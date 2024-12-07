@@ -60,11 +60,7 @@ public class EditPhonoPage extends OnePageBook {
 	}
 	
 	private boolean hasViewablePhono() {
-		if (App.getSelectedLang() == Language.NULL) {
-			return false;
-		} else {
-			return true;
-		}
+		return !App.getSelectedLang().equals(Language.NULL);
 	}
 
 }

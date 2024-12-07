@@ -6,6 +6,11 @@ package net.oijon.susquehanna;
  *
  */
 public class Launcher {
+	
+	private Launcher() {
+		// prevents instantiation
+	}
+	
 	public static void main(String[] args) {
 		App.main(args);
 	}

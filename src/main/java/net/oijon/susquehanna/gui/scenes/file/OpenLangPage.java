@@ -55,14 +55,16 @@ public class OpenLangPage extends Book {
 		File[] files = Language.getLanguageFiles(
 				new File(System.getProperty("user.home") + "/Susquehanna/"));
     	log.info("Found " + files.length + " language(s)");
-    	log.debug("Language(s) found:");
-    	for (int i = 0; i < files.length; i++) {
-    		log.debug(files[i].getName());
+    	if (log.isDebug()) {
+	    	log.debug("Language(s) found:");
+	    	for (File file : files) {
+	    		log.debug(file.getName());
+	    	}
     	}
     	languageSelect.getChildren().clear();
     	
     	if (files != null) {
-	        for (int i = 0; i < files.length; i++) {
+	        for (File file : files) {
 	        	Label nameLabel = new Label();
 	        	nameLabel.setFont(Fonts.OPENSANS);
 	        	Label timeCreatedLabel = new Label();
@@ -81,8 +83,7 @@ public class OpenLangPage extends Book {
 	        	HBox buttonHBox = new HBox();
 	        	HBox box = new HBox();
 	        	
-	        	try (InputStream input = new FileInputStream(files[i])) {
-	        		final File file = files[i];
+	        	try (InputStream input = new FileInputStream(file)) {
 	                Properties prop = new Properties();
 	
 	                prop.load(input);

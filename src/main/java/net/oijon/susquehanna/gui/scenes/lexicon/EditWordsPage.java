@@ -44,8 +44,8 @@ public class EditWordsPage extends Book {
 		// TODO: make this get from selected language dir
 		File[] langs = Language.getLanguageFiles(
 				new File(System.getProperty("user.home") + "/Susquehanna/"));
-		for (int i = 0; i < langs.length; i++) {
-			options.add(langs[i].getName().replace(".language", ""));
+		for (File langFile : langs) {
+			options.add(langFile.getName().replace(".language", ""));
 		}
 		sourceLanguageInput.setItems(options);
 		

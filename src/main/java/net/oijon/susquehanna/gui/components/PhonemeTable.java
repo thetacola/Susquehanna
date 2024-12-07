@@ -23,7 +23,6 @@ import net.oijon.oling.datatypes.phonology.Phonology;
 public class PhonemeTable extends Parent {
 	
 	private Phonology phonology;
-	private VBox container;
 	private boolean isEditable = true;
 	private List<GridPane> tableList = new ArrayList<GridPane>();
 	
@@ -52,7 +51,6 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private void build() {
-		container = new VBox();
 		generateFromPhonosys();
 	}
 	
@@ -74,7 +72,8 @@ public class PhonemeTable extends Parent {
 	}
 	
 	private void createContainer() {
-		container = new VBox();
+		this.getChildren().removeAll();
+		VBox container = new VBox();
 		for (GridPane grid : tableList) {
 			container.getChildren().add(grid);
 		}
@@ -121,7 +120,7 @@ public class PhonemeTable extends Parent {
 		// top labels
 		for (int i = 0; i < pt.getColumnNames().size(); i++) {
 			Label l = new Label(pt.getColumnNames().get(i));
-			if (l.getText().equals("No column names")) {
+			if ("No column names".equals(l.getText())) {
 				l.setText("");
 			}
 			// TODO: this text does not align correctly
@@ -234,7 +233,7 @@ public class PhonemeTable extends Parent {
 			int colIndicator = 1;
 			for (int j = 0; j < row.size(); j++) {
 				String sound = row.getSound(j);
-				if (!sound.equals("*") & !sound.equals("#")) {
+				if (!"*".equals(sound) & !"#".equals(sound)) {
 					PhonemeButton pb = new PhonemeButton(row.getSound(j), this, isEditable);
 					thingsToAdd.add(pb);					
 				} else {
@@ -245,7 +244,7 @@ public class PhonemeTable extends Parent {
 				if ((j + 1) % pt.dataPerCell() == 0) {
 					// cell is needed as, although phonosystems have a predictable amount of sounds per category, phonologies do not
 					HBox cell = new HBox();
-					while (thingsToAdd.size() > 0) {
+					while (!thingsToAdd.isEmpty()) {
 						PhonemeButton pb = thingsToAdd.poll();
 						HBox.setHgrow(pb, Priority.ALWAYS);
 						cell.getChildren().add(pb);
