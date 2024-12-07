@@ -1,6 +1,6 @@
 package net.oijon.susquehanna.gui.components;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -49,7 +49,7 @@ public class ToolButton extends Button {
         	
         	@Override
         	public void handle(ActionEvent event) {
-        		ArrayList<Book> books = App.getSceneList();
+        		List<Book> books = App.getSceneList();
         		for (Book book : books) {
         			if (book.getID().equals(id)) {
         				App.setScene(book);
