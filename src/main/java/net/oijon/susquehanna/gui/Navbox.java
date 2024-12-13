@@ -15,6 +15,9 @@ public class Navbox extends ScrollPane {
 	BinderTab lexiconButton = new BinderTab("lexicon");
 	BinderTab settingsButton = new BinderTab("settings");
 	
+	/**
+	 * Creates a Navbox, allowing the user to switch between different categories of scenes
+	 */
 	public Navbox() {
 		super();
     	
@@ -34,6 +37,9 @@ public class Navbox extends ScrollPane {
         createTransferActions();
 	}
 	
+	/**
+	 * Creates the actions for each button that transfer the user to a certain category
+	 */
 	public void createTransferActions() {
 		// transfer actions
     	fileButton.createTransferAction("file.info");
