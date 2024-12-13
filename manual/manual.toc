@@ -8,15 +8,15 @@
 \contentsline {section}{\numberline {2.3}Info}{9}{}%
 \contentsline {section}{\numberline {2.4}Report Bug}{9}{}%
 \contentsline {chapter}{\numberline {3}The Phonology Tab}{10}{}%
-\contentsline {section}{\numberline {3.1}View Phonology}{10}{}%
-\contentsline {section}{\numberline {3.2}Edit Phonology}{10}{}%
-\contentsline {section}{\numberline {3.3}Phonotactics}{10}{}%
-\contentsline {chapter}{\numberline {4}The Orthography Tab}{11}{}%
-\contentsline {section}{\numberline {4.1}View Orthography}{11}{}%
-\contentsline {section}{\numberline {4.2}Edit Orthography}{11}{}%
-\contentsline {section}{\numberline {4.3}Script}{11}{}%
-\contentsline {chapter}{\numberline {5}The Grammar Tab}{12}{}%
-\contentsline {chapter}{\numberline {6}The Lexicon Tab}{13}{}%
-\contentsline {section}{\numberline {6.1}View Words}{13}{}%
-\contentsline {section}{\numberline {6.2}Edit Words}{13}{}%
-\contentsline {chapter}{\numberline {7}The Settings Tab}{14}{}%
+\contentsline {section}{\numberline {3.1}View Phonology}{11}{}%
+\contentsline {section}{\numberline {3.2}Edit Phonology}{11}{}%
+\contentsline {section}{\numberline {3.3}Phonotactics}{12}{}%
+\contentsline {chapter}{\numberline {4}The Orthography Tab}{13}{}%
+\contentsline {section}{\numberline {4.1}View Orthography}{13}{}%
+\contentsline {section}{\numberline {4.2}Edit Orthography}{13}{}%
+\contentsline {section}{\numberline {4.3}Script}{13}{}%
+\contentsline {chapter}{\numberline {5}The Grammar Tab}{14}{}%
+\contentsline {chapter}{\numberline {6}The Lexicon Tab}{15}{}%
+\contentsline {section}{\numberline {6.1}View Words}{15}{}%
+\contentsline {section}{\numberline {6.2}Edit Words}{15}{}%
+\contentsline {chapter}{\numberline {7}The Settings Tab}{16}{}%

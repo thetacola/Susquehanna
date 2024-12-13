@@ -5,6 +5,7 @@
 \usepackage{indentfirst}
 \usepackage{wrapfig}
 \usepackage{tcolorbox}
+\usepackage{tipa}
 \pagenumbering{arabic}
 
 \begin{document}
@@ -92,7 +93,7 @@
 	\begin{tcolorbox}[width=1\textwidth]
 		\textsc{For developers:} Language files are stored in your home directory. On Linux, this can be found at \emph{\textasciitilde/Susquehanna/}, and on Windows it can be found at \emph{C:{\textbackslash}Users{\textbackslash}\{username\}{\textbackslash}Susquehanna} on a typical configuration. The directory is created in the \emph{user.home} folder provided by Java, so if the folder cannot be located in these places, check your \emph{user.home}. Files with the \emph{.language} extension are those that store languages, and the file names correspond to the name given to them when first created via New Language. Other files, such as phonological systems, glossing systems, and logs can also be found in this directory.
 	\end{tcolorbox}
-	\section{Info}
+	\section{Info}\label{sec:info}
 	\begin{wrapfigure}{r}{0.4\textwidth}
 		\centering
 		\includegraphics[width=0.2\textwidth]{img/info}
@@ -110,7 +111,7 @@
 		\caption{The Report Bug tool button.}
 		\label{fig:report-bug}
 	\end{wrapfigure}
-	The Report Bug book allows both suggestions and bug reports to be added from inside the application. This section requires a GitHub account, as GitHub does not support anonymous bug reports, so this page will prompt with a GitHub login. Once logged in, the user will likely need to insert you two factor authentication code, then they will be brought directly to the new issue page. This page contains an embedded browser, so one can browse GitHub from here as well. Before reporting a bug, it would be a good idea to check to make sure this bug has not been reported before. If it has, commenting on the issue saying it is also affecting you may help in fixing the bug.
+	The Report Bug book allows both suggestions and bug reports to be added from inside the application. This section requires a GitHub account, as GitHub does not support anonymous bug reports, so this page will prompt with a login. Once logged in, the user will likely need to insert their two factor authentication code, then they will be brought directly to the new issue page. This page contains an embedded browser, so one can browse GitHub from here as well. Before reporting a bug, it would be a good idea to check to make sure the bug in question has not been reported before. If it has, commenting on the issue saying it is also affecting you may help in fixing the bug.
 	
 	\chapter{The Phonology Tab}
 	\begin{figure}[ht]
@@ -119,9 +120,34 @@
 		\caption{The Phonology tab, when first clicked.}
 		\label{fig:phonology-tab}
 	\end{figure}
+	\newpage
 	\section{View Phonology}
+	\begin{wrapfigure}{r}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/view-phonology}
+		\caption{The View Phonology tool button.}
+		\label{fig:view-phonology}
+	\end{wrapfigure}
+	The View Phonology book is one of the few mono-paged books. This page allows the user to see the current phonology, without worrying about accidentally clicking on and editing something. For the default phonological system (International Phonetic Alphabet), this view is split into three tables, those being the consonants, the vowels, and the sounds that do not fit in a table in the IPA. Phonemes added to the language are marked in green. Phonemes with diacritics will appear next to their non-diacriticized counterparts.
+	\begin{tcolorbox}[width=1\textwidth]
+		\textsc{For developers:} Susquehanna is bundled with OLing, which has rather powerful phonological tools built-in. If the IPA is not the phonological system you want to use, you can create a new one in the \emph{\{user.home\}/Susquehanna/phonoSystems} directory. Finding the Susquehanna directory is mentioned in Section \ref{sec:info}. Susquehanna currently does not support switching between phonological systems inside the application itself, however the .language file for your language can be edited to contain the new system in it. Susquehanna will have no problem parsing a different system as long as it is syntactically correct!
+	\end{tcolorbox}
 	\section{Edit Phonology}
+	\begin{wrapfigure}{l}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/edit-phonology}
+		\caption{The Edit Phonology tool button.}
+		\label{fig:edit-phonology}
+	\end{wrapfigure}
+	The Edit Phonology book allows the user to change what phonemes are in their language, edit existing phonemes to add diacritics, and delete phonemes in their entirety. Like the View Phonology book, it is a mono-paged book. To add a phoneme, simply click on the phoneme, then click the green button on the right of the button to add it. Adding diacritics to a phoneme (such as in the case of \textipa{/p\_h/} for example) is done by clicking the phoneme, then clicking the yellow edit button. From here, a keyboard will pop up with every possible character in your set phonological system. Add your diacritics, then click "Submit" or press the enter key to add diacritics to your phoneme. To delete a phoneme, click the red delete button on the right of the phoneme button. There is no confirmation for this, but if a phoneme is accidentally deleted, it can be rather simply added back.
 	\section{Phonotactics}
+	\begin{wrapfigure}{r}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/phonotactics}
+		\caption{The Phonotactics tool button.}
+		\label{fig:phonotactics}
+	\end{wrapfigure}
+	The Phonotactics book is currently a placeholder, and has yet to be added. Clicking on the tool will simply give a blank book.
 	
 	\chapter{The Orthography Tab}
 	\begin{figure}[ht]
