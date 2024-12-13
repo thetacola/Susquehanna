@@ -61,22 +61,75 @@
 	Books are the main display of Susquehanna, and are responsible for allowing the user to edit their language. Books display whatever is needed for their attached tool. Typically, books have two sections, those being the left and right pages. However, some books, such as the View Phonology book, only have one page that stretches out for the whole display. Books and tools are interlinked in that books are only accessible through tools, and each tool has a related book. As such, the names of the books in this manual is the same as the name of the tool for said book. Each book is described in detail throughout this manual, for a specific book's functionality, look at the table of contents to find the book you are looking for.
 	\par
 	\begin{tcolorbox}[width=1\textwidth]
-		\textsc{For developers:} Creating a new book is similar to creating a new toolbox. First, create a new class in \emph{net.oijon.susquehanna.gui.scenes.*}, where * is replaced with the tab the associated tool should be a part of. In your new class, make sure to extend Book! Then, create a public constructor, and initialize the superclass inside it. Then, set your ID and toolbox. Book IDs should follow the format of \emph{\{tab\}.\{tool name\}}, as some functions depend on the tab being a part of the ID. Once that's set, create your various JavaFX components. To add them to the pages, use \emph{addToLeft()} to add them to your left page, and \emph{addToRight()} to add them to your right page. You may also want to change the font of labels so that it is standardized with the rest of the application, using the \emph{OPENSANS} font in \emph{net.oijon.susquehanna.gui.resources.Fonts} will make the font the same as other labels in Susquehanna. If your book allows data to be edited, create a \emph{refresh()} function that will re-render various components when called. After your book has been designed, add it to the books registry in \emph{net.oijon.susquehanna.App}. This can be done via \emph{books.add(new \{your book class\}())}. Set a tool and perhaps a tab to point to your book (see Sections \ref{sec:tabs} and \ref{sec:tools}), and you should have a functional book in Susquehanna!
+		\textsc{For developers:} Creating a new book is similar to creating a new toolbox. First, create a new class in \emph{net.oijon.susquehanna.gui.scenes.*}, where * is replaced with the tab the associated tool should be a part of. In your new class, make sure to extend Book! Then, create a public constructor, and initialize the superclass inside it. Then, set your ID and toolbox. Book IDs should follow the format of \emph{\{tab\}.\{tool name\}}, as some functions depend on the tab being a part of the ID. Once that's set, create your various JavaFX components. To add them to the pages, use \emph{addToLeft()} to add them to your left page, and \emph{addToRight()} to add them to your right page. You may also want to change the font of labels so that it is standardized with the rest of the application, using the \emph{OPENSANS} font in \emph{net.oijon.susquehanna.gui.resources.Fonts} will make the font the same as other labels in Susquehanna. If your book allows data to be edited, create a \emph{refresh()} function that will re-render various components when called. If you would like to utilize the embedded OLog in Susquehanna, you can access the log by using \emph{App.getLog()}. After your book has been designed, add it to the books registry in \emph{net.oijon.susquehanna.App}. This can be done via \emph{books.add(new \{your book class\}())}. Set a tool and perhaps a tab to point to your book (see Sections \ref{sec:tabs} and \ref{sec:tools}), and you should have a functional book in Susquehanna!
 	\end{tcolorbox}
 	
 	\chapter{The File Tab}
-	The first tab a user will encounter when first starting up Susquehanna is the file tab. This tab is responsible for things such as selecting a language, seeing debug information, and sending bug reports. In short, the file tab allows the user to change what is being worked on, and report when anything goes wrong.
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=1\linewidth]{img/file-tab}
+		\caption{The File tab, when first clicked.}
+		\label{fig:file-tab}
+	\end{figure}
+	The first tab a user will encounter when starting up Susquehanna is the File tab. This tab is responsible for things such as selecting a language, seeing debug information, and sending bug reports. In short, the file tab allows the user to change what is being worked on, and report when anything goes wrong.
+	\newpage
 	\section{New Language}
+	\begin{wrapfigure}{r}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/new-language}
+		\caption{The New Language tool button.}
+		\label{fig:new-language}
+	\end{wrapfigure}
+	The New Language book allows the user to create a new language. This language can then be edited with other tools in Susquehanna. At the moment, the New Language book is a bit bare-bones. There are two text fields, that being the Language Name and the Language Autonym. Although the Language Name is listed as being unable to change, this will change in the near future. To create a language, simply type the information needed into this form, then click the "Create!" button. In the future, more information will be able to be added on this book, such as a language image and relations to other languages.
 	\section{Open Language}
+	\begin{wrapfigure}{l}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/open-language}
+		\caption{The Open Language tool button.}
+		\label{fig:open-language}
+	\end{wrapfigure}
+	The Open Language book allows the user to open a previously created language and edit it. This book consists of a list of all languages available, with information such as the name, date created, and date last modified. From this page, the user can either select or delete languages. To select a language, simply click the "Select" button underneath the language. To delete a language, click the "Delete" button to the right of the "Select" button. A popup will appear asking if the user is sure they want to delete the given language. Selecting "Yes" on this popup will delete the language. There is also a "Refresh" button on this page. If the user has created a new language, and despite this the new language is not appearing in the list, they can click the "Refresh" button to refresh the list, showing the new language.
+	\begin{tcolorbox}[width=1\textwidth]
+		\textsc{For developers:} Language files are stored in your home directory. On Linux, this can be found at \emph{\textasciitilde/Susquehanna/}, and on Windows it can be found at \emph{C:{\textbackslash}Users{\textbackslash}\{username\}{\textbackslash}Susquehanna} on a typical configuration. The directory is created in the \emph{user.home} folder provided by Java, so if the folder cannot be located in these places, check your \emph{user.home}. Files with the \emph{.language} extension are those that store languages, and the file names correspond to the name given to them when first created via New Language. Other files, such as phonological systems, glossing systems, and logs can also be found in this directory.
+	\end{tcolorbox}
 	\section{Info}
+	\begin{wrapfigure}{r}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/info}
+		\caption{The Info tool button.}
+		\label{fig:info}
+	\end{wrapfigure}
+	The Info book is the first book to appear when opening Susquehanna. On the left page, this book contains version information for Susquehanna, along with version information for each of its dependencies. On the right page, debug information is present, and can be easily copied and pasted somewhere else. This page also displays if the currently used build is a snapshot, and if so its exact build ID.
+	\begin{tcolorbox}[width=1\textwidth]
+		\textsc{For developers:} Make sure that, before releasing a new version of Susquehanna, that the version information is correct! It displays on this page, so this page allows you to rather easily check. If it's out of date, version information can be changed in \emph{net.oijon.susquehanna.SystemInfo}.
+	\end{tcolorbox}
 	\section{Report Bug}
+	\begin{wrapfigure}{l}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/report-bug}
+		\caption{The Report Bug tool button.}
+		\label{fig:report-bug}
+	\end{wrapfigure}
+	The Report Bug book allows both suggestions and bug reports to be added from inside the application. This section requires a GitHub account, as GitHub does not support anonymous bug reports, so this page will prompt with a GitHub login. Once logged in, the user will likely need to insert you two factor authentication code, then they will be brought directly to the new issue page. This page contains an embedded browser, so one can browse GitHub from here as well. Before reporting a bug, it would be a good idea to check to make sure this bug has not been reported before. If it has, commenting on the issue saying it is also affecting you may help in fixing the bug.
 	
 	\chapter{The Phonology Tab}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=1\linewidth]{img/phonology-tab}
+		\caption{The Phonology tab, when first clicked.}
+		\label{fig:phonology-tab}
+	\end{figure}
 	\section{View Phonology}
 	\section{Edit Phonology}
 	\section{Phonotactics}
 	
 	\chapter{The Orthography Tab}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=1\linewidth]{img/orthography-tab}
+		\caption{The Orthography tab, when first clicked.}
+		\label{fig:orthography-tab}
+	\end{figure}
 	\section{View Orthography}
 	\section{Edit Orthography}
 	\section{Script}
@@ -86,6 +139,12 @@
 	does not contain any usable tools.
 	
 	\chapter{The Lexicon Tab}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=1\linewidth]{img/lexicon-tab}
+		\caption{The Lexicon tab, when first clicked.}
+		\label{fig:lexicon-tab}
+	\end{figure}
 	\section{View Words}
 	\section{Edit Words}
 	
