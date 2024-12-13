@@ -17,6 +17,6 @@
 \contentsline {section}{\numberline {4.3}Script}{14}{}%
 \contentsline {chapter}{\numberline {5}The Grammar Tab}{15}{}%
 \contentsline {chapter}{\numberline {6}The Lexicon Tab}{16}{}%
-\contentsline {section}{\numberline {6.1}View Words}{16}{}%
-\contentsline {section}{\numberline {6.2}Edit Words}{16}{}%
-\contentsline {chapter}{\numberline {7}The Settings Tab}{17}{}%
+\contentsline {section}{\numberline {6.1}View Words}{17}{}%
+\contentsline {section}{\numberline {6.2}Edit Words}{17}{}%
+\contentsline {chapter}{\numberline {7}The Settings Tab}{18}{}%
