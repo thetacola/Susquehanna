@@ -15,6 +15,10 @@ public class BinderTab extends Button {
 
 	String name = "";
 	
+	/**
+	 * Creates a binder tab, using the name of the tab to grab the correct image file
+	 * @param name The name of the tab (file, phonology, etc.)
+	 */
 	public BinderTab(String name) {
 		this.name = name;
 		String fileName = "/img/";
@@ -25,6 +29,10 @@ public class BinderTab extends Button {
         this.setBackground(null);
 	}
 	
+	/**
+	 * Creates an action that switches the current scene with a different scene.
+	 * @param id The ID of the book to switch to
+	 */
 	public void createTransferAction(String id) {
 		this.setOnAction(new EventHandler<ActionEvent>() {
         	
