@@ -13,18 +13,29 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.oling.datatypes.orthography.Orthography;
+import net.oijon.olog.Log;
 
 public class OrthoList extends ScrollPane {
 
-	private String[][] sortedOrtho;
 	private Orthography o;
+	int sortedPairIDs[];
 	private int mode;
+	Log log = App.getLog();
 	
 	public OrthoList(Orthography o) {
 		this.o = o;
+		
+		log.debug("Creating phoneme-grapheme pair pointer array...");
+		// initiate pointers to pairs
+		sortedPairIDs = new int[o.size()];
+		for (int i = 0; i < sortedPairIDs.length; i++) {
+			sortedPairIDs[i] = i;
+		}
 		sortOrtho();
+		
 		build();
 	}
 	
@@ -33,41 +44,41 @@ public class OrthoList extends ScrollPane {
 		 * 0 - via phoneme
 		 * 1 - via grapheme
 		 */
-		sortedOrtho = new String[o.size()][2];
-		
-		for (int i = 0; i < o.size(); i++) {
-			String[] pair = new String[2];
-			pair[0] = o.getPair(i).getPhonemes();
-			pair[1] = o.getPair(i).getGraphemes();
-			sortedOrtho[i] = pair;
-		}
 		
 		boolean sorted = false;
 		
-		while (!sorted) {
-			// sort
-			for (int i = 0; i < o.size() - 1; i++) {
-				if (sortedOrtho[i][mode].length() > sortedOrtho[i + 1][mode].length()) {
-					String tempVar = sortedOrtho[i][mode];
-					sortedOrtho[i][mode] = sortedOrtho[i + 1][mode];
-					sortedOrtho[i + 1][mode] = tempVar;
-				}
-			}
-			
-			boolean sortedSoFar = true;
-			// verify
-			for (int i = 0; i < o.size() - 1; i++) {
-				if (sortedOrtho[i][mode].length() > sortedOrtho[i + 1][mode].length() | !sortedSoFar) {
-					sortedSoFar = false;
-				}
-			}
-			
-			if (sortedSoFar) {
+		log.debug("Starting ortho sort on mode " + mode);
+		while (sorted == false) {
+			if (sortedPairIDs.length == 0 | sortedPairIDs.length == 1) {
+				// any array of length 0 or 1 will be sorted no matter what
 				sorted = true;
 			}
-			
+			for (int i = 0; i < sortedPairIDs.length - 1; i++) {
+				String compare1 = "";
+				String compare2 = "";
+				if (mode == 0) {
+					compare1 = o.getPair(sortedPairIDs[i]).getPhonemes();
+					compare2 = o.getPair(sortedPairIDs[i + 1]).getPhonemes();
+				} else if (mode == 1) {
+					compare1 = o.getPair(sortedPairIDs[i]).getGraphemes();
+					compare2 = o.getPair(sortedPairIDs[i + 1]).getGraphemes();
+				}
+				
+				if (compare1.compareTo(compare2) > 0) {
+					// unsorted pair, sort them and restart check
+					int tempInt = sortedPairIDs[i];
+					sortedPairIDs[i] = sortedPairIDs[i + 1];
+					sortedPairIDs[i + 1] = tempInt;
+					break;
+				}
+				
+				if (i == sortedPairIDs.length - 2) {
+					// arriving here means that everything below the top has been sorted
+					sorted = true;
+				}
+			}
 		}
-		build();
+		log.debug("Finished ortho sort on mode " + mode);
 	}
 	
 	private void build() {
@@ -78,6 +89,7 @@ public class OrthoList extends ScrollPane {
 			@Override
 			public void handle(ActionEvent event) {
 				mode = 0;
+				sortOrtho();
 				build();
 			}
 			
@@ -88,6 +100,7 @@ public class OrthoList extends ScrollPane {
 			@Override
 			public void handle(ActionEvent event) {
 				mode = 1;
+				sortOrtho();
 				build();
 			}
 			
@@ -105,10 +118,10 @@ public class OrthoList extends ScrollPane {
 		chartHeaders.setAlignment(Pos.TOP_CENTER);
 		orthoBox.getChildren().add(chartHeaders);
 		orthoBox.setAlignment(Pos.CENTER);
-		for (String[] pair : sortedOrtho) {
+		for (int id : sortedPairIDs) {
 			HBox cell = new HBox();
-			Label phoneme = new Label(pair[0]);
-			Label grapheme = new Label(pair[1]);
+			Label phoneme = new Label(o.getPair(id).getPhonemes());
+			Label grapheme = new Label(o.getPair(id).getGraphemes());
 			phoneme.setPadding(new Insets(0, 10, 0, 10));
 			grapheme.setPadding(new Insets(0, 10, 0, 10));
 			phoneme.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null , null)));
