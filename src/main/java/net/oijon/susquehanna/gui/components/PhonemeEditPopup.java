@@ -17,19 +17,37 @@ public class PhonemeEditPopup extends Stage {
 
 	private String phoneme = "";
 	
+	/**
+	 * Creates the popup, with a given phoneme to edit and a linked PhonoTable
+	 * The phoneme is changed by the popup, and the PhonoTable is told what to change
+	 * @param phoneme The phoneme the popup is to edit
+	 * @param pt The linked PhonoTable
+	 */
 	public PhonemeEditPopup(String phoneme, PhonemeTable pt) {
 		this.phoneme = phoneme;
 		initPopup(pt);
 	}
 	
+	/**
+	 * Gets the phoneme the popup is to edit
+	 * @return The phoneme the popup is to edit
+	 */
 	public String getPhoneme() {
 		return phoneme;
 	}
 	
+	/**
+	 * Sets the phoneme the popup is to edit
+	 * @param phoneme The phoneme the popup is to edit
+	 */
 	public void setPhoneme(String phoneme) {
 		this.phoneme = phoneme;
 	}
 	
+	/**
+	 * Initialized the popup window and displays it
+	 * @param pt The linked PhonoTable
+	 */
 	private void initPopup(PhonemeTable pt) {
 		this.initModality(Modality.APPLICATION_MODAL);
 		this.initOwner(App.getStage());
