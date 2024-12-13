@@ -26,11 +26,20 @@ public class PhonemeTable extends Parent {
 	private boolean isEditable = true;
 	private List<GridPane> tableList = new ArrayList<GridPane>();
 	
+	/**
+	 * Creates a PhonemeTable, displaying a Phonology via GUI components
+	 * @param phonology The Phonology to display via the PhonemeTable
+	 */
 	public PhonemeTable(Phonology phonology) {
 		this.phonology = phonology;
 		build();
 	}
 	
+	/**
+	 * Similar to PhonemeTable(Phonology), with an extra toggle to make the table read-only
+	 * @param phonology The Phonology to display via the PhonemeTable
+	 * @param isEditable True if editable, false if view-only
+	 */
 	public PhonemeTable(Phonology phonology, boolean isEditable) {
 		this.phonology = phonology;
 		this.isEditable = isEditable;
@@ -38,6 +47,9 @@ public class PhonemeTable extends Parent {
 		createContainer();
 	}
 	
+	/**
+	 * Refreshes the table, checking for any new changes and displaying them
+	 */
 	public void refresh() {
 		List<HBox> cells = generateCellList();
 		
@@ -50,10 +62,25 @@ public class PhonemeTable extends Parent {
 		}
 	}
 	
+	/**
+	 * Builds the PhonemeTable and allows it to display. Identical to generateFromPhonosys();
+	 */
 	private void build() {
 		generateFromPhonosys();
 	}
 	
+	/**
+	 * Adds any missing phonemes with diacritics to a cell
+	 * 
+	 * This seems like it could be refactored to make it run easier and not
+	 * require as many parameters...
+	 * 
+	 * TODO: Refactor PhonemeTable.checkPhonemesInCell();
+	 * 
+	 * @param cell The cell to be checked for missing phonemes
+	 * @param buttons The buttons inside the cell
+	 * @param phonemes The list of phonemes in the cell
+	 */
 	private void checkPhonemesInCell(HBox cell, List<PhonemeButton> buttons, List<String> phonemes) {
 		for (PhonemeButton button : buttons) {
 			boolean inPhono = phonology.getList().contains(button.getPhoneme());
@@ -71,6 +98,9 @@ public class PhonemeTable extends Parent {
 		}
 	}
 	
+	/**
+	 * Creates the container for each PhonoTable shown in the PhonemeTable
+	 */
 	private void createContainer() {
 		this.getChildren().removeAll();
 		VBox container = new VBox();
@@ -80,6 +110,10 @@ public class PhonemeTable extends Parent {
 		this.getChildren().add(container);
 	}
 	
+	/**
+	 * Generates a list of all cells in the PhonemeTable
+	 * @return A list of all cells in the PhonemeTable
+	 */
 	private List<HBox> generateCellList() {
 		List<HBox> cells = new ArrayList<HBox>();
 		
@@ -98,6 +132,10 @@ public class PhonemeTable extends Parent {
 		return cells;
 	}
 	
+	/**
+	 * Generates regex for filtering out diacritics in a given PhonoSystem
+	 * @return The regex to check for diacritics
+	 */
 	private String generateDiacriticRegex() {
 		String diacriticRegex = "[";
 		for (int i = 0; i < phonology.getPhonoSystem().getDiacritics().size(); i++) {
@@ -107,6 +145,9 @@ public class PhonemeTable extends Parent {
 		return diacriticRegex;
 	}
 	
+	/**
+	 * Creates a table for each PhonoTable found in the linked PhonoSystem
+	 */
 	private void generateFromPhonosys() {
 		PhonoSystem ps = phonology.getPhonoSystem();
 		for (int i = 0; i < ps.getTables().size(); i++) {
@@ -115,6 +156,12 @@ public class PhonemeTable extends Parent {
 		refresh();
 	}
 	
+	/**
+	 * Creates the labels needed for the given PhonoTable
+	 * @param pt The PhonoTable to generate the labels for
+	 * @return A GridPane with labels for each row and column, without any data in
+	 * said rows or columns
+	 */
 	private GridPane generatePaneWithLabels(PhonoTable pt) {
 		GridPane gp = new GridPane();
 		// top labels
@@ -132,6 +179,11 @@ public class PhonemeTable extends Parent {
 		return gp;
 	}
 	
+	/**
+	 * Gets a list of PhonemeButtons in a cell
+	 * @param cell The cell to extract PhonemeButtons from
+	 * @return A list of all PhonemeButtons in the given cell
+	 */
 	private List<PhonemeButton> getButtonsInCell(HBox cell) {
 		List<PhonemeButton> buttonList = new ArrayList<PhonemeButton>();
 		ObservableList<Node> children = cell.getChildren();
@@ -147,6 +199,13 @@ public class PhonemeTable extends Parent {
 		return buttonList;
 	}
 	
+	/**
+	 * Gets a list of phonemes with diacritics using a base phoneme
+	 * @param phoneme The diacriticless phoneme to use as a base
+	 * Note that one could include a diacritic here, however it would only give phonemes
+	 * that contain that specific diacritic.
+	 * @return A list of all phonemes using diacritics with the given phoneme as a base
+	 */
 	private List<String> getListOfDiacritisizedPhonemes(String phoneme) {
 		List<String> list = new ArrayList<String>();
 		List<String> phonemes = phonology.getList();
@@ -161,6 +220,11 @@ public class PhonemeTable extends Parent {
 		return list;
 	}
 	
+	/**
+	 * Gets a list of phonemes from a list of buttons
+	 * @param buttons The buttons to extract phonemes from
+	 * @return A list of phonemes, extracted from buttons
+	 */
 	private List<String> getPhonemesFromButtons(List<PhonemeButton> buttons) {
 		List<String> phonemes = new ArrayList<String>();
 		
@@ -171,6 +235,16 @@ public class PhonemeTable extends Parent {
 		return phonemes;
 	}
 	
+	/**
+	 * Removes duplicate buttons in a given cell
+	 * 
+	 * This also feels like it could be refactored...
+	 * 
+	 * TODO: Refactor PhonemeTable.removeDuplicates()
+	 * 
+	 * @param cell The cell to check for duplicates in
+	 * @param buttons The buttons in the cell
+	 */
 	private void removeDuplicates(HBox cell, List<PhonemeButton> buttons) {
 		for (int i = 0; i < buttons.size(); i++) {
 			
@@ -213,6 +287,11 @@ public class PhonemeTable extends Parent {
 		}
 	}
 	
+	/**
+	 * Generates a GridPane from a given PhonoTable
+	 * @param pt The PhonoTable to use for data and layout
+	 * @return a GridPane displaying all data in the PhonoTable
+	 */
 	private GridPane generateTable(PhonoTable pt) {
 		GridPane gp = generatePaneWithLabels(pt);
 		
