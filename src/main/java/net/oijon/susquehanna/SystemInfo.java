@@ -22,20 +22,20 @@ public final class SystemInfo {
     }
     
     public static String susquehannaVerNum() {
-    	return "0.1.1";
+    	return "0.1.2";
     }
     
     public static String susquehannaVerName() {
-    	return "Index";
+    	return "Milford";
     }
     
     public static boolean isSnapshot() {
-    	return false;
+    	return true;
     }
     
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "24w36c";
+    		return "24w50a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
