@@ -25,6 +25,10 @@ public class OrthoList extends ScrollPane {
 	private int mode;
 	Log log = App.getLog();
 	
+	/**
+	 * Creates an OrthoList from a given orthography
+	 * @param o The orthography to display data from
+	 */
 	public OrthoList(Orthography o) {
 		this.o = o;
 		
@@ -39,6 +43,10 @@ public class OrthoList extends ScrollPane {
 		build();
 	}
 	
+	/**
+	 * Sorts the orthography, either by phoneme or by grapheme.
+	 * To change the mode, use the private int 'mode'.
+	 */
 	public void sortOrtho() {
 		/**
 		 * 0 - via phoneme
@@ -85,6 +93,9 @@ public class OrthoList extends ScrollPane {
 		}
 	}
 	
+	/**
+	 * Builds the OrthoList and allows it to be displayed.
+	 */
 	private void build() {
 		Label sortByLabel = new Label("Sort by: ");
 		Button byPhonemes = new Button("Phonemes");

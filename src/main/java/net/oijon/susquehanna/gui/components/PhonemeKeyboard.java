@@ -15,6 +15,10 @@ public class PhonemeKeyboard extends Parent {
 
 	TextField field = new TextField();
 	
+	/**
+	 * Creates a virtual keyboard with a PhonoSystem to use as a template
+	 * @param ps The PhonoSystem used to dictate the keys and layout of the virtual keyboard
+	 */
 	public PhonemeKeyboard(PhonoSystem ps) {
 		VBox mainBox = new VBox();
 		mainBox.setAlignment(Pos.TOP_CENTER);
@@ -26,11 +30,22 @@ public class PhonemeKeyboard extends Parent {
 		this.getChildren().add(mainBox);
 	}
 	
+	/**
+	 * Similar to PhonemeKeyboard(PhonoSystem), but also sets the text already displayed
+	 * in the typing area.
+	 * @param ps The PhonoSystem used to dictate the keys and layout of the virtual keyboard
+	 * @param field The text to display by default in the typing area
+	 */
 	public PhonemeKeyboard(PhonoSystem ps, TextField field) {
 		this(ps);
 		this.field = field;
 	}
 	
+	/**
+	 * Builds a table from the PhonoSystem and allows it to be displayed.
+	 * @param pt The PhonoTable from the PhonoSystem linked to use for the layout
+	 * @return A GridPane containing buttons for typing, already laid out.
+	 */
 	private GridPane buildTable(PhonoTable pt) {
 		GridPane gp = new GridPane();
 		
@@ -60,6 +75,11 @@ public class PhonemeKeyboard extends Parent {
 		return gp;
 	}
 	
+	/**
+	 * Builds the diacritic table from the linked PhonoSystem
+	 * @param ps The PhonoSystem to take the diacritic table from
+	 * @return A GridPane containing buttons for typing diacritics, already laid out.
+	 */
 	private GridPane buildDiacriticTable(PhonoSystem ps) {
 		GridPane gp = new GridPane();
 		
@@ -95,10 +115,18 @@ public class PhonemeKeyboard extends Parent {
 		return gp;
 	}
 	
+	/**
+	 * Gets the TextField for the input of the keyboard.
+	 * @return The TextField used for input
+	 */
 	public TextField getTextField() {
 		return field;
 	}
 	
+	/**
+	 * Sets the TextField for the input to a different TextField
+	 * @param field The new TextField to use
+	 */
 	public void setTextField(TextField field) {
 		this.field = field;
 	}

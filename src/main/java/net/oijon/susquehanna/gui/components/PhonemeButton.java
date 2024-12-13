@@ -35,6 +35,10 @@ public class PhonemeButton extends Parent {
 		build();
 	}
 	
+	/**
+	 * Makes an exact copy of a PhonemeButton
+	 * @param pb The PhonemeButton to copy
+	 */
 	public PhonemeButton (PhonemeButton pb) {
 		this.phoneme = pb.phoneme;
 		this.pt = pb.pt;
@@ -43,12 +47,24 @@ public class PhonemeButton extends Parent {
 		build();
 	}
 	
+	/**
+	 * Creates a PhonemeButton, similar to PhonemeButton(String), but with a toggle to
+	 * visually disable it.
+	 * @param phoneme The phoneme to display on the main button
+	 * @param isEditable True if editable, false if disabled
+	 */
 	public PhonemeButton(String phoneme, boolean isEditable) {
 		this.phoneme = phoneme;
 		this.isEditable = isEditable;
 		build();
 	}
 	
+	/**
+	 * Creates a PhonemeButton with a linked PhonemeTable
+	 * @param phoneme The phoneme to display on the main button
+	 * @param pt The PhonemeTable to link to
+	 * @param isEditable True if editable, false if disabled
+	 */
 	public PhonemeButton(String phoneme, PhonemeTable pt, boolean isEditable) {
 		this.phoneme = phoneme;
 		this.pt = pt;
@@ -56,6 +72,9 @@ public class PhonemeButton extends Parent {
 		build();
 	}
 	
+	/**
+	 * Builds the PhonemeButton and allows it to be displayed.
+	 */
 	private void build() {
 		phonemeButton = new Button(phoneme);
 		
@@ -174,14 +193,27 @@ public class PhonemeButton extends Parent {
 		return isEditable;
 	}
 	
+	/**
+	 * Sets if the phoneme shown is editable or not
+	 * @param isEditable The editability status of the phoneme this button represents
+	 */
 	public void setEditable(boolean isEditable) {
 		this.isEditable = isEditable;
 	}
 	
+	/**
+	 * Checks if the phoneme for this button is in the Phonology.
+	 * Note that this does not do any checking, it simply returns the value used for display changes.
+	 * @return True if in, false if not.
+	 */
 	public boolean isInPhono() {
 		return inPhono;
 	}
 	
+	/**
+	 * Set the PhonemeButton to be in the Phonology, adding extra buttons to it if set to true
+	 * @param inPhono True if in, false if not
+	 */
 	public void setInPhono(boolean inPhono) {
 		if (this.inPhono != inPhono) {
 			this.inPhono = inPhono;
@@ -195,6 +227,9 @@ public class PhonemeButton extends Parent {
 		}
 	}
 	
+	/**
+	 * Builds the add button that appears when a PhonemeButton is not in a Phonology
+	 */
 	private void buildAdd() {
 		add = new ToolButton("add");		
 		add.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -228,6 +263,9 @@ public class PhonemeButton extends Parent {
 		VBox.setMargin(add, Insets.EMPTY);
 	}
 	
+	/**
+	 * Builds the edit button that appears when a PhonemeButton is in a Phonology
+	 */
 	private void buildEdit() {
 		edit = new ToolButton("edit");
 		edit.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -243,6 +281,9 @@ public class PhonemeButton extends Parent {
 		VBox.setMargin(edit, Insets.EMPTY);
 	}
 	
+	/**
+	 * Builds the trash button that appears when a PhonemeButton is in a Phonology
+	 */
 	private void buildTrash() {
 		trash = new ToolButton("trash");
 		trash.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

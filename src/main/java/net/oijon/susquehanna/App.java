@@ -146,10 +146,18 @@ public class App extends Application {
         log.info("Started!");
     }
 
+	/**
+	 * Lists all books registered in the application
+	 * @return A list of all books registered
+	 */
 	public static List<Book> getSceneList() {
 		return books;
 	}
 	
+	/**
+	 * Sets the current book displayed
+	 * @param s The scene/book to display
+	 */
 	public static void setScene(Scene s) {
 		// TODO: change to loading scene, then change to actual scene once finished loading
 		if (s instanceof Book) {
@@ -170,6 +178,13 @@ public class App extends Application {
 		stage.setScene(s);
 	}
 	
+	/**
+	 * Refreshes all books in a given category
+	 * ex. if "phonology" is the given type, all books following the pattern
+	 * "phonology.*" will be refreshed
+	 * 
+	 * @param type The category to refresh
+	 */
 	public static void refreshType(String type) {
 		for (Book book : books) {
 			if (book.getID().startsWith(type)) {
@@ -243,6 +258,10 @@ public class App extends Application {
 		}
 	}
     
+    /**
+     * Creates the preloader and launches the application
+     * @param args Launch args
+     */
     public static void main(String[] args) {
     	System.setProperty("javafx.preloader", LoadingScreen.class.getName());
         launch();

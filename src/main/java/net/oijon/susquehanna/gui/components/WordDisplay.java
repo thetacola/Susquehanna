@@ -28,12 +28,22 @@ public class WordDisplay extends Parent {
 	private Label createdLabel = new Label();
 	private Label editedLabel = new Label();
 	
+	/**
+	 * Creates the word display from a given word
+	 * @param w The word to be displayed
+	 */
 	public WordDisplay(Word w) {
 		this.word = w;
 		build();
 		refresh();
 	}
 	
+	/**
+	 * Similar to WordDisplay(Word), but also allows to toggle if details shall be
+	 * shown
+	 * @param w The word to be displayed
+	 * @param detailed True if the display shall have details, false otherwise
+	 */
 	public WordDisplay(Word w, boolean detailed) {
 		this.word = w;
 		this.detailed = detailed;
@@ -41,6 +51,9 @@ public class WordDisplay extends Parent {
 		refresh();
 	}
 	
+	/**
+	 * Refreshes the display to update any changes to the word
+	 */
 	public void refresh() {
 		wordLabel.setText(word.getProperties().getProperty(WordProperty.NAME));
 		meaningLabel.setText(word.getProperties().getProperty(WordProperty.MEANING));
@@ -52,6 +65,9 @@ public class WordDisplay extends Parent {
 		editedLabel.setText("Last Edited: " + word.getProperties().getEditDate());
 	}
 	
+	/**
+	 * Builds the word display and allows it to be shown
+	 */
 	private void build() {
 		gp.setBorder(new Border(new BorderStroke(Color.BLACK, 
 	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));

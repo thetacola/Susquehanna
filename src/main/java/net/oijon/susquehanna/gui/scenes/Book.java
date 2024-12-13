@@ -156,29 +156,53 @@ public abstract class Book extends Scene {
 		
 	}
 	
+	/**
+	 * Sets the toolbox for the book to use (file tools, lexicon tools, etc)
+	 * @param toolbox The toolbox to be added to this book
+	 */
 	public void setToolbox(Toolbox toolbox) {
 		this.toolbox = toolbox;
 		indicator.setBackground(toolbox.getBackground());
 		build();
 	}
 	
+	/**
+	 * Gets the toolbox used by this book
+	 * @return The toolbox used by this book
+	 */
 	public Toolbox getToolbox() {
 		return toolbox;
 	}
 	
+	/**
+	 * Sets the navbox used by this book (file tab, phonology tab, etc.)
+	 * @param navbox The navbox to be used by this book
+	 */
 	public void setNavbox(Navbox navbox) {
 		this.navbox = navbox;
 		build();
 	}
 	
+	/**
+	 * Gets the navbox used by this book
+	 * @return The navbox used by this book
+	 */
 	public Navbox getNavbox() {
 		return navbox;
 	}
 	
+	/**
+	 * Gets the ID of this book
+	 * @return The ID of this book
+	 */
 	public String getID() {
 		return id;
 	}
 	
+	/**
+	 * Gets the main HBox all components of a book are a child of
+	 * @return The main HBox of this book
+	 */
 	public HBox getMainHBox() {
 		return root;
 	}
