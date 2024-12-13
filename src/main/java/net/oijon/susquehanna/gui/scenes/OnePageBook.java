@@ -13,6 +13,9 @@ import net.oijon.susquehanna.gui.resources.Backgrounds;
 
 public abstract class OnePageBook extends Book {
 
+	/**
+	 * Creates a book with one main page, stretching over where the binding usually would be
+	 */
 	public OnePageBook() {
 		BackgroundImage paperImage = new BackgroundImage(new Image(Book.class.getResourceAsStream("/img/paper-texture.png")),
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -46,7 +49,7 @@ public abstract class OnePageBook extends Book {
 	
 	@Override
 	protected void build() {
-bookProper.getChildren().clear();
+		bookProper.getChildren().clear();
 		
 		bookProper.getChildren().addAll(makeLeftPages(), leftScroll, makeRightPages());
         HBox.setHgrow(leftScroll, Priority.ALWAYS);
