@@ -47,7 +47,9 @@ public class OrthoList extends ScrollPane {
 		
 		boolean sorted = false;
 		
-		log.debug("Starting ortho sort on mode " + mode);
+		if (log.isDebug()) {
+			log.debug("Starting ortho sort on mode " + mode);
+		}
 		while (sorted == false) {
 			if (sortedPairIDs.length == 0 | sortedPairIDs.length == 1) {
 				// any array of length 0 or 1 will be sorted no matter what
@@ -78,7 +80,9 @@ public class OrthoList extends ScrollPane {
 				}
 			}
 		}
-		log.debug("Finished ortho sort on mode " + mode);
+		if (log.isDebug()) {
+			log.debug("Finished ortho sort on mode " + mode);
+		}
 	}
 	
 	private void build() {
