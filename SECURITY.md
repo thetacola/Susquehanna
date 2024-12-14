@@ -5,7 +5,9 @@ As there are currently no full release versions, the current build will be suppo
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.1.0   | ✅ |
+| 0.1.2   | ✅ |
+| 0.1.1   | x |
+| 0.1.0   | X |
 | 0.0.2   | X |
 | 0.0.1   | X |
 
