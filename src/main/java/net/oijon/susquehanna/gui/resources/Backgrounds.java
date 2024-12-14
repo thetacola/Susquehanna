@@ -14,11 +14,6 @@ import javafx.scene.paint.Color;
 public class Backgrounds {
 	public static BackgroundSize STRETCH_TO_FIT_SIZE = new BackgroundSize(100, 100, true, true, true, true);
 	
-	// private attributes needed for backgrounds to work
-	private static BackgroundFill DEFAULT_FILL = new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY);
-	
-	// repeats
-	// array allows for future expansion where x and y repeat are different
 	
 	private static Image loadImage(String name) {
 		return new Image(Indicator.class.getResourceAsStream("/img/" + name));
@@ -30,7 +25,7 @@ public class Backgrounds {
 	
     // public backgrounds
     public static Background WOOD = new Background(loadBgImage("wood-texture.png", BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, STRETCH_TO_FIT_SIZE));
-    public static Background DEFAULT = new Background(DEFAULT_FILL);
+    public static Background DEFAULT = new Background(new BackgroundFill(Color.web("#004A7F"), CornerRadii.EMPTY, Insets.EMPTY));
     public static Background BINDING = new Background(loadBgImage("page-binding.png", BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundSize.DEFAULT));
     public static Background RIGHTWOOD = new Background(loadBgImage("right-wood.png", BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundSize.DEFAULT));
     public static Background PAPER = new Background(loadBgImage("paper-texture.png", BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, STRETCH_TO_FIT_SIZE));
