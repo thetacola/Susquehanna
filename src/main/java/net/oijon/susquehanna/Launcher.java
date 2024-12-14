@@ -1,11 +1,11 @@
 package net.oijon.susquehanna;
 
 /**
- * This is stupid, but JavaFX has forced my hand...
+ * Launches the application. JavaFX does not like launching from App for some reason.
  * @author alex
  *
  */
-public class Launcher {
+public final class Launcher {
 	
 	private Launcher() {
 		// prevents instantiation
