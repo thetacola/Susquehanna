@@ -25,7 +25,7 @@ public class ReportBugPage extends Book {
 	
 	@Override
 	public void refresh() {
-		
+		// nothing to refresh
 	}
 
 }

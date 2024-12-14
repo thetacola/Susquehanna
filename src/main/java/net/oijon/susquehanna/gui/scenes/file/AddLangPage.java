@@ -57,7 +57,7 @@ public class AddLangPage extends Book {
 	
 	@Override
 	public void refresh() {
-		
+		// nothing to refresh
 	}
 
 }
