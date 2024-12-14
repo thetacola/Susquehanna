@@ -49,7 +49,7 @@ public class ViewWordsPage extends Book {
 	}
 	
 	private boolean hasViewableLexicon() {
-		return !(App.getSelectedLang() == Language.NULL);
+		return !App.getSelectedLang().equals(Language.NULL);
 	}
 	
 }
