@@ -272,7 +272,7 @@ public class PhonemeButton extends Parent {
 		edit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				final PhonemeEditPopup popup = new PhonemeEditPopup(phoneme, pt);
+				final PhonemeEditPopup popup = new PhonemeEditPopup(phoneme);
                 popup.show();
                 App.writeToSelectedLang();
                 App.refreshType("phono");
