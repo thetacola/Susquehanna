@@ -42,11 +42,7 @@ public class EditOrthographyPage extends Book {
 	}
 
 	private boolean hasViewableOrtho() {
-		if (App.getSelectedLang().equals(Language.NULL)) {
-			return false;
-		} else {
-			return true;
-		}
+		return !App.getSelectedLang().equals(Language.NULL);
 	}
 	
 	private void buildNonVisible() {
