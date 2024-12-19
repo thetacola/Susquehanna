@@ -19,7 +19,7 @@ public class ReportBugPage extends Book {
 		toolbox = new FileTools();
 		
 		WebView githubView = new WebView();
-		githubView.getEngine().load("https://github.com/alexdcramer/Susquehanna/issues/new");
+		githubView.getEngine().load("https://github.com/thetacola/Susquehanna/issues/new");
 		addToLeft(githubView);
 	}
 	

@@ -1,6 +1,7 @@
 package net.oijon.susquehanna;
 
 import javafx.application.Application;
+import javafx.application.Preloader;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -58,10 +59,9 @@ public class App extends Application {
 	public static Stage stage;
 	
 	@Override
-    public void start(Stage stage) {
-    	App.stage = stage;
-    	
-    	log.info("Starting application...");
+	public void init() {
+		notifyPreloader(new Preloader.ProgressNotification(0));
+		log.info("Initializing application...");
     	
     	//Verify IPA is intact
     	PhonoSystem ipa = PhonoSystem.IPA;
@@ -75,7 +75,7 @@ public class App extends Application {
     		log.err("IPA phonology system could not be verified!");
     	}
         
-    	log.info("Loading scenes...");
+    	log.info("Loading books...");
     	// Create blank placeholders
     	BlankPage phonotactics = new BlankPage();
     	phonotactics.setID("phono.phonotactics");
@@ -96,7 +96,6 @@ public class App extends Application {
     	books.add(new InfoPage());
     	books.add(new AddLangPage());
     	books.add(new OpenLangPage());
-    	books.add(new ReportBugPage());
     	// phono
     	books.add(new EditPhonoPage());
     	books.add(new ViewPhonoPage());
@@ -112,8 +111,7 @@ public class App extends Application {
     	books.add(new ViewWordsPage());
     	// settings
     	books.add(settings);
-    	
-    	log.info("Loaded " + books.size() + " scenes!");
+
     	
         ImageView indicator = Indicator.FILE;
         VBox rightIndicator = new VBox(indicator);
@@ -121,10 +119,23 @@ public class App extends Application {
         
         VBox rightWoodVBox = new VBox(RIGHTWOOD);
         rightWoodVBox.setBackground(Backgrounds.RIGHTWOOD);
+        log.info("Initialized!");
+	}
+	
+	@Override
+    public void start(Stage stage) {
+    	App.stage = stage;
+    	log.info("Starting application...");
+    	
+    	// Oddly, webviews count as "a scene or stage" according to JavaFX
+    	// Books do not, despite extending scene...
+    	log.info("Loading webview books...");
+    	books.add(new ReportBugPage());
+    	log.info("Loaded " + books.size() + " books!");
         
-        Navbox navbox = new Navbox();
+    	Navbox navbox = new Navbox();
         navbox.createTransferActions();
-        
+    	
         Book book = new InfoPage();
         book.setNavbox(navbox);
         book.setToolbox(new FileTools());
