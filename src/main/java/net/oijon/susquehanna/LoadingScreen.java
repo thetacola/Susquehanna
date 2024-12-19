@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -27,10 +28,16 @@ public class LoadingScreen extends Preloader {
 
 	Log log = App.getLog();
 	Stage stage;
+	ProgressBar bar;
 
 	
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		bar = new ProgressBar();
+		// FIXME: Use stage dynamic width instead of image dimensions!
+		bar.setPrefWidth(640);
+		bar.setProgress(-1);
 		
 		Background color = new Background(new BackgroundFill(Color.web("#064288"),
 				CornerRadii.EMPTY, Insets.EMPTY));
@@ -49,7 +56,7 @@ public class LoadingScreen extends Preloader {
 		version.setText(SystemInfo.susquehannaVersion());
 		version.setContentDisplay(ContentDisplay.CENTER);
 		
-		VBox rootVBox = new VBox(iv, version);
+		VBox rootVBox = new VBox(iv, version, bar);
 		rootVBox.setAlignment(Pos.BOTTOM_CENTER);
 		rootVBox.setBackground(color);
         Scene root = new Scene(rootVBox);
@@ -63,7 +70,6 @@ public class LoadingScreen extends Preloader {
         	log.debug("Finished loading screen at " + Instant.now());
         }
 	}
-	
 	
 	@Override
 	public void handleStateChangeNotification(StateChangeNotification evt) {
