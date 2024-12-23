@@ -55,9 +55,8 @@ public class PhonemeTable extends Parent {
 		
 		for (HBox hbox : cells) {
 			List<PhonemeButton> cell = getButtonsInCell(hbox);
-			List<String> phonemesInCell = getPhonemesFromButtons(cell);
 			
-			checkPhonemesInCell(hbox, cell, phonemesInCell);
+			checkPhonemesInCell(hbox);
 			removeDuplicates(hbox, cell);
 		}
 	}
@@ -72,16 +71,14 @@ public class PhonemeTable extends Parent {
 	/**
 	 * Adds any missing phonemes with diacritics to a cell
 	 * 
-	 * This seems like it could be refactored to make it run easier and not
-	 * require as many parameters...
-	 * 
-	 * TODO: Refactor PhonemeTable.checkPhonemesInCell();
-	 * 
 	 * @param cell The cell to be checked for missing phonemes
 	 * @param buttons The buttons inside the cell
 	 * @param phonemes The list of phonemes in the cell
 	 */
-	private void checkPhonemesInCell(HBox cell, List<PhonemeButton> buttons, List<String> phonemes) {
+	private void checkPhonemesInCell(HBox cell) {
+		List<PhonemeButton> buttons = getButtonsInCell(cell);
+		List<String> phonemes = getPhonemesFromButtons(buttons);
+		
 		for (PhonemeButton button : buttons) {
 			boolean inPhono = phonology.getList().contains(button.getPhoneme());
 			button.setInPhono(inPhono);
