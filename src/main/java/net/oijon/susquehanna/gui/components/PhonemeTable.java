@@ -72,8 +72,6 @@ public class PhonemeTable extends Parent {
 	 * Adds any missing phonemes with diacritics to a cell
 	 * 
 	 * @param cell The cell to be checked for missing phonemes
-	 * @param buttons The buttons inside the cell
-	 * @param phonemes The list of phonemes in the cell
 	 */
 	private void checkPhonemesInCell(HBox cell) {
 		List<PhonemeButton> buttons = getButtonsInCell(cell);
