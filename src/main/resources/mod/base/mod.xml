@@ -23,6 +23,8 @@
     </dependencies>
     <toolboxes>
         <!-- Put toolboxes here. These will create tabs in the order they appear here. -->
+		<!-- Each '.' past the ID of your mod needs to be a folder. This is how files are found. -->
+		<!-- Ex. "net.oijon.susquehanna.mods.base.toolboxes.FileTools" is in ./toolboxes/FileTools.class -->
         <toolbox>net.oijon.susquehanna.mods.base.toolboxes.FileTools</toolbox>
         <toolbox>net.oijon.susquehanna.mods.base.toolboxes.PhonologyTools</toolbox>
         <toolbox>net.oijon.susquehanna.mods.base.toolboxes.OrthographyTools</toolbox>

@@ -1,5 +1,5 @@
 package net.oijon.susquehanna.mod;
 
-public class ModLoader {
+public class ModLoader extends ClassLoader {
 
 }
