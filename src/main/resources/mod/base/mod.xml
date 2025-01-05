@@ -1,0 +1,52 @@
+<mod>
+    <!-- This mod.xml file also acts as a template! Feel free to copy and edit it. -->
+    <!-- Make sure in your mod not to add any of the books listed here, as your mod will
+    conflict with Base otherwise -->
+    <name>Base</name>
+    <!-- When deciding what to name your mod ID, it is *highly* reccomended to use a domain that you
+    control! In here, the domain controlled is oijon.net, so net.oijon.* is used. It would also be a
+    good idea to add the project name as a subdomain. Here, I've decided that all of my Susquehanna
+    mods will be grouped in "susquehanna.mods", with the name as the final subdomain. -->
+
+    <!-- DO NOT USE NET.OIJON as the base of your mod's ID, as that will cause confusion for the
+    end user when an issue occurs and "net.oijon" is listed, despite the issue being from your
+    mod.-->
+    <id>net.oijon.susquehanna.mods.base</id>
+    <description>The default tabs and books for Susquehanna.</description>
+    <incompatibleWith>
+        <!-- If making some sort of full conversion mod, make sure to add
+        net.oijon.susquehanna.mods.base here! -->
+        <!-- <incompatible>net.oijon.susquehanna.mods.example-incompatible-mod</incompatible> -->
+    </incompatibleWith>
+    <dependencies>
+        <!-- <dependency>net.oijon.susquehanna.mods.example-dependency</dependency> -->
+    </dependencies>
+    <toolboxes>
+        <!-- Put toolboxes here. These will create tabs in the order they appear here. -->
+        <toolbox>net.oijon.susquehanna.mods.base.toolboxes.FileTools</toolbox>
+        <toolbox>net.oijon.susquehanna.mods.base.toolboxes.PhonologyTools</toolbox>
+        <toolbox>net.oijon.susquehanna.mods.base.toolboxes.OrthographyTools</toolbox>
+        <toolbox>net.oijon.susquehanna.mods.base.toolboxes.GrammarTools</toolbox>
+        <toolbox>net.oijon.susquehanna.mods.base.toolboxes.LexiconTools</toolbox>
+        <toolbox>net.oijon.susquehanna.mods.base.toolboxes.SettingsTools</toolbox>
+    </toolboxes>
+    <books>
+        <!-- Put books without WebViews here. These will be loaded while the program splash screen
+        is shown. The order these are in will be the order their toolbuttons are displayed in tabs.
+        This does have the effect of making all post-load books at the end. This may be changed in
+        the future. -->
+        <book>net.oijon.susquehanna.mods.base.file.AddLangPage</book>
+        <book>net.oijon.susquehanna.mods.base.file.InfoPage</book>
+        <book>net.oijon.susquehanna.mods.base.file.OpenLangPage</book>
+        <book>net.oijon.susquehanna.mods.base.lexicon.EditWordPage</book>
+        <book>net.oijon.susquehanna.mods.base.lexicon.ViewWordsPage</book>
+        <book>net.oijon.susquehanna.mods.base.orthography.EditOrthograpyPage</book>
+        <book>net.oijon.susquehanna.mods.base.orthography.ViewOrthograpyPage</book>
+        <book>net.oijon.susquehanna.mods.base.phonology.EditPhonologyPage</book>
+        <book>net.oijon.susquehanna.mods.base.phonology.ViewPhonologyPage</book>
+    </books>
+    <postloadBooks>
+        <!-- Put books with WebViews here. Due to constraints with JavaFX, these must be loaded in a different phase. -->
+        <book>net.oijon.susquehanna.mods.base.file.ReportBugPage</book>
+    </postloadBooks>
+</mod>

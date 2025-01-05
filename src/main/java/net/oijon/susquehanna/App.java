@@ -47,6 +47,8 @@ import java.util.List;
  */
 public class App extends Application {
 	
+	public static final String HOME_DIR = System.getProperty("user.home") + "/Susquehanna";
+	
 	static List<Book> books = new ArrayList<Book>();
 	static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
 	static VBox languageSelect = new VBox();
@@ -66,7 +68,7 @@ public class App extends Application {
     	//Verify IPA is intact
     	PhonoSystem ipa = PhonoSystem.IPA;
     	ipa.toFile();
-    	PhonoSystem ipaFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
+    	PhonoSystem ipaFile = new PhonoSystem(new File(HOME_DIR + "/phonoSystems/IPA.phosys"));
     	if (ipaFile.toString().equals(ipa.toString())) {
     		if (log.isDebug()) {
     			log.debug("IPA phonology system successfully verified!");
