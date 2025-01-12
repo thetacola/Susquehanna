@@ -28,6 +28,8 @@ import net.oijon.susquehanna.gui.scenes.orthography.EditOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
+import net.oijon.susquehanna.gui.scenes.settings.ModsPage;
+import net.oijon.susquehanna.gui.scenes.settings.PreferencesPage;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
 import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
@@ -37,7 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//last edit: 9/14/24 -N3
+//last edit: 1/5/25 -N3
 
 
 /**
@@ -87,9 +89,6 @@ public class App extends Application {
     	
     	BlankPage grammar = new BlankPage();
     	grammar.setID("grammar.null");
-    	
-    	BlankPage settings = new BlankPage();
-    	settings.setID("settings.null");
     	// Book instanciation
     	// Has the nice side effect of preloading everything, so no lag when switching scenes :D
     	// file
@@ -110,7 +109,8 @@ public class App extends Application {
     	books.add(new EditWordsPage());
     	books.add(new ViewWordsPage());
     	// settings
-    	books.add(settings);
+    	books.add(new PreferencesPage());
+    	books.add(new ModsPage());
 
     	
         ImageView indicator = Indicator.FILE;

@@ -8,12 +8,14 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import net.oijon.olog.Log;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.gui.scenes.Book;
 
 public class BinderTab extends Button {
 
 	String name = "";
+	Log log = App.getLog();
 	
 	/**
 	 * Creates a binder tab, using the name of the tab to grab the correct image file
@@ -39,12 +41,18 @@ public class BinderTab extends Button {
         	@Override
         	public void handle(ActionEvent event) {
         		List<Book> books = App.getSceneList();
+        		boolean found = false;
         		for (Book book : books) {
         			String bookID = book.getID();
         			if (bookID.equals(id)) {
         				App.setScene(book);
+        				found = true;
+        				log.debug("Successfully transfered to \"" + id + "\"!");
         				break;
         			}
+        		}
+        		if (!found) {
+        			log.err("Unable to find book \"" + id + "\"! Is it enabled?");
         		}
         	}
         });
