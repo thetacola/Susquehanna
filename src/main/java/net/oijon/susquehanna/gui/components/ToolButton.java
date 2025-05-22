@@ -12,7 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import net.oijon.olog.Log;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.gui.scenes.Book;
 
 /**
@@ -21,6 +23,10 @@ import net.oijon.susquehanna.gui.scenes.Book;
  *
  */
 public class ToolButton extends Button {
+	
+	LocaleBundle lb = App.lb;
+	Log log = App.getLog();
+	private String id;
 
 	/**
 	 * Constructs a button. 
@@ -28,21 +34,31 @@ public class ToolButton extends Button {
 	 * @param name The text under the button
 	 */
 	public ToolButton(String name) {
+		id = name;
 		String fileName = "/img/";
-		fileName += getFileName(name);
+		fileName += name;
 		fileName += ".png";
-		this.setText(name);
-		this.setGraphic(new ImageView(new Image(ToolButton.class.getResourceAsStream(fileName))));
-		this.setPadding(Insets.EMPTY);
-        this.setContentDisplay(ContentDisplay.TOP);
-        this.setBackground(null);
-        this.setTextAlignment(TextAlignment.CENTER);
-        this.setTextFill(Color.WHITE);
-        createActions();
+		this.setText(lb.get("tool." + name));
+		try {
+			Image img = new Image(ToolButton.class.getResourceAsStream(fileName));
+			ImageView imgV = new ImageView(img);
+			this.setGraphic(imgV);
+			this.setPadding(Insets.EMPTY);
+	        this.setContentDisplay(ContentDisplay.TOP);
+	        this.setBackground(null);
+	        this.setTextAlignment(TextAlignment.CENTER);
+	        this.setTextFill(Color.WHITE);
+	        createActions();
+		} catch (NullPointerException e) {
+			log.err("Unable to load button image for " + name
+					+ " at " + fileName + "! Defaulting to text-only button...");
+		}
+		createTransferAction();
 	}
 	/**
 	 * Sets the book that this button should transfer the main stage to
 	 * @param book The book to be changed to when this button is pressed
+	 * @deprecated as of 0.2.0, as the id should now be the name.
 	 */
 	public void createTransferAction(String id) {
 		this.setOnAction(new EventHandler<ActionEvent>() {
@@ -61,24 +77,10 @@ public class ToolButton extends Button {
 	}
 	
 	/**
-	 * Gets the file name of the images from a button name
-	 * @param name The name of the button
-	 * @return The file name for the button
+	 * Creates the action to transfer to the book with the same ID as the button.
 	 */
-	private static String getFileName(String name) {
-		String fileName = "";
-		for (int i = 0; i < name.length(); i++) {
-			char currentChar = name.charAt(i);
-			if (currentChar == ' ') {
-				currentChar = '-';
-			}
-			else if (currentChar == '\n') {
-				currentChar = '-';
-			}
-			currentChar = Character.toLowerCase(currentChar);
-			fileName += currentChar;
-		}
-		return fileName;
+	private void createTransferAction() {
+		createTransferAction(id);
 	}
 	
 	/**
@@ -91,7 +93,7 @@ public class ToolButton extends Button {
 		//  🥺  is for me?
 		// 👉👈
 		Button button = this;
-		final String fileName = "/img/" + getFileName(button.getText());
+		final String fileName = "/img/" + id;
 		
 		button.setOnMousePressed(new EventHandler<MouseEvent>() {
 	       	@Override

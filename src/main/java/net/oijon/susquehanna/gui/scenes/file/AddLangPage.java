@@ -13,21 +13,25 @@ import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
+import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.LocaleBundle;
 
 public class AddLangPage extends Book {
 
+	LocaleBundle lb = App.lb;
+	
 	public AddLangPage() {
 		super();
 		id = "file.add";
 		toolbox = new FileTools();
 		
-		Label languageNameLabel = new Label("Language Name (NOTE: cannot be changed)");
+		Label languageNameLabel = new Label(lb.get("file.add.name"));
 	    languageNameLabel.setFont(Fonts.OPENSANS);
 	    TextField languageName = new TextField();
-	    Label languageAutonymLabel = new Label("Language Autonym");
+	    Label languageAutonymLabel = new Label(lb.get("file.add.autonym"));
 	    languageAutonymLabel.setFont(Fonts.OPENSANS);
 	    TextField languageAutonym = new TextField();
-	    Button createLanguage = new Button("Create!");
+	    Button createLanguage = new Button(lb.get("file.add.create"));
 	    
 	    createLanguage.setOnAction(new EventHandler<ActionEvent>() {
 

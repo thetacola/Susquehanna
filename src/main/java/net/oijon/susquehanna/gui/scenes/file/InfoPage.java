@@ -8,6 +8,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import net.oijon.oling.datatypes.language.Language;
+import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.SystemInfo;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
@@ -15,7 +17,7 @@ import net.oijon.susquehanna.gui.toolboxes.FileTools;
 
 public class InfoPage extends Book {
 
-
+	LocaleBundle lb = App.lb;
     TextArea debug = new TextArea();
 	
 	public InfoPage() {
@@ -50,8 +52,8 @@ public class InfoPage extends Book {
         ImageView opennlpLogo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/dependency-logos/opennlp.png")));
         ImageView otimeLogo = new ImageView(new Image(InfoPage.class.getResourceAsStream("/img/dependency-logos/otime.png")));
 
-        Label madeByOijon = new Label("Brought to you by Oijon - oijon.net");
-        Label debugInfo = new Label("Debug information:");
+        Label madeByOijon = new Label(lb.get("file.info.broughttoyou"));
+        Label debugInfo = new Label(lb.get("file.info.debuginfo"));
         debug.setText(generateDebugInfo());
         madeByOijon.setFont(Fonts.OPENSANS);
         
@@ -89,6 +91,8 @@ public class InfoPage extends Book {
 		String[] propArray = rawProperties.substring(0, rawProperties.length() - 1).split(", ");
 		
 		String list = "";
+		list += "=== Susquehanna Settings ===\n";
+		list += "Locale=" + App.l.toString() + "\n";
 		list += "=== OLing Settings ===\n";
 		File[] files = Language.getLanguageFiles(
 				new File(System.getProperty("user.home") + "/Susquehanna/"));

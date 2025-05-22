@@ -8,16 +8,10 @@ public class FileTools extends Toolbox {
 	public FileTools() {
 		super(Backgrounds.FILETOOLS);
 		
-		ToolButton addLanguage = new ToolButton("New\nLanguage");
-        ToolButton openLanguage = new ToolButton("Open\nLanguage");
-        ToolButton reportBug = new ToolButton("Report Bug");
-        ToolButton info = new ToolButton("Info");
-        
-        // transfer actions
-        addLanguage.createTransferAction("file.add");
-        openLanguage.createTransferAction("file.open");
-        reportBug.createTransferAction("file.report");
-        info.createTransferAction("file.info");
+		ToolButton addLanguage = new ToolButton("file.add");
+        ToolButton openLanguage = new ToolButton("file.open");
+        ToolButton reportBug = new ToolButton("file.report");
+        ToolButton info = new ToolButton("file.info");
         
         this.getChildren().addAll(addLanguage, openLanguage, info, reportBug);
 	}

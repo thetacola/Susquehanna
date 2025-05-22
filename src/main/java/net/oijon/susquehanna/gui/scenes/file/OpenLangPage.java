@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
@@ -30,6 +31,8 @@ import net.oijon.oling.datatypes.language.LanguageProperty;
 public class OpenLangPage extends Book {
 
 	private VBox languageSelect = new VBox();
+
+	LocaleBundle lb = App.lb;
 	
 	public OpenLangPage() {
 		super();
@@ -37,7 +40,7 @@ public class OpenLangPage extends Book {
 		toolbox = new FileTools();
 		
 		refresh();
-		Button refreshLanguageList = new Button("Refresh");
+		Button refreshLanguageList = new Button(lb.get("gen.refresh"));
         
         refreshLanguageList.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
@@ -73,10 +76,10 @@ public class OpenLangPage extends Book {
 	        	lastAccessedLabel.setFont(Fonts.OPENSANS);
 	        	Image icon = new Image(App.class.getResourceAsStream("/img/no-image.png"));
 	        	ImageView iconView = new ImageView(icon);
-	        	Button select = new Button("Select");
+	        	Button select = new Button(lb.get("gen.select"));
 	        	select.setPrefSize(100, 30);
 	        	select.setMinSize(100, 30);
-	        	Button delete = new Button("Delete");
+	        	Button delete = new Button(lb.get("gen.delete"));
 	        	delete.setPrefSize(100, 30);
 	        	delete.setMinSize(100, 30);
 	        	VBox infoBox = new VBox();
@@ -93,12 +96,12 @@ public class OpenLangPage extends Book {
 	                Date timeCreatedDate = new Date(timeCreated);
 	                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	                String timeCreatedString = sdf.format(timeCreatedDate);
-	                timeCreatedLabel.setText(" Created on: " + timeCreatedString);
+	                timeCreatedLabel.setText(" " + lb.get("file.open.createdon") + " " + timeCreatedString);
 	                
 	                Long lastAccessed = Long.valueOf(prop.getProperty("lastEdited"));
 	                Date lastAccessedDate = new Date(lastAccessed);
 	                String lastAccessedString = sdf.format(lastAccessedDate);
-	                lastAccessedLabel.setText(" Last modified: " + lastAccessedString);
+	                lastAccessedLabel.setText(" " + lb.get("file.open.lastaccessed") + " " + lastAccessedString);
 	                
 	                select.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -125,11 +128,12 @@ public class OpenLangPage extends Book {
 						@Override
 						public void handle(ActionEvent event) {
 							Stage delete = new Stage();
-							delete.setWidth(400);
+							delete.setWidth(600);
 							delete.setHeight(150);
 							
-							Label label = new Label("Are you sure you want to delete " + name + "?");
-							Button yes = new Button("Yes");
+							Label label = new Label(lb.get("file.open.deleteconfirm").replace("{0}", name));
+							label.setFont(Fonts.OPENSANS);
+							Button yes = new Button(lb.get("gen.yes"));
 							yes.setPrefSize(50, 25);
 							yes.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -169,7 +173,7 @@ public class OpenLangPage extends Book {
 								}
 								
 							});
-							Button no = new Button("No");
+							Button no = new Button(lb.get("gen.no"));
 							no.setOnAction(new EventHandler<ActionEvent>() {
 
 								@Override

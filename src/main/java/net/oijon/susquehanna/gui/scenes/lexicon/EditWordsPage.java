@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.gui.components.WordDisplay;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.toolboxes.LexiconTools;
@@ -21,22 +22,24 @@ import net.oijon.oling.datatypes.lexicon.WordProperty;
 
 public class EditWordsPage extends Book {
 
+	LocaleBundle lb = App.lb;
+	
 	public EditWordsPage() {
 		super();
 		id = "lexicon.edit";
 		toolbox = new LexiconTools();
 		refresh();
-		Label wordLabel = new Label("Word: ");
+		Label wordLabel = new Label(lb.get(id + ".word") + " ");
 		TextField wordInput = new TextField();
-		Label meaningLabel = new Label("Meaning: ");
+		Label meaningLabel = new Label(lb.get(id + ".meaning") + " ");
 		TextField meaningInput = new TextField();
 		//TODO: automatically get pronunciation from orthography
-		Label pronounciationLabel = new Label("Pronounciation: ");
+		Label pronounciationLabel = new Label(lb.get(id + ".pronunciation") + " ");
 		TextField pronounciationInput = new TextField();
 		// Button guessPronounciation = new Button("Guess Pronounciation");
-		Label etymologyLabel = new Label("Etymology: ");
+		Label etymologyLabel = new Label(lb.get(id + ".etymology") + " ");
 		TextField etymologyInput = new TextField();
-		Label sourceLanguageLabel = new Label("Source Language: ");		
+		Label sourceLanguageLabel = new Label(lb.get(id + ".source") + " ");		
 		ComboBox<String> sourceLanguageInput = new ComboBox<String>();
 		
 		ObservableList<String> options = FXCollections.observableArrayList();
@@ -49,7 +52,7 @@ public class EditWordsPage extends Book {
 		}
 		sourceLanguageInput.setItems(options);
 		
-		Button addWord = new Button("Add Word");
+		Button addWord = new Button(lb.get(id + ".add"));
 		addWord.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

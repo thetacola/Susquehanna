@@ -33,11 +33,17 @@ import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+import org.codehaus.plexus.util.FileUtils;
 
-//last edit: 9/14/24 -N3
+//last edit: 5/22/25 -N3
 
 
 /**
@@ -55,8 +61,40 @@ public class App extends Application {
     static File currentFile;
     static ImageView BINDING = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
 	static ImageView RIGHTWOOD = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
-    
+    public static Locale l;
+    public static Properties p = new Properties();
+    public static LocaleBundle lb;
+	
 	public static Stage stage;
+	
+	private void loadSettings() {
+		File f = new File(System.getProperty("user.home") + "/Susquehanna/config.properties");
+    	
+		if (!f.exists()) {
+    		log.warn("Config file not found, copying over default...");
+    		URL defaultConfig = getClass().getResource("/config.properties");
+    		try {
+				FileUtils.copyURLToFile(defaultConfig, f);
+				log.info("Default config copied successfully!");
+			} catch (IOException e) {
+				log.err("Unable to copy over default config file! " + e.toString());
+				e.printStackTrace();
+			}
+    	}
+    	
+		try {
+			p.load(new FileInputStream(f));
+			log.info("Config successfully loaded!");
+		} catch (FileNotFoundException e) {
+			log.err("Cannot find config!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			log.err("Unable to load config!");
+			e.printStackTrace();
+		}
+		
+		l = new Locale(p.getProperty("language"), p.getProperty("country"));
+	}
 	
 	@Override
 	public void init() {
@@ -76,6 +114,11 @@ public class App extends Application {
     	}
         
     	log.info("Loading books...");
+    	
+    	loadSettings();
+    	File localizationDir = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/");
+		lb = new LocaleBundle(localizationDir, l);
+    	
     	// Create blank placeholders
     	BlankPage phonotactics = new BlankPage();
     	phonotactics.setID("phono.phonotactics");
@@ -148,7 +191,7 @@ public class App extends Application {
 
 			@Override
 			public void handle(WindowEvent event) {
-				log.critical("Closing...");
+				log.info("Application closed by user.");
 				stage.close();
 			}
         	
