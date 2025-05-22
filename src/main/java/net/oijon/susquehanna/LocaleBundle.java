@@ -74,6 +74,11 @@ public class LocaleBundle {
 	}
 	
 	public String get(String input) {
-		return p.getProperty(input);
+		String returnStr = p.getProperty(input);
+		if (returnStr == null) {
+			log.warn("Unable to find localization for " + input);
+			return input;
+		}
+		return returnStr;
 	}
 }
