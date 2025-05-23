@@ -8,14 +8,9 @@ public class OrthographyTools extends Toolbox {
 	public OrthographyTools() {
 		super(Backgrounds.ORTHOGRAPHYTOOLS);
 		
-		ToolButton viewOrthography = new ToolButton("View\nOrthography");
-        ToolButton editOrthography = new ToolButton("Edit\nOrthography");
-        ToolButton script = new ToolButton("Script");
-        
-        // transfer actions
-        viewOrthography.createTransferAction("ortho.view");
-        editOrthography.createTransferAction("ortho.edit");
-        script.createTransferAction("ortho.script");
+		ToolButton viewOrthography = new ToolButton("ortho.view");
+        ToolButton editOrthography = new ToolButton("ortho.edit");
+        ToolButton script = new ToolButton("ortho.script");
         
         this.getChildren().addAll(viewOrthography, editOrthography, script);
         

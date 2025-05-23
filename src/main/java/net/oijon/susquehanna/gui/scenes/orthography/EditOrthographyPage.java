@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.oijon.susquehanna.App;
+import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.gui.components.OrthoList;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
@@ -18,6 +19,8 @@ import net.oijon.oling.datatypes.language.Language;
 
 public class EditOrthographyPage extends Book {
 
+	LocaleBundle lb = App.lb;
+	
 	public EditOrthographyPage() {
 		super();
 		id = "ortho.edit";
@@ -58,9 +61,9 @@ public class EditOrthographyPage extends Book {
 		clear();
 		this.leftPage.setAlignment(Pos.CENTER);
 		
-		Label phonemeLabel = new Label("Phoneme(s)");
-		Label goesTo = new Label(" --Goes to--> ");
-		Label graphemeLabel = new Label("Grapheme(s)");
+		Label phonemeLabel = new Label(lb.get(id + ".phonemes"));
+		Label goesTo = new Label(lb.get(id + ".goesto"));
+		Label graphemeLabel = new Label(lb.get(id + ".graphemes"));
 		
 		TextField phonemes = new TextField();
 		TextField graphemes = new TextField();
@@ -70,7 +73,7 @@ public class EditOrthographyPage extends Book {
 		
 		HBox fieldContainer = new HBox(phonemeBox, goesTo, graphemeBox);
 		
-		Button submit = new Button("Add pair");
+		Button submit = new Button(lb.get(id + ".addpair"));
 		submit.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override

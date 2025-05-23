@@ -27,7 +27,9 @@ public class EditPhonoPage extends OnePageBook {
 	
 	@Override
 	public void refresh() {
-		table.refresh();
+		if (table != null) {
+			table.refresh();
+		}
 	}
 	
 	public void refreshOnNewTable() {

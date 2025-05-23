@@ -28,16 +28,25 @@ import net.oijon.susquehanna.gui.scenes.orthography.EditOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
+import net.oijon.susquehanna.gui.scenes.settings.LocalePage;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
 import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+import org.codehaus.plexus.util.FileUtils;
 
-//last edit: 9/14/24 -N3
+//last edit: 5/22/25 -N3
 
 
 /**
@@ -55,8 +64,83 @@ public class App extends Application {
     static File currentFile;
     static ImageView BINDING = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
 	static ImageView RIGHTWOOD = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
-    
+    public static Locale l;
+    public static Properties settings = new Properties();
+    public static LocaleBundle lb;
+	
 	public static Stage stage;
+	
+	private void loadSettings() {
+		// copy over everything in localizationPacks folder
+		File packsDir = new File(getClass().getResource("/localizationPacks").getFile());
+		
+		if (!packsDir.exists()) {
+			packsDir.mkdir();
+		}
+		
+		File[] packs = packsDir.listFiles();
+		for (int i = 0; i < packs.length; i++) {
+			File pack = packs[i];
+			File dest = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/"
+					+ pack.getName());
+			if (!dest.exists()) {
+				try {
+					FileUtils.copyFile(pack, dest);
+					log.info("Copied over localization pack " + pack.getName());
+				} catch (IOException e) {
+					log.err("Could not copy pack " + pack.getName() + "! " + e.toString());
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// copy over default settings if don't exist
+		File f = new File(System.getProperty("user.home") + "/Susquehanna/config.properties");
+    	
+		if (!f.exists()) {
+    		log.warn("Config file not found, copying over default...");
+    		URL defaultConfig = getClass().getResource("/config.properties");
+    		try {
+				FileUtils.copyURLToFile(defaultConfig, f);
+				log.info("Default config copied successfully!");
+			} catch (IOException e) {
+				log.err("Unable to copy over default config file! " + e.toString());
+				e.printStackTrace();
+			}
+    	}
+    	
+		try {
+			settings.load(new FileInputStream(f));
+			log.info("Config successfully loaded!");
+		} catch (FileNotFoundException e) {
+			log.err("Cannot find config!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			log.err("Unable to load config!");
+			e.printStackTrace();
+		}
+		
+		l = new Locale(settings.getProperty("language"), settings.getProperty("country"));
+	}
+	
+	public static void saveSettings() {
+		File config = new File(System.getProperty("user.home") + "/Susquehanna/config.properties");
+		
+		OutputStream os;
+		try {
+			os = new FileOutputStream(config);
+			settings.store(os, null);
+		} catch (IOException e) {
+			try {
+				config.createNewFile();
+				os = new FileOutputStream(config);
+				settings.store(os, null);
+			} catch (Exception e1) {
+				log.err("Unable to save to config!");
+				e1.printStackTrace();
+			}
+		}		
+	}
 	
 	@Override
 	public void init() {
@@ -76,6 +160,11 @@ public class App extends Application {
     	}
         
     	log.info("Loading books...");
+    	
+    	loadSettings();
+    	File localizationDir = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/");
+		lb = new LocaleBundle(localizationDir, l);
+    	
     	// Create blank placeholders
     	BlankPage phonotactics = new BlankPage();
     	phonotactics.setID("phono.phonotactics");
@@ -88,8 +177,6 @@ public class App extends Application {
     	BlankPage grammar = new BlankPage();
     	grammar.setID("grammar.null");
     	
-    	BlankPage settings = new BlankPage();
-    	settings.setID("settings.null");
     	// Book instanciation
     	// Has the nice side effect of preloading everything, so no lag when switching scenes :D
     	// file
@@ -110,7 +197,7 @@ public class App extends Application {
     	books.add(new EditWordsPage());
     	books.add(new ViewWordsPage());
     	// settings
-    	books.add(settings);
+    	books.add(new LocalePage());
 
     	
         ImageView indicator = Indicator.FILE;
@@ -148,7 +235,7 @@ public class App extends Application {
 
 			@Override
 			public void handle(WindowEvent event) {
-				log.critical("Closing...");
+				log.info("Application closed by user.");
 				stage.close();
 			}
         	
@@ -187,6 +274,15 @@ public class App extends Application {
 		}
 		
 		stage.setScene(s);
+	}
+	
+	/**
+	 * Refreshes all books registered. Useful for locale changes.
+	 */
+	public static void refreshAll() {
+		for (Book book : books) {
+			book.refresh();
+		}
 	}
 	
 	/**
