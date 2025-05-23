@@ -40,6 +40,7 @@ public class LocaleBundle {
 						expectedName += "_" + searchLocale.getCountry();
 					}
 					expectedName += ".properties";
+					log.debug("Looking for " + expectedName + "...");
 					if (files[i].getName().equals(expectedName)) {
 						try {
 							FileInputStream fis = new FileInputStream(files[i]);
@@ -60,12 +61,13 @@ public class LocaleBundle {
 					log.warn("Unable to find pack for " + searchLocale.toString() + ". Searching for " +
 							searchLocale.getLanguage() + ".");
 					searchLocale = new Locale(searchLocale.getLanguage());
-				} else if (searchLocale != Locale.ENGLISH) {
+				} else if (searchLocale.getLanguage() != "en") {
 					log.warn("Unable to find pack for " + searchLocale.toString() + ". Searching for " +
 							Locale.US.toString() + ".");
 					searchLocale = Locale.US;
 				} else {
 					log.err("Unable to find any localization!");
+					break;
 				}
 			} else {
 				log.info("Loaded pack for " + searchLocale.toString() + "!");

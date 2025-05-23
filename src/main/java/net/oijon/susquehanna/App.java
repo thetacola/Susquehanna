@@ -28,6 +28,7 @@ import net.oijon.susquehanna.gui.scenes.orthography.EditOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.orthography.ViewOrthographyPage;
 import net.oijon.susquehanna.gui.scenes.phonology.EditPhonoPage;
 import net.oijon.susquehanna.gui.scenes.phonology.ViewPhonoPage;
+import net.oijon.susquehanna.gui.scenes.settings.LocalePage;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
 import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
@@ -68,6 +69,30 @@ public class App extends Application {
 	public static Stage stage;
 	
 	private void loadSettings() {
+		// copy over everything in localizationPacks folder
+		File packsDir = new File(getClass().getResource("/localizationPacks").getFile());
+		
+		if (!packsDir.exists()) {
+			packsDir.mkdir();
+		}
+		
+		File[] packs = packsDir.listFiles();
+		for (int i = 0; i < packs.length; i++) {
+			File pack = packs[i];
+			File dest = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/"
+					+ pack.getName());
+			if (!dest.exists()) {
+				try {
+					FileUtils.copyFile(pack, dest);
+					log.info("Copied over localization pack " + pack.getName());
+				} catch (IOException e) {
+					log.err("Could not copy pack " + pack.getName() + "! " + e.toString());
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// copy over default settings if don't exist
 		File f = new File(System.getProperty("user.home") + "/Susquehanna/config.properties");
     	
 		if (!f.exists()) {
@@ -131,8 +156,6 @@ public class App extends Application {
     	BlankPage grammar = new BlankPage();
     	grammar.setID("grammar.null");
     	
-    	BlankPage settings = new BlankPage();
-    	settings.setID("settings.null");
     	// Book instanciation
     	// Has the nice side effect of preloading everything, so no lag when switching scenes :D
     	// file
@@ -153,7 +176,7 @@ public class App extends Application {
     	books.add(new EditWordsPage());
     	books.add(new ViewWordsPage());
     	// settings
-    	books.add(settings);
+    	books.add(new LocalePage());
 
     	
         ImageView indicator = Indicator.FILE;
@@ -230,6 +253,15 @@ public class App extends Application {
 		}
 		
 		stage.setScene(s);
+	}
+	
+	/**
+	 * Refreshes all books registered. Useful for locale changes.
+	 */
+	public static void refreshAll() {
+		for (Book book : books) {
+			book.refresh();
+		}
 	}
 	
 	/**
