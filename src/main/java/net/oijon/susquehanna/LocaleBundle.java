@@ -57,11 +57,11 @@ public class LocaleBundle {
 				}
 			}
 			if (found == false) {
-				if (searchLocale.getCountry() != "") {
+				if (!searchLocale.getCountry().equals("")) {
 					log.warn("Unable to find pack for " + searchLocale.toString() + ". Searching for " +
 							searchLocale.getLanguage() + ".");
 					searchLocale = new Locale(searchLocale.getLanguage());
-				} else if (searchLocale.getLanguage() != "en") {
+				} else if (!searchLocale.getLanguage().equals("en")) {
 					log.warn("Unable to find pack for " + searchLocale.toString() + ". Searching for " +
 							Locale.US.toString() + ".");
 					searchLocale = Locale.US;

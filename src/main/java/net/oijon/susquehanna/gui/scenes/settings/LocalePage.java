@@ -80,15 +80,19 @@ public class LocalePage extends Book {
 	private ArrayList<File> getFiles() {
 		File localizationDir = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/");
 		File[] f = localizationDir.listFiles();
-		log.debug("Found " + f.length + " localization packs...");
 		ArrayList<File> matchingFiles = new ArrayList<File>();
-		for (int i = 0; i < f.length; i++) {
-			if (f[i].isFile()) {
-				String fileName = f[i].getName();
-				if (fileName.startsWith("SusquehannaBundle") && fileName.endsWith(".properties")) {
-					matchingFiles.add(f[i]);
+		if (f != null) {
+			log.debug("Found " + f.length + " localization packs...");
+			for (int i = 0; i < f.length; i++) {
+				if (f[i].isFile()) {
+					String fileName = f[i].getName();
+					if (fileName.startsWith("SusquehannaBundle") && fileName.endsWith(".properties")) {
+						matchingFiles.add(f[i]);
+					}
 				}
 			}
+		} else {
+			log.err("Unable to find localization directory! Please restart the application to regenerate it.");
 		}
 		
 		return matchingFiles;
@@ -119,8 +123,8 @@ public class LocalePage extends Book {
 			String country = p.getProperty("locale.country");
 			
 			String fileName = matchingFiles.get(i).getName();
-			fileName.replace("SusquehannaBundle_", "");
-			fileName.replace(".properties", "");
+			fileName = fileName.replace("SusquehannaBundle_", "");
+			fileName = fileName.replace(".properties", "");
 			
 			retArr[i] = "";
 			if (language != null) {
