@@ -36,7 +36,9 @@ import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,7 @@ public class App extends Application {
     static ImageView BINDING = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
 	static ImageView RIGHTWOOD = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
     public static Locale l;
-    public static Properties p = new Properties();
+    public static Properties settings = new Properties();
     public static LocaleBundle lb;
 	
 	public static Stage stage;
@@ -108,7 +110,7 @@ public class App extends Application {
     	}
     	
 		try {
-			p.load(new FileInputStream(f));
+			settings.load(new FileInputStream(f));
 			log.info("Config successfully loaded!");
 		} catch (FileNotFoundException e) {
 			log.err("Cannot find config!");
@@ -118,7 +120,26 @@ public class App extends Application {
 			e.printStackTrace();
 		}
 		
-		l = new Locale(p.getProperty("language"), p.getProperty("country"));
+		l = new Locale(settings.getProperty("language"), settings.getProperty("country"));
+	}
+	
+	public static void saveSettings() {
+		File config = new File(System.getProperty("user.home") + "/Susquehanna/config.properties");
+		
+		OutputStream os;
+		try {
+			os = new FileOutputStream(config);
+			settings.store(os, null);
+		} catch (IOException e) {
+			try {
+				config.createNewFile();
+				os = new FileOutputStream(config);
+				settings.store(os, null);
+			} catch (Exception e1) {
+				log.err("Unable to save to config!");
+				e1.printStackTrace();
+			}
+		}		
 	}
 	
 	@Override

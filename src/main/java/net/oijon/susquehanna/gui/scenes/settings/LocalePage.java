@@ -3,7 +3,6 @@ package net.oijon.susquehanna.gui.scenes.settings;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -64,6 +63,9 @@ public class LocalePage extends Book {
 				@Override
 				public void handle(ActionEvent event) {
 					lb.load(localizationDir, l);
+					App.settings.setProperty("language", l.getLanguage());
+					App.settings.setProperty("country", l.getCountry());
+					App.saveSettings();
 					App.refreshAll();
 				}
 				
