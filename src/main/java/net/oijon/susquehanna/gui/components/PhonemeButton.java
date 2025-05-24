@@ -17,9 +17,9 @@ import net.oijon.susquehanna.App;
 public class PhonemeButton extends Parent {
 
 	private Button phonemeButton;
-	private ToolButton add;
-	private ToolButton edit;
-	private ToolButton trash;
+	private PressableButton add;
+	private PressableButton edit;
+	private PressableButton trash;
 	private String phoneme = "";
 	private boolean isEditable = false;
 	private boolean inPhono = false;
@@ -231,7 +231,7 @@ public class PhonemeButton extends Parent {
 	 * Builds the add button that appears when a PhonemeButton is not in a Phonology
 	 */
 	private void buildAdd() {
-		add = new ToolButton("add");		
+		add = new PressableButton("add");		
 		add.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		PhonemeButton me = this;
 		add.setOnAction(new EventHandler<ActionEvent>() {
@@ -267,7 +267,7 @@ public class PhonemeButton extends Parent {
 	 * Builds the edit button that appears when a PhonemeButton is in a Phonology
 	 */
 	private void buildEdit() {
-		edit = new ToolButton("edit");
+		edit = new PressableButton("edit");
 		edit.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		edit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -285,7 +285,7 @@ public class PhonemeButton extends Parent {
 	 * Builds the trash button that appears when a PhonemeButton is in a Phonology
 	 */
 	private void buildTrash() {
-		trash = new ToolButton("trash");
+		trash = new PressableButton("trash");
 		trash.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		PhonemeButton me = this;
 		trash.setOnAction(new EventHandler<ActionEvent>() {
