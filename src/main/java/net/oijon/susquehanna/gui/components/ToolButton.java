@@ -4,15 +4,6 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
-import net.oijon.olog.Log;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.gui.scenes.Book;
@@ -22,37 +13,18 @@ import net.oijon.susquehanna.gui.scenes.Book;
  * @author alex
  *
  */
-public class ToolButton extends Button {
+public class ToolButton extends PressableButton {
 	
-	LocaleBundle lb = App.lb;
-	Log log = App.getLog();
-	private String id;
+	protected LocaleBundle lb = App.lb;
 
 	/**
 	 * Constructs a button. 
 	 * Before ToolButton.createActions(new ToolButton()) instead!
 	 * @param name The text under the button
 	 */
-	public ToolButton(String name) {
-		id = name;
-		String fileName = "/img/";
-		fileName += name;
-		fileName += ".png";
-		this.setText(lb.get("tool." + name));
-		try {
-			Image img = new Image(ToolButton.class.getResourceAsStream(fileName));
-			ImageView imgV = new ImageView(img);
-			this.setGraphic(imgV);
-			this.setPadding(Insets.EMPTY);
-	        this.setContentDisplay(ContentDisplay.TOP);
-	        this.setBackground(null);
-	        this.setTextAlignment(TextAlignment.CENTER);
-	        this.setTextFill(Color.WHITE);
-	        createActions();
-		} catch (NullPointerException e) {
-			log.err("Unable to load button image for " + name
-					+ " at " + fileName + "! Defaulting to text-only button...");
-		}
+	public ToolButton(String id) {
+		super(id);
+		this.setText(lb.get("tool." + id));
 		createTransferAction();
 	}
 	/**
@@ -81,32 +53,6 @@ public class ToolButton extends Button {
 	 */
 	private void createTransferAction() {
 		createTransferAction(id);
-	}
-	
-	/**
-	 * Creates the button images for when pressed
-	 */
-	private void createActions() {
-		// only works because of pass-by-reference
-		// have to do this because otherwise the eventhandlers go
-		//
-		//  🥺  is for me?
-		// 👉👈
-		Button button = this;
-		final String fileName = "/img/" + id;
-		
-		button.setOnMousePressed(new EventHandler<MouseEvent>() {
-	       	@Override
-	       	public void handle(MouseEvent event) {
-	       		button.setGraphic(new ImageView(new Image(ToolButton.class.getResourceAsStream(fileName + "-pressed.png"))));
-	       	}
-	       });
-		button.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	       	@Override
-	       	public void handle(MouseEvent event) {
-	       		button.setGraphic(new ImageView(new Image(ToolButton.class.getResourceAsStream(fileName + ".png"))));
-	     	}
-	    });
 	}
 	
 }
