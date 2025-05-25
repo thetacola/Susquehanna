@@ -102,6 +102,12 @@ public class App extends Application {
 	        try {
 	        	Path filePath = it.next();
 	        	String idStr = filePath.getFileName().toString();
+	        	File packdir = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/");
+	        	
+	        	if (!packdir.exists()) {
+	        		packdir.mkdir();
+	        	}
+	        	
 	        	File newFile = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/" + idStr);
 	        	if (!newFile.exists()) {
 	        		Files.copy(filePath, new FileOutputStream(newFile));
@@ -193,6 +199,7 @@ public class App extends Application {
 			e.printStackTrace();
 		}
     	File localizationDir = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/");
+    	
 		lb = new LocaleBundle(localizationDir, l);
     	
     	// Create blank placeholders
