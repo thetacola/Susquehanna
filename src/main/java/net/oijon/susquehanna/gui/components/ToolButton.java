@@ -18,9 +18,8 @@ public class ToolButton extends PressableButton {
 	protected LocaleBundle lb = App.lb;
 
 	/**
-	 * Constructs a button. 
-	 * Before ToolButton.createActions(new ToolButton()) instead!
-	 * @param name The text under the button
+	 * Constructs a button.
+	 * @param id The ID of the book this button should transfer to
 	 */
 	public ToolButton(String id) {
 		super(id);
@@ -29,7 +28,7 @@ public class ToolButton extends PressableButton {
 	}
 	/**
 	 * Sets the book that this button should transfer the main stage to
-	 * @param book The book to be changed to when this button is pressed
+	 * @param id The book to be changed to when this button is pressed
 	 * @deprecated as of 0.2.0, as the id should now be the name.
 	 */
 	public void createTransferAction(String id) {

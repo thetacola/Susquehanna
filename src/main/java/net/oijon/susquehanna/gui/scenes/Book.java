@@ -90,7 +90,7 @@ public abstract class Book extends Scene {
 	
 	/**
 	 * Adds any amount of JavaFX nodes to the left page
-	 * @param nodes The JavaFX node to be added to the page
+	 * @param node The JavaFX node to be added to the page
 	 */
 	public void addToLeft(Node node) {
 		leftPage.getChildren().add(node);
@@ -99,7 +99,7 @@ public abstract class Book extends Scene {
 	
 	/**
 	 * Adds any amount of JavaFX nodes to the right page
-	 * @param nodes The JavaFX node to be added to the page
+	 * @param node The JavaFX node to be added to the page
 	 */
 	public void addToRight(Node node) {
 		rightPage.getChildren().add(node);
