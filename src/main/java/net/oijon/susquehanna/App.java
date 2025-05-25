@@ -40,11 +40,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.stream.Stream;
+
 import org.codehaus.plexus.util.FileUtils;
 
 //last edit: 5/22/25 -N3
@@ -71,29 +83,38 @@ public class App extends Application {
 	
 	public static Stage stage;
 	
-	private void loadSettings() {
+	private void loadSettings() throws URISyntaxException, IOException {
 		// copy over everything in localizationPacks folder
-		File packsDir = new File(getClass().getResource("/localizationPacks").getFile());
-		
-		if (!packsDir.exists()) {
-			packsDir.mkdir();
-		}
-		
-		File[] packs = packsDir.listFiles();
-		for (int i = 0; i < packs.length; i++) {
-			File pack = packs[i];
-			File dest = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/"
-					+ pack.getName());
-			if (!dest.exists()) {
-				try {
-					FileUtils.copyFile(pack, dest);
-					log.info("Copied over localization pack " + pack.getName());
-				} catch (IOException e) {
-					log.err("Could not copy pack " + pack.getName() + "! " + e.toString());
-					e.printStackTrace();
-				}
-			}
-		}
+		// may or may not have lifted code from Onahsa
+		URI uri = Launcher.class.getResource("/localizationPacks").toURI();
+        Path myPath = null;
+        FileSystem fileSystem = null;
+        if (uri.getScheme().equals("jar")) {
+	        fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+	        myPath = fileSystem.getPath("/localizationPacks");
+        } else {
+            myPath = Paths.get(uri);
+        }
+        Stream<Path> walk = Files.walk(myPath, 1);
+        Iterator<Path> it = walk.iterator();
+        it.next();
+        while (it.hasNext()){
+	        try {
+	        	Path filePath = it.next();
+	        	String idStr = filePath.getFileName().toString();
+	        	File newFile = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/" + idStr);
+	        	if (!newFile.exists()) {
+	        		Files.copy(filePath, new FileOutputStream(newFile));
+	        		log.info("Copying over localization pack " + newFile.getName());
+	        	}
+	        } catch (NoSuchElementException e) {
+	        	e.printStackTrace();
+	        }
+        }
+        walk.close();
+        if (fileSystem != null) {
+        	fileSystem.close();
+        }
 		
 		// copy over default settings if don't exist
 		File f = new File(System.getProperty("user.home") + "/Susquehanna/config.properties");
@@ -162,7 +183,15 @@ public class App extends Application {
         
     	log.info("Loading books...");
     	
-    	loadSettings();
+    	try {
+			loadSettings();
+		} catch (URISyntaxException e) {
+			log.critical("Unable to load built-in localizations; URI given is invalid‽");
+			e.printStackTrace();
+		} catch (IOException e) {
+			log.critical("Unable to load built-in localizations!!");
+			e.printStackTrace();
+		}
     	File localizationDir = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/");
 		lb = new LocaleBundle(localizationDir, l);
     	

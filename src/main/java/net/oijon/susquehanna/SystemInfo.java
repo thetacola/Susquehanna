@@ -38,7 +38,7 @@ public final class SystemInfo {
      * @return The version number of this program
      */
     public static String susquehannaVerNum() {
-    	return "0.2.0";
+    	return "0.2.1";
     }
     
     /**
@@ -65,7 +65,7 @@ public final class SystemInfo {
      */
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "25w21c";
+    		return "25w21d";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
