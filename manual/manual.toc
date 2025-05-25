@@ -7,6 +7,7 @@
 \contentsline {section}{\numberline {2.2}Open Language}{8}{}%
 \contentsline {section}{\numberline {2.3}Info}{9}{}%
 \contentsline {section}{\numberline {2.4}Report Bug}{9}{}%
+\contentsline {section}{\numberline {2.5}Welcome}{9}{}%
 \contentsline {chapter}{\numberline {3}The Phonology Tab}{10}{}%
 \contentsline {section}{\numberline {3.1}View Phonology}{11}{}%
 \contentsline {section}{\numberline {3.2}Edit Phonology}{11}{}%
@@ -20,3 +21,4 @@
 \contentsline {section}{\numberline {6.1}View Words}{17}{}%
 \contentsline {section}{\numberline {6.2}Edit Words}{17}{}%
 \contentsline {chapter}{\numberline {7}The Settings Tab}{18}{}%
+\contentsline {section}{\numberline {7.1}Language}{19}{}%
