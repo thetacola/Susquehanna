@@ -42,7 +42,7 @@ public class Navbox extends ScrollPane {
 	 */
 	public void createTransferActions() {
 		// transfer actions
-    	fileButton.createTransferAction("file.info");
+    	fileButton.createTransferAction("file.welcome");
     	phonologyButton.createTransferAction("phono.view");
     	orthographyButton.createTransferAction("ortho.view");
     	grammarButton.createTransferAction("grammar.null");

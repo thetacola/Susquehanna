@@ -79,7 +79,7 @@ public class LocaleBundle {
 		String returnStr = p.getProperty(input);
 		if (returnStr == null) {
 			log.warn("Unable to find localization for " + input);
-			return input;
+			returnStr = input;
 		}
 		return returnStr;
 	}

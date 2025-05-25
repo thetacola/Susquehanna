@@ -12,8 +12,9 @@ public class FileTools extends Toolbox {
         ToolButton openLanguage = new ToolButton("file.open");
         ToolButton reportBug = new ToolButton("file.report");
         ToolButton info = new ToolButton("file.info");
+        ToolButton welcome = new ToolButton("file.welcome");
         
-        this.getChildren().addAll(addLanguage, openLanguage, info, reportBug);
+        this.getChildren().addAll(addLanguage, openLanguage, info, reportBug, welcome);
 	}
 	
 }

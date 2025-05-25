@@ -22,6 +22,7 @@ import net.oijon.susquehanna.gui.scenes.file.AddLangPage;
 import net.oijon.susquehanna.gui.scenes.file.InfoPage;
 import net.oijon.susquehanna.gui.scenes.file.OpenLangPage;
 import net.oijon.susquehanna.gui.scenes.file.ReportBugPage;
+import net.oijon.susquehanna.gui.scenes.file.WelcomePage;
 import net.oijon.susquehanna.gui.scenes.lexicon.EditWordsPage;
 import net.oijon.susquehanna.gui.scenes.lexicon.ViewWordsPage;
 import net.oijon.susquehanna.gui.scenes.orthography.EditOrthographyPage;
@@ -183,6 +184,7 @@ public class App extends Application {
     	books.add(new InfoPage());
     	books.add(new AddLangPage());
     	books.add(new OpenLangPage());
+    	books.add(new WelcomePage());
     	// phono
     	books.add(new EditPhonoPage());
     	books.add(new ViewPhonoPage());
@@ -223,7 +225,7 @@ public class App extends Application {
     	Navbox navbox = new Navbox();
         navbox.createTransferActions();
     	
-        Book book = new InfoPage();
+        Book book = new WelcomePage();
         book.setNavbox(navbox);
         book.setToolbox(new FileTools());
         
