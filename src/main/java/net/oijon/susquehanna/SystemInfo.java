@@ -38,7 +38,7 @@ public final class SystemInfo {
      * @return The version number of this program
      */
     public static String susquehannaVerNum() {
-    	return "0.2.2";
+    	return "0.3.0";
     }
     
     /**
@@ -47,7 +47,7 @@ public final class SystemInfo {
      * @return The human-friendly name of the version
      */
     public static String susquehannaVerName() {
-    	return "Cliffside";
+    	return "Colliersville";
     }
     
     /**
@@ -56,7 +56,7 @@ public final class SystemInfo {
      * @return True if development build, false otherwise
      */
     public static boolean isSnapshot() {
-    	return false;
+    	return true;
     }
     
     /**
@@ -65,7 +65,7 @@ public final class SystemInfo {
      */
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "25w21e";
+    		return "25w48a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
