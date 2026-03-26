@@ -57,6 +57,9 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.codehaus.plexus.util.FileUtils;
 
 //last edit: 5/22/25 -N3
@@ -398,7 +401,7 @@ public class App extends Application {
 		File file = getCurrentFile();
 		try {
 			lang.toFile(file);
-		} catch (IOException e) {
+		} catch (IOException | TransformerException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
 	}
