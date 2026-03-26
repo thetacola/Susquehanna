@@ -7,7 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import net.oijon.oling.datatypes.phonology.Phoneme;
+import net.oijon.oling.datatypes.phonology.PhonoCategory;
+import net.oijon.oling.datatypes.phonology.PhonoCell;
 import net.oijon.oling.datatypes.phonology.PhonoSystem;
 import net.oijon.oling.datatypes.phonology.PhonoTable;
 
@@ -50,25 +54,27 @@ public class PhonemeKeyboard extends Parent {
 		GridPane gp = new GridPane();
 		
 		for (int i = 0; i < pt.size(); i++) {
-			for (int j = 0; j < pt.getRow(i).size(); j++) {
-				String phoneme = pt.getRow(i).getSound(j);
-				Button button = new Button();
-				if (!"#".equals(phoneme) & !"*".equals(phoneme)) {
-					button = new Button(phoneme);
+			PhonoCategory row = pt.getRow(i);
+			int rowIndex = row.getIndex();
+			for (int j = 0; j < row.size(); j++) {
+				PhonoCell cell = row.getCell(j);
+				int cellIndex = cell.getIndex();
+				HBox cellHBox = new HBox();
+				for (int k = 0; k < cell.size(); k++) {
+					Phoneme p = cell.getPhonemes().get(k);
+					Button button = new Button(p.toString());
 					
 					button.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
 							String currentText = field.getText();
-							field.setText(currentText + phoneme);
-						}			
+							field.setText(currentText + p.getSound());
+						}
 					});
-				} else {
-					button.setDisable(true);
+					
+					cellHBox.getChildren().add(button);
 				}
-				GridPane.setRowIndex(button, i);
-				GridPane.setColumnIndex(button, j);
-				gp.getChildren().add(button);
+				gp.add(cellHBox, rowIndex, cellIndex);
 			}
 		}
 		gp.setAlignment(Pos.CENTER);

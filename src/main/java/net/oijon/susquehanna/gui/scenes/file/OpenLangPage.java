@@ -4,9 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +35,7 @@ import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
-import net.oijon.oling.Parser;
+import net.oijon.oling.LegacyParser;
 import net.oijon.oling.datatypes.language.Language;
 import net.oijon.oling.datatypes.language.LanguageProperty;
 
@@ -55,6 +66,7 @@ public class OpenLangPage extends Book {
 	
 	@Override
 	public void refresh() {
+		// TODO: find legacy and new files separately
 		File[] files = Language.getLanguageFiles(
 				new File(System.getProperty("user.home") + "/Susquehanna/"));
     	log.info("Found " + files.length + " language(s)");
@@ -107,21 +119,58 @@ public class OpenLangPage extends Book {
 
 						@Override
 						public void handle(ActionEvent event) {
-							Parser parser = new Parser(file);
+							String[] splitDot = file.getName().split(Pattern.quote("."));
+							String ext = splitDot[splitDot.length - 1];
 							Language l = Language.NULL;
-							try {
-								l = parser.parseLanguage();
-								App.setSelectedLang(l, file);
-							} catch (Exception e) {
+							if (ext.equals("language")) {
+								LegacyParser parser = new LegacyParser(file);
+								try {
+									l = parser.parseLanguage();
+									App.setSelectedLang(l, file);
+								} catch (Exception e) {
+									App.setSelectedLangNull();
+									e.printStackTrace();
+									log.err("Unable to select language!");
+									log.err(e.toString());
+								}
+							} else if (ext.equals("xml")) {
+								try {
+									DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+						            DocumentBuilder builder = factory.newDocumentBuilder();
+									
+									Scanner reader = new Scanner(file, StandardCharsets.UTF_8);
+						            boolean firstLine = true;
+						            String data = "";
+						            while (reader.hasNextLine()) {
+						                if (firstLine) {
+						                    data = reader.nextLine();
+						                    String[] splitData = data.split("<\\?xml");
+						                    data = "<?xml" + splitData[1];
+						                    firstLine = false;
+						                } else {
+	
+						                    data += reader.nextLine() + "\n";
+						                }
+						            }
+						            reader.close();
+						            Document doc = builder.parse(new InputSource(new StringReader(data)));
+						            Element element = doc.getDocumentElement();
+						            l = new Language(element);
+						            App.setSelectedLang(l, file);
+								} catch (Exception e) {
+									App.setSelectedLangNull();
+									e.printStackTrace();
+									log.err("Unable to select language!");
+									log.err(e.toString());
+								}
+							} else {
 								App.setSelectedLangNull();
-								e.printStackTrace();
-								log.err("Unable to select language!");
-								log.err(e.toString());
+								log.err("Unable to load language from " + file.getName() + 
+										" (Unsupported file extension)");
 							}
 							log.info("Selected language: "
-							+ App.getSelectedLang().getProperties().getProperty(LanguageProperty.NAME));
+									+ App.getSelectedLang().getProperties().getProperty(LanguageProperty.NAME));
 						}
-	                	
 	                });
 	                delete.setOnAction(new EventHandler<ActionEvent>() {
 

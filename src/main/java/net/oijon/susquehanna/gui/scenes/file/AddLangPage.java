@@ -3,6 +3,9 @@ package net.oijon.susquehanna.gui.scenes.file;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -42,8 +45,8 @@ public class AddLangPage extends Book {
 				newLang.getProperties().setProperty(LanguageProperty.AUTONYM,
 						languageAutonym.getText());
 				try {
-					newLang.toFile(new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".language"));
-				} catch (IOException e) {
+					newLang.toFile(new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".xml"));
+				} catch (IOException | TransformerException | ParserConfigurationException e) {
 					log.err(e.toString() + " - Could not write new language to file!");
 					e.printStackTrace();
 				}
