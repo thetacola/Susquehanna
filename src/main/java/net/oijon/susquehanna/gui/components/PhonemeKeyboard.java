@@ -9,11 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.phonology.Phoneme;
-import net.oijon.oling.datatypes.phonology.PhonoCategory;
-import net.oijon.oling.datatypes.phonology.PhonoCell;
-import net.oijon.oling.datatypes.phonology.PhonoSystem;
-import net.oijon.oling.datatypes.phonology.PhonoTable;
+import net.oijon.oling.datatypes.phonology.table.Phoneme;
+import net.oijon.oling.datatypes.phonology.table.PhonoCategory;
+import net.oijon.oling.datatypes.phonology.table.PhonoCell;
+import net.oijon.oling.datatypes.phonology.table.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.table.PhonoTable;
 
 public class PhonemeKeyboard extends Parent {
 
@@ -91,7 +91,7 @@ public class PhonemeKeyboard extends Parent {
 		
 		int rowSize = ps.getTables().get(0).getRow(0).size();
 		
-		int totalAmount = ps.getDiacritics().size();
+		int totalAmount = ps.getDiacriticKeys().size();
 		int iterations = (totalAmount % rowSize) + 1;
 		int count = 0;
 		for (int i = 0; i < iterations; i++) {
@@ -99,7 +99,7 @@ public class PhonemeKeyboard extends Parent {
 				if (count >= totalAmount) {
 					break;
 				} else {
-					String diacritic = ps.getDiacritics().get(count);
+					String diacritic = ps.getDiacriticKeys().get(count);
 					Button button = new Button(diacritic);
 					
 					button.setOnAction(new EventHandler<ActionEvent>() {

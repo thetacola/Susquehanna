@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import net.oijon.oling.datatypes.language.Language;
-import net.oijon.oling.datatypes.phonology.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.table.PhonoSystem;
 import net.oijon.olog.Log;
 import net.oijon.susquehanna.gui.Navbox;
 import net.oijon.susquehanna.gui.resources.Backgrounds;

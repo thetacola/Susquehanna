@@ -15,11 +15,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.phonology.Phoneme;
-import net.oijon.oling.datatypes.phonology.PhonoCategory;
-import net.oijon.oling.datatypes.phonology.PhonoCell;
-import net.oijon.oling.datatypes.phonology.PhonoSystem;
-import net.oijon.oling.datatypes.phonology.PhonoTable;
+import net.oijon.oling.datatypes.phonology.table.Phoneme;
+import net.oijon.oling.datatypes.phonology.table.PhonoCategory;
+import net.oijon.oling.datatypes.phonology.table.PhonoCell;
+import net.oijon.oling.datatypes.phonology.table.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.table.PhonoTable;
 import net.oijon.oling.datatypes.phonology.Phonology;
 
 public class PhonemeTable extends Parent {
@@ -135,8 +135,8 @@ public class PhonemeTable extends Parent {
 	 */
 	private String generateDiacriticRegex() {
 		String diacriticRegex = "[";
-		for (int i = 0; i < phonology.getPhonoSystem().getDiacritics().size(); i++) {
-			diacriticRegex += phonology.getPhonoSystem().getDiacritics().get(i);
+		for (int i = 0; i < phonology.getPhonoSystem().getDiacriticKeys().size(); i++) {
+			diacriticRegex += phonology.getPhonoSystem().getDiacriticKeys().get(i);
 		}
 		diacriticRegex += "]*";
 		return diacriticRegex;

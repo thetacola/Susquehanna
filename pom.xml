@@ -86,6 +86,13 @@
 		    <artifactId>otime</artifactId>
 		    <version>0.0.2</version>
 		</dependency>
+		<!-- Source: https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-utils -->
+		<dependency>
+		    <groupId>org.codehaus.plexus</groupId>
+		    <artifactId>plexus-utils</artifactId>
+		    <version>4.0.3</version>
+		    <scope>compile</scope>
+		</dependency>
     </dependencies>
     <build>
         <plugins>
