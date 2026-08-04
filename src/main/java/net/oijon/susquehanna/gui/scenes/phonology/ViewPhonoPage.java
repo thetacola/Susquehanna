@@ -46,7 +46,7 @@ public class ViewPhonoPage extends OnePageBook {
 	private void buildViewable() {
 		clear();
 		
-		Label phonoLabel = new Label("Phonology");
+		Label phonoLabel = new Label("View Phonology");
 		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
 		table = new PhonemeTable(App.getSelectedLang().getPhono(), false);
 		

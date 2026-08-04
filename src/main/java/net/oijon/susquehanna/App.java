@@ -99,12 +99,14 @@ public class App extends Application {
     		}
     	});
 		
-		log.warn("Found " + languages.length + " to convert!");
-		for (int i = 0; i < languages.length; i++) {
-			LegacyParser lp = new LegacyParser(languages[i]);
-			File newFile = new File(languages[i].toString().replace(".language", ".language.bak"));
-			log.info("Moving legacy file to " + newFile);
-			languages[i].renameTo(newFile);
+		if (languages.length > 0) {
+			log.warn("Found " + languages.length + " to convert!");
+			for (int i = 0; i < languages.length; i++) {
+				LegacyParser lp = new LegacyParser(languages[i]);
+				File newFile = new File(languages[i].toString().replace(".language", ".language.bak"));
+				log.info("Moving legacy file to " + newFile);
+				languages[i].renameTo(newFile);
+			}
 		}
 	}
 	

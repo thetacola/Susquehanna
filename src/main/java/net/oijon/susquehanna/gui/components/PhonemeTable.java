@@ -20,6 +20,7 @@ import net.oijon.oling.datatypes.phonology.table.PhonoCategory;
 import net.oijon.oling.datatypes.phonology.table.PhonoCell;
 import net.oijon.oling.datatypes.phonology.table.PhonoSystem;
 import net.oijon.oling.datatypes.phonology.table.PhonoTable;
+import net.oijon.susquehanna.App;
 import net.oijon.oling.datatypes.phonology.Phonology;
 
 public class PhonemeTable extends Parent {
@@ -301,10 +302,10 @@ public class PhonemeTable extends Parent {
 				HBox cellHBox = new HBox();
 				for (int k = 0; k < cell.size(); k++) {
 					Phoneme p = cell.getPhonemes().get(k);
-					PhonemeButton button = new PhonemeButton(p.toString());
+					PhonemeButton button = new PhonemeButton(p.getSound(), isEditable);
 					cellHBox.getChildren().add(button);
 				}
-				gp.add(cellHBox, rowIndex + 1, cellIndex + 1);
+				gp.add(cellHBox, cellIndex + 1, rowIndex + 1);
 			}
 		}
 		return gp;
