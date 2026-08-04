@@ -71,14 +71,6 @@ public class OpenLangPage extends Book {
 	@Override
 	public void refresh() {
 		File homeDir = new File(System.getProperty("user.home") + "/Susquehanna/");
-		File[] legacyFiles = Language.getLanguageFiles(homeDir);
-    	log.warn("Found " + legacyFiles.length + " legacy language(s)");
-    	if (log.isDebug()) {
-	    	log.debug("Language(s) found:");
-	    	for (File file : legacyFiles) {
-	    		log.debug(file.getName());
-	    	}
-    	}
     	languageSelect.getChildren().clear();
     	
     	File[] xmlFiles = homeDir.listFiles(new FilenameFilter() {
@@ -94,16 +86,10 @@ public class OpenLangPage extends Book {
 	        	languageSelect.getChildren().add(box);
 	        }
         }
-    	if (legacyFiles != null) {
-    		for (File file : legacyFiles) {
-    			HBox box = createSelectionBox(file);
-    			box.setBackground(new Background(new BackgroundFill(Color.BISQUE, null, null)));
-	        	languageSelect.getChildren().add(box);
-    		}
-    	}
 	}
 	
 	private HBox createSelectionBox(File file) {
+				
 		Label nameLabel = new Label();
     	nameLabel.setFont(Fonts.OPENSANS);
     	Label timeCreatedLabel = new Label();
@@ -121,20 +107,23 @@ public class OpenLangPage extends Book {
     	VBox infoBox = new VBox();
     	HBox buttonHBox = new HBox();
     	HBox box = new HBox();
+    	File metadata = new File(file.toString().replace(".xml", ".meta"));
     	
-    	try (InputStream input = new FileInputStream(file)) {
+    	try (InputStream input = new FileInputStream(metadata)) {
+    		// the initialization of the program already ensures that this exists
+    		
             Properties prop = new Properties();
 
             prop.load(input);
             String name = prop.getProperty("name");
             nameLabel.setText(name);
-            Long timeCreated = Long.valueOf(prop.getProperty("timeCreated"));
+            Long timeCreated = Long.valueOf(prop.getProperty("created"));
             Date timeCreatedDate = new Date(timeCreated);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String timeCreatedString = sdf.format(timeCreatedDate);
             timeCreatedLabel.setText(" " + lb.get("file.open.createdon") + " " + timeCreatedString);
             
-            Long lastAccessed = Long.valueOf(prop.getProperty("lastEdited"));
+            Long lastAccessed = Long.valueOf(prop.getProperty("edited"));
             Date lastAccessedDate = new Date(lastAccessed);
             String lastAccessedString = sdf.format(lastAccessedDate);
             lastAccessedLabel.setText(" " + lb.get("file.open.lastaccessed") + " " + lastAccessedString);
@@ -143,55 +132,8 @@ public class OpenLangPage extends Book {
 
 				@Override
 				public void handle(ActionEvent event) {
-					String[] splitDot = file.getName().split(Pattern.quote("."));
-					String ext = splitDot[splitDot.length - 1];
 					Language l = Language.NULL;
-					if (ext.equals("language")) {
-						LegacyParser parser = new LegacyParser(file);
-						try {
-							l = parser.parseLanguage();
-							App.setSelectedLang(l, file);
-						} catch (Exception e) {
-							App.setSelectedLangNull();
-							e.printStackTrace();
-							log.err("Unable to select language!");
-							log.err(e.toString());
-						}
-					} else if (ext.equals("xml")) {
-						try {
-							DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				            DocumentBuilder builder = factory.newDocumentBuilder();
-							
-							Scanner reader = new Scanner(file, StandardCharsets.UTF_8);
-				            boolean firstLine = true;
-				            String data = "";
-				            while (reader.hasNextLine()) {
-				                if (firstLine) {
-				                    data = reader.nextLine();
-				                    String[] splitData = data.split("<\\?xml");
-				                    data = "<?xml" + splitData[1];
-				                    firstLine = false;
-				                } else {
-
-				                    data += reader.nextLine() + "\n";
-				                }
-				            }
-				            reader.close();
-				            Document doc = builder.parse(new InputSource(new StringReader(data)));
-				            Element element = doc.getDocumentElement();
-				            l = new Language(element);
-				            App.setSelectedLang(l, file);
-						} catch (Exception e) {
-							App.setSelectedLangNull();
-							e.printStackTrace();
-							log.err("Unable to select language!");
-							log.err(e.toString());
-						}
-					} else {
-						App.setSelectedLangNull();
-						log.err("Unable to load language from " + file.getName() + 
-								" (Unsupported file extension)");
-					}
+					App.setSelectedLang(file);
 					log.info("Selected language: "
 							+ App.getSelectedLang().getProperties().getProperty(LanguageProperty.NAME));
 				}
