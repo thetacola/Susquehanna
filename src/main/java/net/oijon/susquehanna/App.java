@@ -393,8 +393,7 @@ public class App extends Application {
     
     /**
      * Sets a new selected language
-     * @param l The language to be selected
-     * @param f The file of the newly-selected language
+     * @param f The file of the language to be selected
      */
     public static void setSelectedLang(File f) {
     	String metaPath = f.toString().replace(".xml", ".meta");
