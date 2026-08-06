@@ -15,9 +15,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.phonology.PhonoCategory;
-import net.oijon.oling.datatypes.phonology.PhonoSystem;
-import net.oijon.oling.datatypes.phonology.PhonoTable;
+import net.oijon.oling.datatypes.phonology.table.Phoneme;
+import net.oijon.oling.datatypes.phonology.table.PhonoCategory;
+import net.oijon.oling.datatypes.phonology.table.PhonoCell;
+import net.oijon.oling.datatypes.phonology.table.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.table.PhonoTable;
+import net.oijon.susquehanna.App;
 import net.oijon.oling.datatypes.phonology.Phonology;
 
 public class PhonemeTable extends Parent {
@@ -133,8 +136,8 @@ public class PhonemeTable extends Parent {
 	 */
 	private String generateDiacriticRegex() {
 		String diacriticRegex = "[";
-		for (int i = 0; i < phonology.getPhonoSystem().getDiacritics().size(); i++) {
-			diacriticRegex += phonology.getPhonoSystem().getDiacritics().get(i);
+		for (int i = 0; i < phonology.getPhonoSystem().getDiacriticKeys().size(); i++) {
+			diacriticRegex += phonology.getPhonoSystem().getDiacriticKeys().get(i);
 		}
 		diacriticRegex += "]*";
 		return diacriticRegex;
@@ -291,43 +294,18 @@ public class PhonemeTable extends Parent {
 		GridPane gp = generatePaneWithLabels(pt);
 		
 		for (int i = 0; i < pt.size(); i++) {
-			
-			// generate row label
-			Label label = new Label(pt.getRow(i).getName());
-			// TODO: this text also does not align correctly
-			label.setAlignment(Pos.CENTER_RIGHT);
-			GridPane.setRowIndex(label, i + 1);
-			GridPane.setColumnIndex(label, 0);
 			PhonoCategory row = pt.getRow(i);
-			gp.getChildren().add(label);
-			
-			// queue prevents duplicate HBoxes from being added
-			Queue<PhonemeButton> thingsToAdd = new LinkedList<PhonemeButton>();
-			// 1 instead of 0 as to give room for side labels
-			int colIndicator = 1;
+			int rowIndex = row.getIndex();
 			for (int j = 0; j < row.size(); j++) {
-				String sound = row.getSound(j);
-				if (!"*".equals(sound) & !"#".equals(sound)) {
-					PhonemeButton pb = new PhonemeButton(row.getSound(j), this, isEditable);
-					thingsToAdd.add(pb);					
-				} else {
-					PhonemeButton pb = new PhonemeButton("");
-					pb.getMainButton().setDisable(true);
-					thingsToAdd.add(pb);
+				PhonoCell cell = row.getCell(j);
+				int cellIndex = cell.getIndex();
+				HBox cellHBox = new HBox();
+				for (int k = 0; k < cell.size(); k++) {
+					Phoneme p = cell.getPhonemes().get(k);
+					PhonemeButton button = new PhonemeButton(p.getSound(), isEditable);
+					cellHBox.getChildren().add(button);
 				}
-				if ((j + 1) % pt.dataPerCell() == 0) {
-					// cell is needed as, although phonosystems have a predictable amount of sounds per category, phonologies do not
-					HBox cell = new HBox();
-					while (!thingsToAdd.isEmpty()) {
-						PhonemeButton pb = thingsToAdd.poll();
-						HBox.setHgrow(pb, Priority.ALWAYS);
-						cell.getChildren().add(pb);
-					}
-					GridPane.setRowIndex(cell, i + 1);
-					GridPane.setColumnIndex(cell, colIndicator);
-					gp.getChildren().add(cell);
-					colIndicator++;
-				}
+				gp.add(cellHBox, cellIndex + 1, rowIndex + 1);
 			}
 		}
 		return gp;
