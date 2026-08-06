@@ -159,10 +159,8 @@ public class App extends Application {
 	        	}
 	        	
 	        	File newFile = new File(System.getProperty("user.home") + "/Susquehanna/localizationPacks/" + idStr);
-	        	if (!newFile.exists()) {
-	        		Files.copy(filePath, new FileOutputStream(newFile));
-	        		log.info("Copying over localization pack " + newFile.getName());
-	        	}
+	        	Files.copy(filePath, new FileOutputStream(newFile));
+	        	log.info("Copying over localization pack " + newFile.getName());
 	        } catch (NoSuchElementException e) {
 	        	e.printStackTrace();
 	        }
