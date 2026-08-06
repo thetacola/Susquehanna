@@ -46,6 +46,9 @@ public class ViewOrthographyPage extends Book {
 	}
 
 	private boolean hasViewableOrtho() {
+		if (App.getSelectedLang() == null) {
+			return false;
+		}
 		return !App.getSelectedLang().equals(Language.NULL);
 	}
 	

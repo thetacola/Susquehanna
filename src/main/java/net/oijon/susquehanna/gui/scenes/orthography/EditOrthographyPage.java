@@ -2,6 +2,9 @@ package net.oijon.susquehanna.gui.scenes.orthography;
 
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -45,6 +48,9 @@ public class EditOrthographyPage extends Book {
 	}
 
 	private boolean hasViewableOrtho() {
+		if (App.getSelectedLang() == null) {
+			return false;
+		}
 		return !App.getSelectedLang().equals(Language.NULL);
 	}
 	
@@ -81,7 +87,7 @@ public class EditOrthographyPage extends Book {
 				App.getSelectedLang().getOrtho().add(phonemes.getText(), graphemes.getText());
 				try {
 					App.getSelectedLang().toFile(App.getCurrentFile());
-				} catch (IOException e) {
+				} catch (IOException | TransformerException | ParserConfigurationException e) {
 					log.err("Could not save orthography!");
 				}
 				phonemes.clear();

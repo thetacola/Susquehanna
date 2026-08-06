@@ -10,8 +10,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import net.oijon.oling.LegacyParser;
 import net.oijon.oling.datatypes.language.Language;
-import net.oijon.oling.datatypes.phonology.PhonoSystem;
+import net.oijon.oling.datatypes.phonology.table.PhonoSystem;
 import net.oijon.olog.Log;
 import net.oijon.susquehanna.gui.Navbox;
 import net.oijon.susquehanna.gui.resources.Backgrounds;
@@ -33,11 +34,13 @@ import net.oijon.susquehanna.gui.scenes.settings.LocalePage;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
 import net.oijon.susquehanna.gui.toolboxes.OrthographyTools;
 import net.oijon.susquehanna.gui.toolboxes.PhonologyTools;
+import net.oijon.susquehanna.language.SusquehannaLanguage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -50,12 +53,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.codehaus.plexus.util.FileUtils;
 
@@ -73,8 +80,7 @@ public class App extends Application {
 	static Log log = new Log(System.getProperty("user.home") + "/Susquehanna");
 	static VBox languageSelect = new VBox();
 	//static TextArea languageList = new TextArea();    
-    static Language selectedLanguage = Language.NULL;
-    static File currentFile;
+    static SusquehannaLanguage selectedLanguage = new SusquehannaLanguage(null, null);
     static ImageView BINDING = new ImageView(new Image(App.class.getResourceAsStream("/img/page-binding.png")));
 	static ImageView RIGHTWOOD = new ImageView(new Image(App.class.getResourceAsStream("/img/right-wood.png")));
     public static Locale l;
@@ -82,6 +88,50 @@ public class App extends Application {
     public static LocaleBundle lb;
 	
 	public static Stage stage;
+	
+	@SuppressWarnings("deprecation")
+	private void convertLegacy() {
+		log.info("Checking for legacy files to convert...");
+		File homeDir = new File(System.getProperty("user.home") + "/Susquehanna/");
+		File[] languages = homeDir.listFiles(new FilenameFilter() {
+    		public boolean accept(File dir, String name) {
+    			return name.toLowerCase().endsWith(".language");
+    		}
+    	});
+		
+		if (languages.length > 0) {
+			log.warn("Found " + languages.length + " to convert!");
+			for (int i = 0; i < languages.length; i++) {
+				LegacyParser lp = new LegacyParser(languages[i]);
+				File newFile = new File(languages[i].toString().replace(".language", ".language.bak"));
+				log.info("Moving legacy file to " + newFile);
+				languages[i].renameTo(newFile);
+			}
+		}
+	}
+	
+	private void verifyMetadata() {
+		File homeDir = new File(System.getProperty("user.home") + "/Susquehanna/");
+		File[] languages = homeDir.listFiles(new FilenameFilter() {
+    		public boolean accept(File dir, String name) {
+    			return name.toLowerCase().endsWith(".xml");
+    		}
+    	});
+		File[] metadatas = new File[languages.length];
+		for (int i = 0; i < metadatas.length; i++) {
+			metadatas[i] = new File(languages[i].toString().replace(".xml", ".meta"));
+		}
+		
+		for (int i = 0; i < metadatas.length; i++) {
+			if (!metadatas[i].exists()) {
+				log.warn("Found language with missing metadata! Generating...");
+				SusquehannaLanguage sl = new SusquehannaLanguage(languages[i], metadatas[i]);
+				sl.write();
+				log.info("Generated metadata at " + metadatas[i].toString());
+			}
+		}
+		
+	}
 	
 	private void loadSettings() throws URISyntaxException, IOException {
 		// copy over everything in localizationPacks folder
@@ -174,18 +224,14 @@ public class App extends Application {
 	public void init() {
 		notifyPreloader(new Preloader.ProgressNotification(0));
 		log.info("Initializing application...");
-    	
-    	//Verify IPA is intact
-    	PhonoSystem ipa = PhonoSystem.IPA;
-    	ipa.toFile();
-    	PhonoSystem ipaFile = new PhonoSystem(new File(System.getProperty("user.home") + "/Susquehanna/phonoSystems/IPA.phosys"));
-    	if (ipaFile.toString().equals(ipa.toString())) {
-    		if (log.isDebug()) {
-    			log.debug("IPA phonology system successfully verified!");
-    		}
-    	} else {
-    		log.err("IPA phonology system could not be verified!");
-    	}
+		
+		log.info("Checking for legacy files...");
+		convertLegacy();
+		
+		log.info("Verifying language metadata...");
+    	verifyMetadata();
+		
+    	// Verifying IPA used to be here, but is now handled by OLing
         
     	log.info("Loading books...");
     	
@@ -342,17 +388,20 @@ public class App extends Application {
      * Sets the currently selected language to Language.NULL
      */
     public static void setSelectedLangNull() {
-    	setSelectedLang(Language.NULL, null);
+    	setSelectedLang(null);
     }
     
     /**
      * Sets a new selected language
-     * @param l The language to be selected
-     * @param f The file of the newly-selected language
+     * @param f The file of the language to be selected
      */
-    public static void setSelectedLang(Language l, File f) {
-    	selectedLanguage = l;
-    	currentFile = f;
+    public static void setSelectedLang(File f) {
+    	String metaPath = f.toString().replace(".xml", ".meta");
+    	File meta = new File(metaPath);
+    	
+    	selectedLanguage = new SusquehannaLanguage(f, meta);
+    	selectedLanguage.read();
+    	
     	for (Book book : books) {
     		book.updateOnLanguageChange();
     	}
@@ -363,7 +412,10 @@ public class App extends Application {
      * @return The currently selected language
      */
     public static Language getSelectedLang() {
-    	return selectedLanguage;
+    	if (selectedLanguage.getLanguage() == null) {
+    		return Language.NULL;
+    	}
+    	return selectedLanguage.getLanguage();
     }
     
     /**
@@ -371,7 +423,7 @@ public class App extends Application {
      * @return The file connected to the selected language
      */
     public static File getCurrentFile() {
-    	return currentFile;
+    	return selectedLanguage.getFile();
     }
     
     /**
@@ -394,13 +446,7 @@ public class App extends Application {
      * Writes the current contents of the selected language to the file.
      */
     public static void writeToSelectedLang() {
-		Language lang = getSelectedLang();
-		File file = getCurrentFile();
-		try {
-			lang.toFile(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		selectedLanguage.write();
 	}
     
     /**

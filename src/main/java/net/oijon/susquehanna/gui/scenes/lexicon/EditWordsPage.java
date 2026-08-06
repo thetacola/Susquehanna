@@ -3,6 +3,9 @@ package net.oijon.susquehanna.gui.scenes.lexicon;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -78,7 +81,7 @@ public class EditWordsPage extends Book {
 						// TODO: make source language dropdown go to normal
 						try {
 							App.getSelectedLang().toFile(App.getCurrentFile());
-						} catch (IOException e) {
+						} catch (IOException | TransformerException | ParserConfigurationException e) {
 							log.err(e.toString() + " - Could not add word " +
 									word.getProperties().getProperty(WordProperty.NAME));
 							e.printStackTrace();

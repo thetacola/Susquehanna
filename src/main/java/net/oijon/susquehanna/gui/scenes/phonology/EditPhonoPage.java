@@ -43,7 +43,7 @@ public class EditPhonoPage extends OnePageBook {
 	private void buildViewable() {
 		clear();
 		
-		Label phonoLabel = new Label("Phonology");
+		Label phonoLabel = new Label("Edit Phonology");
 		phonoLabel.setFont(Fonts.OPENSANS_BOLD);
 		table = new PhonemeTable(App.getSelectedLang().getPhono(), true);
 		
