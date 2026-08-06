@@ -16,6 +16,7 @@ import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.susquehanna.gui.resources.Fonts;
 import net.oijon.susquehanna.gui.scenes.Book;
 import net.oijon.susquehanna.gui.toolboxes.FileTools;
+import net.oijon.susquehanna.language.SusquehannaLanguage;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.LocaleBundle;
 
@@ -41,16 +42,18 @@ public class AddLangPage extends Book {
 			@Override
 			public void handle(ActionEvent arg0) {
 				log.info("Creating new language...");
-				Language newLang = new Language(languageName.getText());
-				newLang.getProperties().setProperty(LanguageProperty.AUTONYM,
-						languageAutonym.getText());
-				try {
-					newLang.toFile(new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".xml"));
-				} catch (IOException | TransformerException | ParserConfigurationException e) {
-					log.err(e.toString() + " - Could not write new language to file!");
-					e.printStackTrace();
-				}
-				log.info(newLang.getProperties().getProperty(LanguageProperty.NAME) + " has been created!");
+				File langFile = new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".xml");
+				File metaFile = new File(System.getProperty("user.home") + "/Susquehanna/" + languageName.getText() + ".meta");
+				
+				SusquehannaLanguage sl = new SusquehannaLanguage(langFile, metaFile);
+				
+				sl.getLanguage().getProperties().setProperty(LanguageProperty.NAME, languageName.getText());
+				sl.getLanguage().getProperties().setProperty(LanguageProperty.AUTONYM, languageAutonym.getText());
+				// FIXME: IDs need to not be null
+				
+				sl.write();
+				
+				log.info(sl.getLanguage().getProperties().getProperty(LanguageProperty.NAME) + " has been created!");
 			}
         	
         });
