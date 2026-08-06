@@ -65,7 +65,7 @@ public final class SystemInfo {
      */
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "26w32b";
+    		return "26w32c";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
