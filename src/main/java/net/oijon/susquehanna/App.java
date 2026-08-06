@@ -42,6 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -184,6 +185,21 @@ public class App extends Application {
 				e.printStackTrace();
 			}
     	}
+		
+		// may not exist in case of an IOException, but if this happens the user has larger problems than missing settings
+		if (f.exists()) {
+			log.info("Adding any new settings to the config...");
+			InputStream defaultStream = this.getClass().getResourceAsStream("/config.properties");
+			Properties p = new Properties();
+			p.load(defaultStream);
+			
+			InputStream currentSettings = new FileInputStream(f);
+			p.load(currentSettings);
+			
+			p.store(new FileOutputStream(f), "");
+		} else {
+			log.err("Unable to check for missing settings, as previous copy attempt failed!");
+		}
     	
 		try {
 			settings.load(new FileInputStream(f));
