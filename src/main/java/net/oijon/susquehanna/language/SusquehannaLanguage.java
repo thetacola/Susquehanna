@@ -17,7 +17,7 @@ import net.oijon.olog.Log;
 import net.oijon.susquehanna.App;
 
 public class SusquehannaLanguage {
-	Language l;
+	Language l = Language.NULL;
 	File langFile;
 	File metadataFile;
 	static Log log = App.getLog();
@@ -25,15 +25,6 @@ public class SusquehannaLanguage {
 	public SusquehannaLanguage(File langFile, File metadataFile) {
 		this.langFile = langFile;
 		this.metadataFile = metadataFile;
-		if (langFile != null) {
-			try {
-				l = Language.parse(langFile);
-			} catch (ParserConfigurationException | IOException | SAXException | InvalidXMLException e) {
-				log.err("Unable to read language from file " + langFile.toString() + "!");
-				e.printStackTrace();
-				l = Language.NULL;
-			}
-		}
 	}
 	
 	public Language getLanguage() {
@@ -45,11 +36,14 @@ public class SusquehannaLanguage {
 	}
 	
 	public void read() {
-		try {
-			l = Language.parse(langFile);
-		} catch (ParserConfigurationException | IOException | SAXException | InvalidXMLException e) {
-			log.err("Unable to read language at " + langFile.toString() + "!");
-			e.printStackTrace();
+		if (langFile != null) {
+			try {
+				l = Language.parse(langFile);
+			} catch (ParserConfigurationException | IOException | SAXException | InvalidXMLException e) {
+				log.err("Unable to read language from file " + langFile.toString() + "!");
+				e.printStackTrace();
+				l = Language.NULL;
+			}
 		}
 	}
 	

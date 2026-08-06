@@ -400,6 +400,7 @@ public class App extends Application {
     	File meta = new File(metaPath);
     	
     	selectedLanguage = new SusquehannaLanguage(f, meta);
+    	selectedLanguage.read();
     	
     	for (Book book : books) {
     		book.updateOnLanguageChange();

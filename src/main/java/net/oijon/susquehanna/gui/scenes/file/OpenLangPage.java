@@ -155,7 +155,8 @@ public class OpenLangPage extends Book {
 						@Override
 						public void handle(ActionEvent event) {
 							File mainFolder = new File(System.getProperty("user.home") + "/Susquehanna/" + name);
-							File langFile = new File(System.getProperty("user.home") + "/Susquehanna/" + name + ".language");
+							File langFile = new File(mainFolder.toString() + ".xml");
+							File metaFile = new File(mainFolder.toString() + ".meta");
 							
 							if (App.getSelectedLang().getProperties().getProperty(LanguageProperty.NAME)
 									== name) {
@@ -177,8 +178,9 @@ public class OpenLangPage extends Book {
 						            }
 						        }
 						    }
-							mainFolder.delete();
-							if (langFile.delete()) {
+						    
+						    // we want both to run, so & instead of &&
+							if (langFile.delete() & metaFile.delete()) {
 								log.info("Successfully deleted language " + name + " at " + langFile.toString());
 							} else {
 								log.err("Unable to delete " + name + " at " + langFile.toString());
