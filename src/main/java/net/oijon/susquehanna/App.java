@@ -103,6 +103,8 @@ public class App extends Application {
 		if (languages.length > 0) {
 			log.warn("Found " + languages.length + " to convert!");
 			for (int i = 0; i < languages.length; i++) {
+				// though it appears unused, the legacy parser on creation converts the file
+				@SuppressWarnings("unused")
 				LegacyParser lp = new LegacyParser(languages[i]);
 				File newFile = new File(languages[i].toString().replace(".language", ".language.bak"));
 				log.info("Moving legacy file to " + newFile);
