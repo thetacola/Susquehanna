@@ -1,6 +1,7 @@
 package net.oijon.susquehanna.gui.scenes.file;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Properties;
 
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import net.oijon.oling.datatypes.language.Language;
+import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.SystemInfo;
@@ -73,9 +75,14 @@ public class InfoPage extends Book {
 		String list = "";
 		list += "=== Susquehanna Settings ===\n";
 		list += "Locale=" + App.l.toString() + "\n";
-		list += "=== OLing Settings ===\n";
-		File[] files = Language.getLanguageFiles(
-				new File(System.getProperty("user.home") + "/Susquehanna/"));
+		File susquehannaHome = new File(System.getProperty("user.home") + "/Susquehanna/");
+		list += "Susquehanna home location=" + susquehannaHome + "\n";
+		File[] files = susquehannaHome
+				.listFiles(new FilenameFilter() {
+    		public boolean accept(File dir, String name) {
+    			return name.toLowerCase().endsWith(".xml");
+    		}
+    	});
 		list += "№ of languages=" + files.length + "\n";
 		list += "=== OLog Settings ===\n";
 		list += "Log location=" + log.getLogFile() + "\n";
