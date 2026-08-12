@@ -10,8 +10,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import net.oijon.oling.datatypes.language.Language;
-import net.oijon.oling.datatypes.language.LanguageProperty;
 import net.oijon.susquehanna.App;
 import net.oijon.susquehanna.LocaleBundle;
 import net.oijon.susquehanna.SystemInfo;
