@@ -49,7 +49,7 @@ public class AddLangPage extends Book {
 				
 				sl.getLanguage().getProperties().setProperty(LanguageProperty.NAME, languageName.getText());
 				sl.getLanguage().getProperties().setProperty(LanguageProperty.AUTONYM, languageAutonym.getText());
-				// FIXME: IDs need to not be null
+				sl.getLanguage().getProperties().generateID();
 				
 				sl.write();
 				
