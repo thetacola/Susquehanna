@@ -56,7 +56,7 @@ public final class SystemInfo {
      * @return True if development build, false otherwise
      */
     public static boolean isSnapshot() {
-    	return true;
+    	return false;
     }
     
     /**
