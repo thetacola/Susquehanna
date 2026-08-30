@@ -38,7 +38,7 @@ public final class SystemInfo {
      * @return The version number of this program
      */
     public static String susquehannaVerNum() {
-    	return "0.3.0";
+    	return "0.3.1";
     }
     
     /**
@@ -47,7 +47,7 @@ public final class SystemInfo {
      * @return The human-friendly name of the version
      */
     public static String susquehannaVerName() {
-    	return "Colliersville";
+    	return "Emmons";
     }
     
     /**
@@ -65,7 +65,7 @@ public final class SystemInfo {
      */
     public static String buildName() {
     	if (isSnapshot()) {
-    		return "26w33b";
+    		return "26w35a";
     	} else {
     		return susquehannaVerName() + ", " + susquehannaVerNum();
     	}
